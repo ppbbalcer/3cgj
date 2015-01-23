@@ -11,6 +11,8 @@ extern size_t globalTexturesSize;
 extern class Scene* gScenes[];
 extern size_t gScenesSize;
 
+extern AudioResource globalAudios[];
+extern size_t globalAudiosSize;
 
 extern ResourceItem texturesScene[];
 extern size_t texturesSceneSize;

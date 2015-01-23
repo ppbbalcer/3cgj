@@ -24,6 +24,9 @@ bool loadMedia() {
 	gScenes[4] = new Scene02Renderer();
 	gScenes[5] = new Scene03Object();
 
+	if (!EngineInst->loadAudioResources(globalAudios, globalAudiosSize))
+		success = false;
+
 	return success;
 }
 
@@ -65,9 +68,6 @@ int main( int argc, char* args[] )
 	
 	//Free resources and close SDL
 	Engine::Destroy();
-
-
-
 
 	return 0;
 }

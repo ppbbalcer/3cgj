@@ -16,7 +16,11 @@ size_t globalTexturesSize = sizeof(globalTextures)/sizeof(globalTextures[0]);
 class Scene* gScenes[10] = {NULL};
 size_t gScenesSize = sizeof(gScenes)/sizeof(gScenes[0]);
 
+AudioResource globalAudios[] = {
+	{"Resources/audio/high.wav", AUDIO_TYPE_SOUND, NULL},
+};
 
+size_t globalAudiosSize = sizeof(globalAudios)/sizeof(globalAudios[0]);
 
 ResourceItem texturesScene[] = {
 	{"Resources/laughing_man_logo.png",		false, true, true, 0,		NULL, NULL, 0, 0}, //Alfa problem fixed

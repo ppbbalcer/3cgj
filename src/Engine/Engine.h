@@ -2,6 +2,7 @@
 #define __ENGINE_H__
 
 #include <SDL.h>
+#include "Audio.h"
 #include "RFont.h"
 #include "StructsGlobal.h"
 
@@ -22,6 +23,8 @@ public:
 	void					unLoadTexture(ResourceItem &resItem);
 	bool					loadResources(ResourceItem resources[], unsigned int size);
 	void					unLoadResources(ResourceItem resources[], unsigned int size);
+	bool					loadAudioResources(AudioResource resources[], unsigned int size);
+	void					unloadAudioResources(AudioResource resources[], unsigned int size);
 	bool					loadGlobalFont(const char *pathTTF, int ptSize);
 	void					unLoadGlobalFont();
 
@@ -56,12 +59,10 @@ private:
 	Scene*				_sceneNext;
 	bool				_quitMainLoop;
 	bool				_showFPS;
-
+	AudioEngine			*_audio;
 	/* Engine private functions */
 	bool init();
 	void close();
-
-
 };
 
 extern Engine* EngineInst;

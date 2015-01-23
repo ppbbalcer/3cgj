@@ -76,6 +76,8 @@ bool Engine::init() {
 
 		} 
 	} 
+	
+	_audio = new AudioEngine();
 
 	_viewportScreen.x = 0; 
 	_viewportScreen.y = 0; 
@@ -99,6 +101,8 @@ void Engine::close() {
 	_window = NULL;
 	_renderer = NULL;
 	_screenSurface = NULL;
+
+	delete _audio;
 
 	//Quit SDL subsystems
 	TTF_Quit();
@@ -124,6 +128,26 @@ void Engine::unLoadResources(ResourceItem resources[], unsigned int size) {
 	for(unsigned i=0; i<size; ++i) {
 		unLoadTexture(resources[i]);
 	}
+}
+
+bool Engine::loadAudioResources(AudioResource resources[], unsigned int size) {
+	bool result = true;
+
+	for (unsigned i = 0; i < size; ++i) {
+		switch(resources[i].type) {
+		case AUDIO_TYPE_SOUND:
+			resources[i].res.sound = _audio->loadSound(resources[i].path);
+			break;
+		case AUDIO_TYPE_MUSIC:
+			resources[i].res.music = _audio->loadMusic(resources[i].path);
+			break;
+		}
+		result &= resources[i].res.sound != NULL;
+	}
+	return result;
+}
+
+void Engine::unloadAudioResources(AudioResource resources[], unsigned int size) {
 }
 
 /* 
