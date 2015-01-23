@@ -270,6 +270,8 @@ public:
 			PAUSE();
 		}
 
+		globalAudios[1].res.sound->setVolume(0.05f);
+		globalAudios[1].res.sound->play(-1, -1);
 	}
 
 	virtual void OnFree(){
@@ -309,7 +311,7 @@ public:
 
 		const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL ); 
 		if( currentKeyStates[ SDL_SCANCODE_UP ] ) {
-			globalAudios[0].res.sound->play();
+			globalAudios[0].res.sound->play(1, 0);
 			posY -= dist;
 			if(posY < 0) {
 				posY = 0;

@@ -18,6 +18,7 @@ size_t gScenesSize = sizeof(gScenes)/sizeof(gScenes[0]);
 
 AudioResource globalAudios[] = {
 	{"Resources/audio/high.wav", AUDIO_TYPE_SOUND, NULL},
+	{"Resources/audio/hb.wav", AUDIO_TYPE_SOUND, NULL},
 };
 
 size_t globalAudiosSize = sizeof(globalAudios)/sizeof(globalAudios[0]);
