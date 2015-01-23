@@ -11,20 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main16\Engine\Engine.cpp" />
-    <ClCompile Include="src\main16\Engine\RFont.cpp" />
-    <ClCompile Include="src\main16\src\GlobalData.cpp" />
-    <ClCompile Include="src\main16\src\main.cpp" />
+    <ClCompile Include="src\Engine\Engine.cpp" />
+    <ClCompile Include="src\Engine\RFont.cpp" />
+    <ClCompile Include="src\GlobalData.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\main16\Engine\Engine.h" />
-    <ClInclude Include="src\main16\Engine\RFont.h" />
-    <ClInclude Include="src\main16\Engine\RTexture.h" />
-    <ClInclude Include="src\main16\Engine\Scene.h" />
-    <ClInclude Include="src\main16\Engine\StructsGlobal.h" />
-    <ClInclude Include="src\main16\src\GlobalData.h" />
-    <ClInclude Include="src\main16\src\SceneExamples.h" />
-    <ClInclude Include="src\main16\src\SceneFont.h" />
+    <ClInclude Include="src\Engine\Engine.h" />
+    <ClInclude Include="src\Engine\RFont.h" />
+    <ClInclude Include="src\Engine\RTexture.h" />
+    <ClInclude Include="src\Engine\Scene.h" />
+    <ClInclude Include="src\Engine\StructsGlobal.h" />
+    <ClInclude Include="src\GlobalData.h" />
+    <ClInclude Include="src\SceneExamples.h" />
+    <ClInclude Include="src\SceneFont.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F4CBED84-EE5D-4375-A743-9CFF692D691B}</ProjectGuid>
@@ -55,7 +55,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\SDK\SDL2-2.0.3-deve-VC\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SDLDIR)\lib\x86\;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\3cgj\Engine;$(SDLDIR)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

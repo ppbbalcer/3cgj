@@ -1,7 +1,7 @@
 #ifndef __GLOBAL_DATA_H__
 #define __GLOBAL_DATA_H__
-#include <Engine/Scene.h>
-#include <Engine/StructsGlobal.h>
+#include "Engine/Scene.h"
+#include "Engine/StructsGlobal.h"
 
 extern const char GlobalFontPath[];
 

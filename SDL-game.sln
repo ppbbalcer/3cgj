@@ -1,16 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL-Lesson02-texutre", "SDL-Lesson02-texutre.vcxproj", "{54F6C873-0465-4ABC-99FB-3441A6B8E6AC}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL-Lesson03-events", "SDL-Lesson03-events.vcxproj", "{4C1E4E91-8E91-4E49-8B5D-0466B8728A12}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL-Lesson05-surface-soft-stretching", "SDL-Lesson05-surface-soft-stretching.vcxproj", "{87371ADB-BDD1-42EE-9876-D402A3D60087}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL-Lesson06-texture-rendering", "SDL-Lesson06-texture-rendering.vcxproj", "{482AAC0A-5EAB-47A9-8B02-F28EC7DB4628}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL-Lesson10-colors", "SDL-Lesson10-colors.vcxproj", "{37AE32FB-000E-4D70-8231-EBBA115A36C2}"
-EndProject
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL-Lesson16-rotat-fonts", "SDL-Lesson16-rotat-fonts.vcxproj", "{F4CBED84-EE5D-4375-A743-9CFF692D691B}"
 EndProject
 Global
@@ -19,26 +9,6 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{54F6C873-0465-4ABC-99FB-3441A6B8E6AC}.Debug|Win32.ActiveCfg = Debug|Win32
-		{54F6C873-0465-4ABC-99FB-3441A6B8E6AC}.Debug|Win32.Build.0 = Debug|Win32
-		{54F6C873-0465-4ABC-99FB-3441A6B8E6AC}.Release|Win32.ActiveCfg = Release|Win32
-		{54F6C873-0465-4ABC-99FB-3441A6B8E6AC}.Release|Win32.Build.0 = Release|Win32
-		{4C1E4E91-8E91-4E49-8B5D-0466B8728A12}.Debug|Win32.ActiveCfg = Debug|Win32
-		{4C1E4E91-8E91-4E49-8B5D-0466B8728A12}.Debug|Win32.Build.0 = Debug|Win32
-		{4C1E4E91-8E91-4E49-8B5D-0466B8728A12}.Release|Win32.ActiveCfg = Release|Win32
-		{4C1E4E91-8E91-4E49-8B5D-0466B8728A12}.Release|Win32.Build.0 = Release|Win32
-		{87371ADB-BDD1-42EE-9876-D402A3D60087}.Debug|Win32.ActiveCfg = Debug|Win32
-		{87371ADB-BDD1-42EE-9876-D402A3D60087}.Debug|Win32.Build.0 = Debug|Win32
-		{87371ADB-BDD1-42EE-9876-D402A3D60087}.Release|Win32.ActiveCfg = Release|Win32
-		{87371ADB-BDD1-42EE-9876-D402A3D60087}.Release|Win32.Build.0 = Release|Win32
-		{482AAC0A-5EAB-47A9-8B02-F28EC7DB4628}.Debug|Win32.ActiveCfg = Debug|Win32
-		{482AAC0A-5EAB-47A9-8B02-F28EC7DB4628}.Debug|Win32.Build.0 = Debug|Win32
-		{482AAC0A-5EAB-47A9-8B02-F28EC7DB4628}.Release|Win32.ActiveCfg = Release|Win32
-		{482AAC0A-5EAB-47A9-8B02-F28EC7DB4628}.Release|Win32.Build.0 = Release|Win32
-		{37AE32FB-000E-4D70-8231-EBBA115A36C2}.Debug|Win32.ActiveCfg = Debug|Win32
-		{37AE32FB-000E-4D70-8231-EBBA115A36C2}.Debug|Win32.Build.0 = Debug|Win32
-		{37AE32FB-000E-4D70-8231-EBBA115A36C2}.Release|Win32.ActiveCfg = Release|Win32
-		{37AE32FB-000E-4D70-8231-EBBA115A36C2}.Release|Win32.Build.0 = Release|Win32
 		{F4CBED84-EE5D-4375-A743-9CFF692D691B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{F4CBED84-EE5D-4375-A743-9CFF692D691B}.Debug|Win32.Build.0 = Debug|Win32
 		{F4CBED84-EE5D-4375-A743-9CFF692D691B}.Release|Win32.ActiveCfg = Release|Win32
