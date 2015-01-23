@@ -60,18 +60,45 @@ void RFont::OnUpdate() {
 
 }
 
-void RFont::printTextLT(int x, int y, const char *text) {
-	printText(x, y, ALIGN_LEFT | ALIGN_TOP, text);
+void RFont::printfLT(int x, int y, const char *text, ...) {
+
+	va_list valist;
+	char buff[1024];
+    va_start(valist, text);
+	vsnprintf(buff, sizeof(buff) - 1, text, valist);
+    va_end(valist);
+
+	printTextBuff(x, y, ALIGN_LEFT | ALIGN_TOP, buff);
 }
 
-void RFont::printText(int x, int y, int alignment, const char *text) {
+void RFont::printTextBuff(int x, int y, int alignment, const char *tex) {
 	SDL_Color colorText = { 255, 255, 255, 255 };
 	SDL_Color colorBorder = { 0, 0, 0, 128 };
-	printText(x, y, colorText, colorBorder, 1,alignment, 1.0f, text);
+	printTextBuff(x, y, colorText, colorBorder, 1,alignment, 1.0f, tex);
 }
 
-void RFont::printText(int x, int y, SDL_Color colorText, SDL_Color colorBorder, int border, int alignment, float scale, const char *text)
+void RFont::printf(int x, int y, int alignment, const char *text, ...) {
+	SDL_Color colorText = { 255, 255, 255, 255 };
+	SDL_Color colorBorder = { 0, 0, 0, 128 };
+	va_list valist;
+	char buff[1024];
+    va_start(valist, text);
+	vsnprintf(buff, sizeof(buff) - 1, text, valist);
+    va_end(valist);
+	printTextBuff(x, y, colorText, colorBorder, 1,alignment, 1.0f, buff);
+}
+
+void RFont::printf(int x, int y, SDL_Color colorText, SDL_Color colorBorder, int border, int alignment, float scale, const char *text, ...)
 {
+	va_list valist;
+	char buff[1024];
+    va_start(valist, text);
+	vsnprintf(buff, sizeof(buff) - 1, text, valist);
+    va_end(valist);
+	printTextRAW(_font, _frameSurface, x, y, colorText, colorBorder, border, alignment, scale, text);
+}
+
+void  RFont::printTextBuff(int x, int y, SDL_Color colorText, SDL_Color colorBorder, int border, int alignment, float scale, const char *text) {
 	printTextRAW(_font, _frameSurface, x, y, colorText, colorBorder, border, alignment, scale, text);
 }
 
@@ -87,7 +114,7 @@ void RFont::printTextRAW(TTF_Font *font, SDL_Surface* surface, int x, int y, SDL
 
 	if( textSurface == NULL )
 	{
-		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+		::printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
 		PAUSE();
 	}
 	else
