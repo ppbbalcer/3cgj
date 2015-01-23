@@ -30,7 +30,6 @@ bool loadMedia() {
 
 int main( int argc, char* args[] )
 {
-	IMap * mapa = IMap::Factory(0,"Resources/map_example.txt");
 	
 	//Start up SDL and create window
 	if( !Engine::Create() )

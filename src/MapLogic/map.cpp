@@ -55,7 +55,6 @@ LoadedMap::LoadedMap(const char * path) {
 	AllocateFields();
 	for (int i = 0 ; i!=GetHeight(); i++) {
 		for (int j = 0 ; j!=GetWidth(); ++j) {
-			//int field= GetFieldAt(j,i)->GetType();
 			Field * new_field = 0;
 			char c = mapfile.get();
 			switch(c) {
