@@ -1,7 +1,7 @@
 #ifndef __GENERIC_MAP
 #define __GENERIC_MAP
-#include <Engine/map.h>
-#include <Engine/field_impl.h>
+#include <MapLogic/map.h>
+#include <MapLogic/field_impl.h>
 
 
 class GenericMap: public IMap {

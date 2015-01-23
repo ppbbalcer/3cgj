@@ -1,9 +1,9 @@
-#include <Engine/map.h>
+#include <MapLogic/map.h>
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
-#include <Engine/field.h>
-#include <Engine/generic_map.h>
+#include <MapLogic/field.h>
+#include <MapLogic/generic_map.h>
 #include <fstream>
 /* following constants define width and height of map in tiles */
 using namespace std;
