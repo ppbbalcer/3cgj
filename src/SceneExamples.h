@@ -250,7 +250,6 @@ private:
 
 };
 
-
 class Scene03Object: public Scene {
 public:
 	virtual void OnLoad() {
@@ -259,6 +258,10 @@ public:
 		_background = new RTexture(texturesScene03[1]);
 		_player = new RTexture(texturesScene03[2]);
 		_player->setPos(240, 190);
+
+		_tiles = new RTexture(texturesScene03[3]);
+		_tiles->setTileSizeSrc(32);
+		_tiles->setTileSizeDst(32);
 
 		//Load media
 		if( !success )
@@ -274,6 +277,9 @@ public:
 		_background = NULL;
 		delete 	_player;
 		_player = NULL;
+
+		delete 	_tiles;
+		_tiles = NULL;
 
 		EngineInst->unLoadResources(texturesScene03, texturesScene03Size);
 	}
@@ -338,12 +344,25 @@ public:
 		_background->render(renderer);
 		_player->render(renderer);
 
+		int sizeDst = _tiles->getTileSizeDst() + 5;
+		int tilesNums = _tiles->getTilesNums();
+		for (int i =  0 ; i<tilesNums; ++i) {
+
+			int col = i % 20 + 2;
+			int row = i / 20 + 2;
+			
+
+			_tiles->renderTile(renderer, col * sizeDst, row * sizeDst, i);
+
+		}
+
 	}
 
 private:
 
 	RTexture* _background;
 	RTexture* _player;
+	RTexture* _tiles;
 
 
 };
