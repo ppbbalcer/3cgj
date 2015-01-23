@@ -1,20 +1,7 @@
 #ifndef __MAP_H
 #define __MAP_H
-/* following constants define width and height of map in tiles */
+#include <Engine/field.h>
 
-enum FieldType {
-	EMPTY = 0,
-	WALL = 2,
-	FLOOR,
-	DESK,
-  
-  
-};
-class IField {
-public:
-	// as per enum FieldType
-	virtual int GetType() = 0;
-};
 
 
 
@@ -27,7 +14,7 @@ public:
 	 * @return pointer to a map. If failed to generate, 0 is returned
 	 *   and an exception is thrown
 	 */
-	static IMap * Factory(int type, char * parameter);
+	static IMap *Factory(int type, const char *parameter);
 	/**
 	 * @return in fields
 	 */

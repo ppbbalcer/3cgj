@@ -1,13 +1,7 @@
 #ifndef __GENERIC_MAP
 #define __GENERIC_MAP
 #include <Engine/map.h>
-class Field : public IField {
-public:
-	int GetType() {
-		return FLOOR;
-	}
-};
-
+#include <Engine/field_impl.h>
 
 
 class GenericMap: public IMap {
@@ -16,6 +10,11 @@ private:
 	int width;
 	int height;
 protected:
+	void SetSize(int w, int h)
+	{
+		width=w;
+		height=h;
+	}
 	/**
 	 * allocate fields
 	 */
