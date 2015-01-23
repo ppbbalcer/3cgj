@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string>
 
-bool loadMedia() {
+bool loadMedia() { 
 	//Loading success flag 
 	bool success = true; 
 
@@ -17,7 +17,7 @@ bool loadMedia() {
 	EngineInst->showFPS(true);
 
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
-	gScene = new MainScene();
+	gScene = new Scene03Object();
 
 	if (!EngineInst->loadAudioResources(globalAudios, globalAudiosSize))
 		success = false;
@@ -53,7 +53,10 @@ int main( int argc, char* args[] )
 	EngineInst->unLoadGlobalFont();
 	Engine::Destroy();
 
-
+<<<<<<< HEAD
 	delete gScene;
+
+=======
+>>>>>>> origin
 	return 0;
 }

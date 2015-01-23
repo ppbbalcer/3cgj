@@ -17,6 +17,7 @@
     <ClCompile Include="src\Engine\RTexture.cpp" />
     <ClCompile Include="src\GlobalData.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MainScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Audio.h" />
