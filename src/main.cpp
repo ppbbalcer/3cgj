@@ -5,10 +5,9 @@
 #include "Engine/RTexture.h"
 #include "SceneExamples.h"
 #include "SceneFont.h"
-
+#include "MapLogic/map.h"
 #include <stdio.h>
 #include <string>
-
 
 bool loadMedia() { 
 	//Loading success flag 
@@ -30,6 +29,7 @@ bool loadMedia() {
 
 int main( int argc, char* args[] )
 {
+	
 	//Start up SDL and create window
 	if( !Engine::Create() )
 	{

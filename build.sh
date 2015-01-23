@@ -1,4 +1,10 @@
-for i in `find . -name '*.cpp'` ; do
-     g++ -g $i -o `echo $i | sed 's/.cpp/.o/'` -I. -I/usr/include/SDL2/ -c
+for i in `find . -name '*.o'` ; do
+    rm $i
 done
-g++ */*.o -lSDL2  `sdl-config --libs`  -lSDL2_ttf -lSDL2_image -lpng -lz -o whatdowedonow
+
+for i in `find . -name '*.cpp'` ; do
+    echo COMPILE
+     g++ -g $i -o `echo $i | sed 's/.cpp/.o/'` -Isrc  -I/usr/include/SDL2/ -c 
+done
+echo LINK
+g++ src/*.o src/*/*.o -lSDL2  `sdl-config --libs`  -lSDL2_ttf -lSDL2_image -lpng -lz -o whatdowedonow

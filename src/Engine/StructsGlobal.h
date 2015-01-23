@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include "Audio.h"
 
 struct ResourceItem {
 	/* Configure part */
@@ -11,12 +12,20 @@ struct ResourceItem {
 	const bool		optLoadSurface;
 	const bool		optLoadTexture;
 	const Uint32	optTextureColorKeyRGB; //Set for texture if value other that 0
-	
+
 	/* Loaded part */
 	SDL_Surface* surface;
 	SDL_Texture* texture;
 	int width;
 	int height;
+};
+
+struct SoundResource {
+	const char *path;
+
+};
+
+struct MusicResource {
 };
 
 #endif /* __STRUCTS_GLOBAL_H__ */
