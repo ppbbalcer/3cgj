@@ -5,10 +5,8 @@
 #include "Engine/RTexture.h"
 #include "SceneExamples.h"
 #include "SceneFont.h"
-#include "Engine/map.h"
 #include <stdio.h>
 #include <string>
-
 
 bool loadMedia() { 
 	//Loading success flag 

@@ -11,7 +11,6 @@ public:
 	void play();
 private:
 	Mix_Chunk *s;
-
 };
 
 class AudioMusic {

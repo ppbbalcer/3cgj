@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include "Engine.h"
 #include "Scene.h"
 
@@ -35,7 +36,7 @@ bool Engine::init() {
 	//Initialization flag 
 	bool success = true; 
 	//Initialize SDL 
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) { 
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 ) { 
 		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() ); 
 		success = false; 
 	} else { 
@@ -102,6 +103,7 @@ void Engine::close() {
 	//Quit SDL subsystems
 	TTF_Quit();
 	IMG_Quit();
+	Mix_Quit();
 	SDL_Quit();
 }
 
