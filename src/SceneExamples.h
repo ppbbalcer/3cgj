@@ -354,6 +354,10 @@ public:
 
 			_tiles->renderTile(renderer, col * sizeDst, row * sizeDst, i);
 
+			char buff[128];
+			sprintf(buff, "%i", i);
+			EngineInst->font()->printTextLT(col * sizeDst, row * sizeDst, buff);
+
 		}
 
 	}
