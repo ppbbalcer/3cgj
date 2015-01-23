@@ -7,7 +7,7 @@ public:
 		type=f;
 	}
 	int GetType() {
-		return FLOOR;
+		return type;
 	}
 };
 

@@ -17,6 +17,8 @@ enum FieldType {
 
 	FLOOR,
 	DESK,
+	DOOR,
+	MEDKIT
   
   
 };
