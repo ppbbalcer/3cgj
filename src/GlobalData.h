@@ -8,7 +8,7 @@ extern const char GlobalFontPath[];
 extern ResourceItem globalTextures[];
 extern size_t globalTexturesSize;
 
-extern class Scene* gScenes[];
+extern class Scene* gScene;
 extern size_t gScenesSize;
 
 extern AudioResource globalAudios[];
