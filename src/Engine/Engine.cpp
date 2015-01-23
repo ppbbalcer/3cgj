@@ -308,9 +308,7 @@ void Engine::mainLoop() {
 		}
 
 		if(_font && _showFPS) {
-			char text[1024];
-			sprintf(text, "FPS: %.2f", 1000.0f/delta);
-			_font->printText(screen_width(), 0, ALIGN_RIGHT | ALIGN_TOP, text);
+			_font->printf(screen_width(), 0, ALIGN_RIGHT | ALIGN_TOP, "FPS: %.2f", 1000.0f/delta);
 		}
 
 		if(_scene->getDrawType() == Scene::DrawType_Paint) {

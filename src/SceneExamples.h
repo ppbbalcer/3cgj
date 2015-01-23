@@ -337,7 +337,7 @@ public:
 
 		_player->setPos(posX, posY);
 
-		EngineInst->font()->printTextLT(100, 100, "Hello test text!!!");
+		EngineInst->font()->printfLT(100, 100, "Hello test text!!!");
 
 	}
 
@@ -355,9 +355,7 @@ public:
 
 			_tiles->renderTile(renderer, col * sizeDst, row * sizeDst, i);
 
-			char buff[128];
-			sprintf(buff, "%i", i);
-			EngineInst->font()->printTextLT(col * sizeDst, row * sizeDst, buff);
+			EngineInst->font()->printfLT(col * sizeDst, row * sizeDst, "%i", i);
 
 		}
 
