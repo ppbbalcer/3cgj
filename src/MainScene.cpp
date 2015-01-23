@@ -20,8 +20,8 @@ void MainScene::OnLoad() {
 		PAUSE();
 	}
 
-	globalAudios[1].res.sound->setVolume(0.05f);
-	globalAudios[1].res.sound->play(-1, -1);
+	globalAudios[1].res.sound->setVolume(0.3f);
+	globalAudios[1].res.sound->play(-1, 0, 2000);
 };
 
 void MainScene::OnFree(){
@@ -54,6 +54,12 @@ void MainScene::OnUpdate(int timems) {
 	int posY = _player->getPosY();
 	int width = _player->getWidth();
 
+	int delay = (int)(2000 * (posX/600.f));
+	if (delay < 400)
+		delay = 400;
+
+	globalAudios[1].res.sound->setDelay(delay);
+
 	const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL ); 
 	if( currentKeyStates[ SDL_SCANCODE_UP ] ) {
 		globalAudios[0].res.sound->play(1, 0);
@@ -83,6 +89,8 @@ void MainScene::OnUpdate(int timems) {
 	}
 
 	_player->setPos(posX, posY);
+
+	globalAudios[1].res.sound->update(timems);
 
 	EngineInst->font()->printfLT(100, 100, "Hello test text!!!");
 };
