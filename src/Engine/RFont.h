@@ -30,7 +30,6 @@ public:
 private: 
 	RFont(const RFont&);
 	RFont& operator=(const RFont&);
-	//Globally used font 
 	TTF_Font *_font;
 	int _width; 
 	int _height;

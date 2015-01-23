@@ -8,7 +8,7 @@ public:
 	RTexture(SDL_Texture* texture, int w, int h);
 	RTexture(const ResourceItem &resItem);
 
-	inline void		setPos( int x, int y );
+	inline void		setPos(int x, int y);
 	inline int		getPosX();
 	inline int		getPosY();
 	inline void		render(SDL_Renderer* renderer);
@@ -18,15 +18,13 @@ public:
 
 	void			setTileSizeSrc(int size); //Size in file
 	void			setTileSizeDst(int size); //Size on screen
-	int				getTileSizeSrc();
-	int				getTileSizeDst();
-	int				getTilesNums();
+	int			getTileSizeSrc();
+	int			getTileSizeDst();
+	int			getTilesNums();
 	void			renderTile(SDL_Renderer* renderer, int x, int y, int tileIdx );
 
 private: 
-
-	//The actual hardware texture 
-	SDL_Texture* _texture; //Image dimensions 
+	SDL_Texture* _texture; 
 	int _width; 
 	int _height;
 	int _x; 

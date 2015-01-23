@@ -11,7 +11,7 @@ struct ResourceItem {
 	const bool		optOptymalize;
 	const bool		optLoadSurface;
 	const bool		optLoadTexture;
-	const Uint32	optTextureColorKeyRGB; //Set for texture if value other that 0
+	const Uint32		optTextureColorKeyRGB; //Set for texture if value other that 0
 
 	/* Loaded part */
 	SDL_Surface* surface;
