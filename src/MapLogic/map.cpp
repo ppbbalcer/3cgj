@@ -1,9 +1,9 @@
-#include <Engine/map.h>
+#include <MapLogic/map.h>
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
-#include <Engine/field.h>
-#include <Engine/generic_map.h>
+#include <MapLogic/field.h>
+#include <MapLogic/generic_map.h>
 #include <fstream>
 /* following constants define width and height of map in tiles */
 using namespace std;
@@ -55,7 +55,6 @@ LoadedMap::LoadedMap(const char * path) {
 	AllocateFields();
 	for (int i = 0 ; i!=GetHeight(); i++) {
 		for (int j = 0 ; j!=GetWidth(); ++j) {
-			//int field= GetFieldAt(j,i)->GetType();
 			Field * new_field = 0;
 			char c = mapfile.get();
 			switch(c) {
