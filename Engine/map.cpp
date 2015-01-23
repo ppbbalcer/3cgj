@@ -10,7 +10,7 @@
 class LoadedMap : public GenericMap {
 public:
 	LoadedMap(const char * path);
-  
+	virtual ~LoadedMap();
 };
 LoadedMap::LoadedMap(const char * path) {
 	SetSize( MAP_WIDTH, MAP_HEIGHT );
@@ -24,7 +24,9 @@ LoadedMap::LoadedMap(const char * path) {
 		}
 	}
 }
-
+LoadedMap::~LoadedMap() {
+	DeallocateFields();
+}
 // a map loaded from file
 class GeneratedMap : public GenericMap     {
 

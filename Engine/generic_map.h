@@ -10,6 +10,9 @@ private:
 	int width;
 	int height;
 protected:
+	/*following methods are used by implementation of specialized
+	 * constructors of GeneratedMap and LoadedMap
+	 */
 	void SetSize(int w, int h)
 	{
 		width=w;
@@ -20,18 +23,32 @@ protected:
 	 */
 	int AllocateFields()
 	{
-		fields = (Field**)calloc(width*height,sizeof(void*));
+		fields = new Field*[width*height];
 	}
-	int PlaceField(int x, int y, Field * field1)
+	void FreeFieldIfExists(int x, int y)
 	{
+		if (fields[x+y*width])
+			delete fields[x+y*width];
+	}
+	/**
+	 * @param x,y - coordinates
+	 * @param field1 field to be supplied. Must be either NULL
+	 *  or a valid pointer. If valid field existed before call
+	 *  it is freed.
+	 */
+	int PlaceField(int x, int y, Field *field1)
+	{
+		if (fields[x+y*width]) {
+			FreeFieldIfExists(x,y);
+		}
 		fields[x+y*width] = field1;
 	}
 	void DeallocateFields() {
 		for (int i = 0 ; i!=width*height; ++i ) {
-			if (fields[ i])
-				free(fields[i]);
+			if (fields[i])
+				delete[] fields[i];
 		}
-
+		delete[] fields;
 	}
 public:
 	IField* GetFieldAt(int x, int y) {
