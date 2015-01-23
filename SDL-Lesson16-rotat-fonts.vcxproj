@@ -14,6 +14,7 @@
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\Engine\RFont.cpp" />
+    <ClCompile Include="src\Engine\RTexture.cpp" />
     <ClCompile Include="src\GlobalData.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
