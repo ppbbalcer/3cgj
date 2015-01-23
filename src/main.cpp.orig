@@ -5,12 +5,11 @@
 #include "Engine/RTexture.h"
 #include "SceneExamples.h"
 #include "SceneFont.h"
-#include "scene_game.h"
 #include "MapLogic/map.h"
 #include <stdio.h>
 #include <string>
 
-bool loadMedia() {
+bool loadMedia() { 
 	//Loading success flag 
 	bool success = true; 
 
@@ -18,9 +17,7 @@ bool loadMedia() {
 	EngineInst->showFPS(true);
 
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
-	gScene = new MainScene();
-	// uncomment this to instead get scene with first preview of map
-	//gScene = new SceneGame();
+	gScene = new Scene03Object();
 
 	if (!EngineInst->loadAudioResources(globalAudios, globalAudiosSize))
 		success = false;
@@ -56,7 +53,10 @@ int main( int argc, char* args[] )
 	EngineInst->unLoadGlobalFont();
 	Engine::Destroy();
 
-
+<<<<<<< HEAD
 	delete gScene;
+
+=======
+>>>>>>> origin
 	return 0;
 }

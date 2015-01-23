@@ -20,15 +20,16 @@ public:
 	void OnRender(SDL_Renderer* renderer);
 	TTF_Font* getFont() { return _font; }
 
-	void printTextLT(int x, int y, const char *text);
-	void printText(int x, int y, int alignment, const char *text);
-	void printText(int x, int y, SDL_Color colorText, SDL_Color colorBorder, int border, int alignment, float scale, const char *text);
+	void printfLT(int x, int y, const char *text, ...);
+	void printf(int x, int y, int alignment, const char *text, ...);
+	void printf(int x, int y, SDL_Color colorText, SDL_Color colorBorder, int border, int alignment, float scale, const char *text, ...);
+	void printTextBuff(int x, int y, int alignment, const char *tex);
+	void printTextBuff(int x, int y, SDL_Color colorText, SDL_Color colorBorder, int border, int alignment, float scale, const char *text);
 	static void printTextRAW(TTF_Font *font, SDL_Surface* surface, int x, int y, SDL_Color colorText, SDL_Color colorBorder, int border, int alignment, float scale, const char *text);
 
 private: 
 	RFont(const RFont&);
 	RFont& operator=(const RFont&);
-	//Globally used font 
 	TTF_Font *_font;
 	int _width; 
 	int _height;

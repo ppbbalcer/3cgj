@@ -10,10 +10,14 @@ AudioSound::~AudioSound() {
 	}
 }
 
-void AudioSound::play() {
+void AudioSound::play(int channel, int loop) {
 	if (s) {
-		Mix_PlayChannel(-1, s, 0);
+		Mix_PlayChannel(channel, s, loop);
 	}
+}
+
+void AudioSound::setVolume(float v) {
+	Mix_VolumeChunk(s, (int)(v*MIX_MAX_VOLUME));
 }
 
 AudioMusic::AudioMusic(const char *file) {
@@ -39,7 +43,7 @@ void AudioMusic::stop() {
 }
 
 AudioEngine::AudioEngine() {
-	init = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0;
+	init = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == 0;
 }
 
 AudioEngine::~AudioEngine() {
@@ -61,6 +65,7 @@ AudioMusic *AudioEngine::loadMusic(const char *file) {
 
 	AudioMusic *m = new AudioMusic(file);
 	musics.push_back(m);
+	return m;
 }
 
 AudioSound *AudioEngine::loadSound(const char *file) {
@@ -69,4 +74,5 @@ AudioSound *AudioEngine::loadSound(const char *file) {
 
 	AudioSound *s = new AudioSound(file);
 	sounds.push_back(s);
+	return s;
 }

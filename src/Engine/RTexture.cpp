@@ -6,6 +6,8 @@ RTexture::RTexture(SDL_Texture* texture, int w, int h):
 	_height(h),
 	_x(0),
 	_y(0),
+	_scaleWidth(_width),
+	_scaleHeight(_height),
 	_tileSizeSrc(0),
 	_tileSizeDst(0),
 	_tileColumns(0),
@@ -20,6 +22,8 @@ RTexture::RTexture(const ResourceItem &resItem):
 	_height(resItem.height),
 	_x(0),
 	_y(0),
+	_scaleWidth(_width),
+	_scaleHeight(_height),
 	_tileSizeSrc(0),
 	_tileSizeDst(0),
 	_tileColumns(0),
@@ -29,7 +33,7 @@ RTexture::RTexture(const ResourceItem &resItem):
 }
 
 void RTexture::renderAll(SDL_Renderer* renderer, int x, int y ) {
-	SDL_Rect renderQuad = { x, y, _width, _height };
+	SDL_Rect renderQuad = { x, y, _scaleWidth, _scaleHeight};
 	SDL_RenderCopy( renderer, _texture, NULL, &renderQuad );
 }
 

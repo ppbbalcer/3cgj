@@ -39,7 +39,7 @@ public:
 			} else if( e.type == SDL_KEYDOWN )
 			{
 				//Change scene
-				EngineInst->setNextScene(gScenes[nextScene]);
+				//EngineInst->setNextScene(gScenes[nextScene]);
 			}
 		}
 
@@ -51,19 +51,19 @@ public:
 		SDL_Color borderColor = { 255, 0, 0, 255 };
 		int border = 1;
 		float scale = 0.5f; // Not work
-		EngineInst->font()->printText(width/2, height/2, textColor, borderColor, border, 0, 2.0f, sceneName);
+		EngineInst->font()->printf(width/2, height/2, textColor, borderColor, border, 0, 2.0f, sceneName);
 
-		EngineInst->font()->printText(0, 0,				textColor, borderColor, border, ALIGN_LEFT | ALIGN_TOP, scale, "Text LEFT TOP");
-		EngineInst->font()->printText(0, height/2,		textColor, borderColor, border, ALIGN_LEFT,				scale, "Text LEFT CENTER");
-		EngineInst->font()->printText(0, height,		textColor, borderColor, border, ALIGN_LEFT | ALIGN_BOTTOM,	scale, "Text LEFT BOTTOM");
+		EngineInst->font()->printf(0, 0,				textColor, borderColor, border, ALIGN_LEFT | ALIGN_TOP, scale, "Text LEFT TOP");
+		EngineInst->font()->printf(0, height/2,		textColor, borderColor, border, ALIGN_LEFT,				scale, "Text LEFT CENTER");
+		EngineInst->font()->printf(0, height,		textColor, borderColor, border, ALIGN_LEFT | ALIGN_BOTTOM,	scale, "Text LEFT BOTTOM");
 
-		EngineInst->font()->printText(width/2, 0,		textColor, borderColor, border, ALIGN_TOP,				scale, "Text CENTER TOP");
-		EngineInst->font()->printText(width/2, height,	textColor, borderColor, border, ALIGN_BOTTOM,			scale, "Text CENTER BOTTOM");
+		EngineInst->font()->printf(width/2, 0,		textColor, borderColor, border, ALIGN_TOP,				scale, "Text CENTER TOP");
+		EngineInst->font()->printf(width/2, height,	textColor, borderColor, border, ALIGN_BOTTOM,			scale, "Text CENTER BOTTOM");
 
 
-		EngineInst->font()->printText(width, 0,				textColor, borderColor, border, ALIGN_RIGHT | ALIGN_TOP, scale, "Text RIGHT TOP");
-		EngineInst->font()->printText(width, height/2,		textColor, borderColor, border, ALIGN_RIGHT,				scale, "Text RIGHT CENTER");
-		EngineInst->font()->printText(width, height,		textColor, borderColor, border, ALIGN_RIGHT | ALIGN_BOTTOM,	scale, "Text RIGHT BOTTOM");
+		EngineInst->font()->printf(width, 0,				textColor, borderColor, border, ALIGN_RIGHT | ALIGN_TOP, scale, "Text RIGHT TOP");
+		EngineInst->font()->printf(width, height/2,		textColor, borderColor, border, ALIGN_RIGHT,				scale, "Text RIGHT CENTER");
+		EngineInst->font()->printf(width, height,		textColor, borderColor, border, ALIGN_RIGHT | ALIGN_BOTTOM,	scale, "Text RIGHT BOTTOM");
 
 	};
 
