@@ -19,6 +19,9 @@ bool loadMedia() {
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
 	gScene = new Scene03Object();
 
+	if (!EngineInst->loadAudioResources(globalAudios, globalAudiosSize))
+		success = false;
+
 	return success;
 }
 
@@ -50,7 +53,7 @@ int main( int argc, char* args[] )
 	EngineInst->unLoadGlobalFont();
 	Engine::Destroy();
 
-	delete gScene;
 
+	delete gScene;
 	return 0;
 }

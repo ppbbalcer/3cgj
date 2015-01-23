@@ -20,12 +20,19 @@ struct ResourceItem {
 	int height;
 };
 
-struct SoundResource {
-	const char *path;
-
+enum audioType {
+	AUDIO_TYPE_SOUND,
+	AUDIO_TYPE_MUSIC,
+	END_AUDIO_TYPE
 };
 
-struct MusicResource {
+struct AudioResource {
+	const char *path;
+	enum audioType type;
+	union {
+		AudioSound *sound;
+		AudioMusic *music;
+	} res ;
 };
 
 #endif /* __STRUCTS_GLOBAL_H__ */

@@ -309,6 +309,7 @@ public:
 
 		const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL ); 
 		if( currentKeyStates[ SDL_SCANCODE_UP ] ) {
+			globalAudios[0].res.sound->play();
 			posY -= dist;
 			if(posY < 0) {
 				posY = 0;
