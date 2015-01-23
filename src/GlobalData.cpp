@@ -32,3 +32,12 @@ ResourceItem texturesScene03[] = {
 };
 
 size_t texturesScene03Size = sizeof(texturesScene03)/sizeof(texturesScene03[0]);
+
+
+ResourceItem texturesScene_game[] = {
+	{"Resources/laughing_man_logo.png",		false, true, true, 0,		NULL, NULL, 0, 0}, //Alfa problem fixed
+	{"Resources/background.png",			false, false, true, 0,		NULL, NULL, 0, 0},
+	{"Resources/ludek.png",					false, false, true, 0xFFFF,	NULL, NULL, 0, 0},
+	{"Resources/tiles/walls.png",					false, false, true, 0x0,	NULL, NULL, 0, 0},
+};
+size_t texturesScene_gameSize = sizeof(texturesScene03)/sizeof(texturesScene03[0]);

@@ -5,6 +5,7 @@
 #include "Engine/RTexture.h"
 #include "SceneExamples.h"
 #include "SceneFont.h"
+#include "scene_game.h"
 #include "MapLogic/map.h"
 #include <stdio.h>
 #include <string>
@@ -19,12 +20,12 @@ bool loadMedia() {
 
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
 	gScenes[0] = new SceneInit();
-	gScenes[1] = new SceneFont2D();
+	gScenes[1] = new SceneGame();
+	//gScenes[1] = new SceneFont2D();
 	gScenes[2] = new SceneFont3D();
 	gScenes[3] = new Scene01Image();
 	gScenes[4] = new Scene02Renderer();
 	gScenes[5] = new Scene03Object();
-
 	return success;
 }
 

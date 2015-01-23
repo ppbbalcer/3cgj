@@ -1,9 +1,14 @@
 #ifndef __MAP_H
 #define __MAP_H
 #include <MapLogic/field.h>
+
 class IMap {
   
 public:
+	enum MapType {
+		GENERATED=1, // not implemented
+		LOADED=2
+	};
 	/**
 	 * @param type type of map to be factored (as per enum MapType)
 	 * @param parameter - parameter as per map time. probably a path

@@ -9,6 +9,9 @@ public:
 	int GetType() {
 		return type;
 	}
+	bool IsObstacle() {
+		return type==WALL;
+	}
 };
 
 #endif

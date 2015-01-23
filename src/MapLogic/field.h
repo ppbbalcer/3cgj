@@ -26,6 +26,8 @@ class IField {
 public:
 	// as per enum FieldType
 	virtual int GetType() = 0;
+	virtual bool IsObstacle() = 0;
+	// other methods will be specific to certain types
 };
 
 #endif

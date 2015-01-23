@@ -2,7 +2,7 @@
 #define __GENERIC_MAP
 #include <MapLogic/map.h>
 #include <MapLogic/field_impl.h>
-
+#include <cstring>
 
 class GenericMap: public IMap {
 private:
@@ -24,6 +24,7 @@ protected:
 	int AllocateFields()
 	{
 		fields = new Field*[width*height];
+		memset(fields, 0, sizeof(Field**)*width*height);
 	}
 	void FreeFieldIfExists(int x, int y)
 	{

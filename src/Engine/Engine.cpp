@@ -8,7 +8,11 @@
 
 
 void PAUSE() {
+#ifdef WIN32
 	system("pause");
+#else
+	system("read");
+#endif
 }
 
 #define _engine EngineInst
