@@ -18,9 +18,9 @@ bool loadMedia() {
 	EngineInst->showFPS(true);
 
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
-	gScene = new MainScene();
+//	gScene = new MainScene();
 	// uncomment this to instead get scene with first preview of map
-	//gScene = new SceneGame();
+	gScene = new SceneGame();
 
 	if (!EngineInst->loadAudioResources(globalAudios, globalAudiosSize))
 		success = false;

@@ -1,7 +1,7 @@
 #ifndef __GENERIC_MAP
 #define __GENERIC_MAP
-#include <MapLogic/map.h>
-#include <MapLogic/field_impl.h>
+#include "map.h"
+#include "field_impl.h"
 #include <cstring>
 
 class GenericMap: public IMap {
@@ -25,6 +25,7 @@ protected:
 	{
 		fields = new Field*[width*height];
 		memset(fields, 0, sizeof(Field**)*width*height);
+		return 0;
 	}
 	void FreeFieldIfExists(int x, int y)
 	{
@@ -43,6 +44,7 @@ protected:
 			FreeFieldIfExists(x,y);
 		}
 		fields[x+y*width] = field1;
+		return 0;
 	}
 	void DeallocateFields() {
 		for (int i = 0 ; i!=width*height; ++i ) {
