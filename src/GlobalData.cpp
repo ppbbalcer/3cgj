@@ -7,16 +7,11 @@ ResourceItem globalTextures[] = {
 	{"Resources/laughing_man_logo.png",		true, true, false, 0,		NULL, NULL, 0, 0},
 	{"Resources/laughing_man.bmp",			true, true, false, 0,		NULL, NULL, 0, 0},
 	{"Resources/background.png",			false, true, false, 0,		NULL, NULL, 0, 0},
-	//"Resources/hello_world.bmp",
-	//"02_getting_an_image_on_the_screen/hello_world.bmp"
 };
 
 size_t globalTexturesSize = sizeof(globalTextures)/sizeof(globalTextures[0]);
 
-class Scene* gScenes[10] = {NULL};
-size_t gScenesSize = sizeof(gScenes)/sizeof(gScenes[0]);
-
-
+class Scene* gScene = NULL;
 
 ResourceItem texturesScene[] = {
 	{"Resources/laughing_man_logo.png",		false, true, true, 0,		NULL, NULL, 0, 0}, //Alfa problem fixed

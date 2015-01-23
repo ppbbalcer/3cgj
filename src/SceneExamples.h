@@ -61,7 +61,7 @@ public:
 			} else if( e.type == SDL_KEYDOWN )
 			{
 				//Change scene
-				EngineInst->setNextScene(gScenes[1]);
+				//EngineInst->setNextScene(gScenes[1]);
 			}
 		}
 
@@ -69,7 +69,7 @@ public:
 		_progress += timems;
 		if (_progress >= 1500) {
 			//Change scene
-			EngineInst->setNextScene(gScenes[1]);
+			//EngineInst->setNextScene(gScenes[1]);
 
 		}
 
@@ -133,7 +133,7 @@ public:
 			} else if( e.type == SDL_KEYDOWN )
 			{
 				//Change scene
-				EngineInst->setNextScene(gScenes[4]);
+				//EngineInst->setNextScene(gScenes[4]);
 			}
 
 		}
@@ -199,7 +199,7 @@ public:
 			} else if( e.type == SDL_KEYDOWN )
 			{
 				//Change scene
-				EngineInst->setNextScene(gScenes[5]);
+				//EngineInst->setNextScene(gScenes[5]);
 			}
 		}
 	};

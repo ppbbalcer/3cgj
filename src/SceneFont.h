@@ -39,7 +39,7 @@ public:
 			} else if( e.type == SDL_KEYDOWN )
 			{
 				//Change scene
-				EngineInst->setNextScene(gScenes[nextScene]);
+				//EngineInst->setNextScene(gScenes[nextScene]);
 			}
 		}
 

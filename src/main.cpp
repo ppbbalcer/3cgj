@@ -17,12 +17,7 @@ bool loadMedia() {
 	EngineInst->showFPS(true);
 
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
-	gScenes[0] = new SceneInit();
-	gScenes[1] = new SceneFont2D();
-	gScenes[2] = new SceneFont3D();
-	gScenes[3] = new Scene01Image();
-	gScenes[4] = new Scene02Renderer();
-	gScenes[5] = new Scene03Object();
+	gScene = new Scene03Object();
 
 	return success;
 }
@@ -46,28 +41,16 @@ int main( int argc, char* args[] )
 		}
 		else
 		{	
-			Scene* startScene = gScenes[0];
-			EngineInst->setNextScene(startScene);
+			EngineInst->setNextScene(gScene);
 			EngineInst->mainLoop();
 		}
 	}
 
 	EngineInst->unLoadResources(globalTextures, globalTexturesSize);
-
-	for(unsigned i=0; i<gScenesSize; ++i) {
-		if (gScenes[i]) {
-			delete gScenes[i];
-			gScenes[i] = NULL;
-		}
-	}
-
 	EngineInst->unLoadGlobalFont();
-	
-	//Free resources and close SDL
 	Engine::Destroy();
 
-
-
+	delete gScene;
 
 	return 0;
 }
