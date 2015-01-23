@@ -3,14 +3,6 @@
 #include <Engine/generic_map.h>
 #define MAP_WIDTH 1024
 #define MAP_HEIGHT 1024
-class Field : public IField {
-public:
-	int GetType() {
-		return FLOOR;
-	}
-};
-
-
 
 // a map loaded from file
 class LoadedMap : public GenericMap {

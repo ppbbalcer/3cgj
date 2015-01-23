@@ -1,5 +1,14 @@
 #ifndef __GENERIC_MAP
 #define __GENERIC_MAP
+#include <Engine/map.h>
+class Field : public IField {
+public:
+	int GetType() {
+		return FLOOR;
+	}
+};
+
+
 
 class GenericMap: public IMap {
 private:
