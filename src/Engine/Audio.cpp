@@ -2,6 +2,9 @@
 
 AudioSound::AudioSound(const char *file) {
 	s = Mix_LoadWAV(file);
+	timer = 0;
+	scheduled_channel = 0;
+	base_delay = 0;
 }
 
 AudioSound::~AudioSound() {
@@ -10,10 +13,36 @@ AudioSound::~AudioSound() {
 	}
 }
 
-void AudioSound::play(int channel, int loop) {
+void AudioSound::play(int channel, int loop, int delay) {
 	if (s) {
-		Mix_PlayChannel(channel, s, loop);
+		if (delay) {
+			base_delay = delay;
+			scheduled_channel = channel;
+		} else {
+			Mix_PlayChannel(channel, s, loop);
+		}
 	}
+}
+
+void AudioSound::update(int time) {
+	if (base_delay == 0)
+		return;
+
+	timer -= time;
+	if (timer < 0) {
+		Mix_PlayChannel(scheduled_channel, s, 0);
+		timer = base_delay;
+	}
+}
+
+void AudioSound::setDelay(int delay) {
+	base_delay = delay;
+}
+
+void AudioSound::stop() {
+	timer = 0;
+	scheduled_channel = 0;
+	base_delay = 0;	
 }
 
 void AudioSound::setVolume(float v) {

@@ -8,10 +8,16 @@ class AudioSound {
 public:
 	AudioSound(const char *file);
 	~AudioSound();
-	void play(int channel = -1, int loop = 0);
+	void play(int channel = -1, int loop = 0, int delay = 0);
+	void stop();
+	void setDelay(int delay);
 	void setVolume(float v);
+	void update(int time);
 private:
 	Mix_Chunk *s;
+	int timer;
+	int base_delay;
+	int scheduled_channel;
 };
 
 class AudioMusic {
