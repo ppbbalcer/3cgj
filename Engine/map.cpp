@@ -5,9 +5,9 @@
 #define MAP_HEIGHT 1024
 class Field : public IField {
 public:
-  int GetType() {
-    return FLOOR;
-  }
+	int GetType() {
+		return FLOOR;
+	}
 };
 
 
@@ -15,7 +15,7 @@ public:
 // a map loaded from file
 class LoadedMap : public GenericMap {
 public:
-  LoadedMap(char * path);
+	LoadedMap(char * path);
   
 };
 
@@ -23,12 +23,12 @@ public:
 class GeneratedMap : public GenericMap     {
 
 public:
-  GeneratedMap(char * generator);
+	GeneratedMap(char * generator);
   
 };
 
 
 IMap * IMap::Factory(int type, char * parameter) {
 
-  return 0;
+	return 0;
 }
