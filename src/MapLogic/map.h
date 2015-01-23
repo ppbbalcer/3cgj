@@ -1,6 +1,7 @@
 #ifndef __MAP_H
 #define __MAP_H
-#include <MapLogic/field.h>
+#include "MapLogic/field.h"
+
 class IMap {
   
 public:
