@@ -2,6 +2,7 @@
 #define __ENGINE_H__
 
 #include <SDL.h>
+#include "Audio.h"
 #include "RFont.h"
 #include "StructsGlobal.h"
 
@@ -14,7 +15,7 @@ public:
 
 	static bool Create();
 	static void Destroy();
-	/* inline static Engine*	getInst()		{ return _engine; } */
+
 	inline int				screen_width()	{ return 640; }
 	inline int				screen_height() { return 480; }
 
@@ -22,20 +23,16 @@ public:
 	void					unLoadTexture(ResourceItem &resItem);
 	bool					loadResources(ResourceItem resources[], unsigned int size);
 	void					unLoadResources(ResourceItem resources[], unsigned int size);
+	bool					loadAudioResources(AudioResource resources[], unsigned int size);
+	void					unloadAudioResources(AudioResource resources[], unsigned int size);
 	bool					loadGlobalFont(const char *pathTTF, int ptSize);
 	void					unLoadGlobalFont();
-
-	inline RFont*			font() { return _font; }
-
+	inline RFont*				font() { return _font; }
 	void					resetViewport();
-
 	void					setNextScene(Scene* scene);
 	void					breakMainLoop();
 	void					mainLoop();
 	void					showFPS(bool flag);
-
-
-
 	static void				eventDebug(SDL_Event *e);
 
 private:
@@ -43,25 +40,22 @@ private:
 	Engine& operator=(const Engine&);
 	Engine(const Engine&);
 	Engine(){}
-	/* static Engine* _engine; */
 
 	/* Engine members */
-	SDL_Window*			_window;	//The window we'll be rendering to 
-	SDL_Surface*		_screenSurface;	//The surface contained by the window 
-	SDL_Renderer*		_renderer;	//The window renderer 
+	SDL_Window*			_window;		//The window we'll be rendering to 
+	SDL_Surface*			_screenSurface;		//The surface contained by the window 
+	SDL_Renderer*			_renderer;		//The window renderer 
 	SDL_Rect			_viewportScreen;	//Viewport all screen
 
-	RFont*				_font; //Global font
+	RFont*				_font;			//Global font
 	Scene*				_scene;
 	Scene*				_sceneNext;
 	bool				_quitMainLoop;
 	bool				_showFPS;
+	AudioEngine			*_audio;
 
-	/* Engine private functions */
 	bool init();
 	void close();
-
-
 };
 
 extern Engine* EngineInst;

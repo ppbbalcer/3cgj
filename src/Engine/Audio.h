@@ -8,7 +8,8 @@ class AudioSound {
 public:
 	AudioSound(const char *file);
 	~AudioSound();
-	void play();
+	void play(int channel = -1, int loop = 0);
+	void setVolume(float v);
 private:
 	Mix_Chunk *s;
 };

@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include "RTexture.h"
 
 /* Interface for Scene */
 
@@ -37,6 +38,19 @@ protected:
 	DrawType _drawType;
 private:
 	Scene* operator=(const Scene&);
+};
+
+class MainScene : public Scene {
+public:
+	virtual void OnLoad();
+	virtual void OnFree();
+	virtual void OnUpdate(int timems);
+	virtual void OnRender(SDL_Renderer* renderer);
+
+private:
+	RTexture* _background;
+	RTexture* _player;
+	RTexture* _tiles;
 };
 
 #endif /* __SCENE_H__ */

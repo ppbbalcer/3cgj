@@ -14,7 +14,6 @@ size_t globalTexturesSize = sizeof(globalTextures)/sizeof(globalTextures[0]);
 class Scene* gScene = NULL;
 AudioResource globalAudios[] = {
 	{"Resources/audio/high.wav", AUDIO_TYPE_SOUND, NULL},
-	{"Resources/audio/hb.wav", AUDIO_TYPE_SOUND, NULL},
 };
 size_t globalAudiosSize = sizeof(globalAudios)/sizeof(globalAudios[0]);
 
