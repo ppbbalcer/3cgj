@@ -2,8 +2,9 @@
 #include "Engine/Engine.h"
 #include "Character.h"
 
-Fireball::Fireball(int start_x, int start_y, int _vx, int _vy)
+Fireball::Fireball(int start_x, int start_y, int _vx, int _vy, int level)
 {
+	power_level = level;
 	x = start_x;
 	y = start_y;
 	vx = _vx;
@@ -34,7 +35,9 @@ int Fireball::updatePosition(IMap *map, int time_ms)
 	}
 	return 0;
 }
-
+int Fireball::GetPowerLevel() {
+	return power_level;
+}
 int Fireball::getPosX()
 {
 	return posX;

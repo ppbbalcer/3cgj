@@ -8,7 +8,7 @@ using namespace std;
 Character::Character(RTexture* texture, IMap * map)
 {
 	_texture = texture;
-
+	power_level=DEFAULT_POWER_LEVEL;
 	_map = map;
 	_health = MAX_HEALTH;
 	_state = ALIVE;
@@ -62,6 +62,14 @@ void Character::heal(int howMuchHeal)
 {
 	_health = min<int>(_health + howMuchHeal, MAX_HEALTH);
 }
+int Character::GetPowerLevel()
+{
+	return power_level;
+}
+int Character::SetPowerLevel(int x)
+{
+	return (power_level=x);
+}
 
 void Character::OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx)
 {
@@ -102,9 +110,13 @@ void Character::OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx)
 
 void Character::OnRender(SDL_Renderer *renderer)
 {
-	_texture->renderTile(renderer, getPosX(), getPosY());
+	if (GetState()==DEAD) {
+		_texture->renderTile(renderer, getPosX(), getPosY(), 30, SDL_FLIP_NONE);
+	} else {
+		_texture->renderTile(renderer, getPosX(), getPosY());
+	}
 }
-
+       
 void Character::setPos(int x, int y)
 {
 	_posX = x;
@@ -142,11 +154,13 @@ int Character::getPosAfterY()
 
 Fireball * Character::Shoot()
 {
+	if (GetState()!=ALIVE)
+		return 0;
 	globalAudios[GameSounds::FIREBALL].res.sound->play(-1, 0, 0);
-
+	
 	return new Fireball(getPosBeforeX() + last_dir_x,
 	                    getPosBeforeY() + last_dir_y,
-	                    last_dir_x, last_dir_y);
+	                    last_dir_x, last_dir_y, GetPowerLevel());
 }
 
 void Character::updateDirection(IMap *map, DIRECT directMove)
