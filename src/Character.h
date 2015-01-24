@@ -6,7 +6,7 @@
 #include "MapLogic/map.h"
 
 #define MAX_HEALTH 100
-
+#define DEFAULT_POWER_LEVEL 25;
 class Fireball;
 class Character
 {
@@ -37,6 +37,8 @@ public:
 	void OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx);
 	void OnRender(SDL_Renderer *renderer);
 	void setPosTiles(IMap *map, int x, int y);
+	int GetPowerLevel();
+	int SetPowerLevel(int x);
 
 	int getPosX();
 	int getPosY();
@@ -61,6 +63,7 @@ public:
 
 private:
 	RTexture *_texture;
+	int power_level;
 
 	IMap * _map;
 	void setPos(int x, int y);

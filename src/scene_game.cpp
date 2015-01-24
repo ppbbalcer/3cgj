@@ -361,10 +361,15 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	/* render fireballs */
 	for (std::list<Fireball*>::iterator it = fireballs.begin();
 	                it != fireballs.end(); ++it) {
-		_tiles->renderTile(renderer, (*it)->getPosX(), (*it)->getPosY(), 28, SDL_FLIP_NONE);
+		int sprite;
+		if ( (*it)->GetPowerLevel() >30)
+			sprite= 29;
+		else
+			sprite=28;
+		_tiles->renderTile(renderer, (*it)->getPosX(), (*it)->getPosY(), sprite, SDL_FLIP_NONE);
 	}
 	/* check loss condition */
-	if (_player1->GetState() == Character::DEAD &&
+	if (_player1->GetState() == Character::DEAD ||
 	                _player2->GetState() == Character::DEAD) {
 		EngineInst->font()->printfLT(100,
 		                             map->GetHeight()*sizeDst, "You lost!");
