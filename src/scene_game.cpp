@@ -511,14 +511,11 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		level->setCurrentScene(room_id + 1);
 	} else if (_player1->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*tileSize, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
+			map->GetHeight()*tileSize, "Player 1 has left the screen. Player 2 must join him so you can win the level together.");
 	} else if (_player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*tileSize, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
-
+			map->GetHeight()*tileSize, "Player 2 has left the screen. Player 2 must join him so you can win the level together.");
 	}
-
-	
 
 	_player1->OnRender(renderer);
 	_player2->OnRender(renderer);
