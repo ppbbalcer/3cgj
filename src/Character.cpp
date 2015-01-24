@@ -64,12 +64,8 @@ void Character::heal(int howMuchHeal)
 
 void Character::OnRender(SDL_Renderer *renderer)
 {
-
-	int margin_top = 100; //???
-	int margin_left = 5;
-
 	//_texture->render(renderer);
-	_texture->renderTile(renderer, getPosX()+margin_left, getPosY()+margin_top);
+	_texture->renderTile(renderer, getPosX(), getPosY());
 }
 
 void Character::setPos(int x, int y)
