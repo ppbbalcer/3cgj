@@ -16,6 +16,7 @@ public:
 
 	int getMana();
 	void restoreMana(int howMuchMana);
+	virtual int crucio(int howMuchCrucio);
 
 	Fireball * Shoot();
 };
