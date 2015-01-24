@@ -11,8 +11,8 @@ using namespace std;
 /* looking for obstacles*/
 bool IMap_isObstacle(int x, int y, void* objMap)
 {
-	
-	if (((IMap*)objMap)->GetFieldAt(x,y)->IsOccupied() )
+
+	if (((IMap*)objMap)->GetFieldAt(x,y)->IsOccupied())
 		return false;
 	return ((IMap*)objMap)->GetFieldAt(x,y)->IsObstacle();
 }
@@ -33,7 +33,7 @@ void SceneGame::OnLoad()
 	EngineInst->setTileSize(tile_size);
 
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
-	/*RTexture *player1Texture = new RTexture(texturesScene_game[2]); 
+	/*RTexture *player1Texture = new RTexture(texturesScene_game[2]);
 	RTexture *player2Texture = new RTexture(texturesScene_game[2]);*/
 
 	//player1Texture->setPos(TILE_SIZE, TILE_SIZE);
@@ -41,18 +41,18 @@ void SceneGame::OnLoad()
 	int tileSizeSrc = 64;
 
 	RTexture *tmpTexture;
-	
-	
+
+
 	_background = new RTexture(texturesScene_game[1]);
 	_background ->setScaleSize(1.0*EngineInst->screen_width()/_background->getWidth());
-	
-	tmpTexture = new RTexture(texturesScene_game[3]); 
+
+	tmpTexture = new RTexture(texturesScene_game[3]);
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(24);
 	_player1 = new Character(tmpTexture, map);
 
-	tmpTexture = new RTexture(texturesScene_game[3]); 
+	tmpTexture = new RTexture(texturesScene_game[3]);
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(27);
@@ -61,8 +61,8 @@ void SceneGame::OnLoad()
 	_player1->setPosTiles(map,3,3);
 	_player2->setPosTiles(map,4,3);
 
-	for(int i = 0; i<5; ++i) {
-		tmpTexture = new RTexture(texturesScene_game[3]); 
+	for (int i = 0; i<5; ++i) {
+		tmpTexture = new RTexture(texturesScene_game[3]);
 		tmpTexture->setTileSizeSrc(tileSizeSrc);
 		tmpTexture->setTileSizeDst(tile_size);
 		tmpTexture->setTileIdx(23);
@@ -71,17 +71,16 @@ void SceneGame::OnLoad()
 		_enemys.push_back(enemy);
 	}
 
-	
+
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(tileSizeSrc);
 
 	_tiles->setTileSizeDst(tile_size);
-	
-	
+
+
 	//Load media
-	if( !success )
-	{
-		printf( "Failed to load media Scene02Renderer !\n" );
+	if (!success) {
+		printf("Failed to load media Scene02Renderer !\n");
 		PAUSE();
 	}
 
@@ -89,7 +88,7 @@ void SceneGame::OnLoad()
 
 void SceneGame::OnFree()
 {
-	for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		delete *enemy;
 	}
 	_enemys.clear();
@@ -100,128 +99,139 @@ void SceneGame::OnFree()
 
 }
 
+void SceneGame::updateFireballs(int timems)
+{
+	for (std::list<Fireball*>::iterator it = fireballs.begin(); it != fireballs.end();) {
+		if ((*it)->updatePosition(map, timems)) {
+			delete *it;
+			it = fireballs.erase(it);
+		} else {
+			it++;
+		}
+	}
+}
+
+void SceneGame::updatePlayers(int timems)
+{
+	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+	if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+		_player1->updateDirection(map, Character::ACTION_MOVE_DOWN);
+	}
+
+	if (currentKeyStates[SDL_SCANCODE_UP]) {
+		_player1->updateDirection(map, Character::ACTION_MOVE_UP);
+	}
+
+	if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+		_player1->updateDirection(map, Character::ACTION_MOVE_LEFT);
+	}
+
+	if (currentKeyStates[SDL_SCANCODE_RETURN]) {
+		Fireball * fb = _player1->Shoot();
+		if (fb)
+			fireballs.push_back(fb);
+	}
+
+	if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+		_player1->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+	}
+
+	if (currentKeyStates[SDL_SCANCODE_S]) {
+		_player2->updateDirection(map, Character::ACTION_MOVE_DOWN);
+	}
+
+	if (currentKeyStates[SDL_SCANCODE_W]) {
+		_player2->updateDirection(map, Character::ACTION_MOVE_UP);
+	}
+
+	if (currentKeyStates[SDL_SCANCODE_A]) {
+		_player2->updateDirection(map, Character::ACTION_MOVE_LEFT);
+	}
+
+	if (currentKeyStates[SDL_SCANCODE_D]) {
+		_player2->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+	}
+	if (currentKeyStates[SDL_SCANCODE_Q]) {
+		Fireball * fb = _player2->Shoot();
+		if (fb)
+			fireballs.push_back(fb);
+	}
+
+	_player1->updatePosition(map, timems,_tiles->getTileSizeDst());
+	_player2->updatePosition(map, timems,_tiles->getTileSizeDst());
+}
+
+void SceneGame::updateEnemies(int timems)
+{
+	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+		int startX = (*enemy)->getPosBeforeX();
+		int startY = (*enemy)->getPosBeforeY();
+		AStarWay_t way1;
+		AStarWay_t way2;
+
+		DIRECT destBest = DIRECT_NO_WAY;
+		DIRECT direct1 = findAstar(way1, startX, startY,_player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+		DIRECT direct2 = findAstar(way2, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+
+		if (direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
+			destBest = direct1;
+		} else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
+			destBest = direct2;
+		} else if (direct1 != DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
+			if (way1.size() > way2.size()) {
+				destBest = direct2;
+			} else {
+				destBest = direct1;
+			}
+		}
+
+		if (destBest != DIRECT_NO_WAY) {
+			if (destBest == DIRECT_DOWN) {
+				(*enemy)->updateDirection(map, Character::ACTION_MOVE_DOWN);
+			} else if (destBest == DIRECT_UP) {
+				(*enemy)->updateDirection(map, Character::ACTION_MOVE_UP);
+			} else if (destBest == DIRECT_LEFT) {
+				(*enemy)->updateDirection(map, Character::ACTION_MOVE_LEFT);
+			} else if (destBest == DIRECT_RIGHT) {
+				(*enemy)->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+			}
+		}
+
+		(*enemy)->updatePosition(map, timems/3,_tiles->getTileSizeDst());
+	}
+}
+
 void SceneGame::OnUpdate(int timems)
 {
-		//Event handler
-		SDL_Event e;
-		//Handle events on queue
-		while( SDL_PollEvent( &e ) != 0 )
-		{
-			//Engine::eventDebug(&e);
-			//User requests quit, Press Esc
-			if( e.type == SDL_QUIT || (e.type == SDL_KEYDOWN  && e.key.keysym.sym == SDLK_ESCAPE) )
-			{
-				//Quit the game
-				EngineInst->breakMainLoop();
-				return;
-			}
+	//Event handler
+	SDL_Event e;
+	//Handle events on queue
+	while (SDL_PollEvent(&e) != 0) {
+		//Engine::eventDebug(&e);
+		//User requests quit, Press Esc
+		if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN  && e.key.keysym.sym == SDLK_ESCAPE)) {
+			//Quit the game
+			EngineInst->breakMainLoop();
+			return;
 		}
+	}
 
-		const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-
-		if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-			_player1->updateDirection(map, Character::ACTION_MOVE_DOWN);
-		}
-
-		if (currentKeyStates[SDL_SCANCODE_UP]) {
-			_player1->updateDirection(map, Character::ACTION_MOVE_UP);
-		}
-
-		if (currentKeyStates[SDL_SCANCODE_LEFT]) {
-			_player1->updateDirection(map, Character::ACTION_MOVE_LEFT);
-		}
-
-		if (currentKeyStates[SDL_SCANCODE_RETURN]) {
-			Fireball * fb = _player1->Shoot();
-			if (fb)
-				fireballs.push_back(fb);
-		}
-
-		if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
-			_player1->updateDirection(map, Character::ACTION_MOVE_RIGHT);
-		}
-
-		if (currentKeyStates[SDL_SCANCODE_S]) {
-			_player2->updateDirection(map, Character::ACTION_MOVE_DOWN);
-		}
-
-		if (currentKeyStates[SDL_SCANCODE_W]) {
-			_player2->updateDirection(map, Character::ACTION_MOVE_UP);
-		}
-
-		if (currentKeyStates[SDL_SCANCODE_A]) {
-			_player2->updateDirection(map, Character::ACTION_MOVE_LEFT);
-		}
-
-		if (currentKeyStates[SDL_SCANCODE_D]) {
-			_player2->updateDirection(map, Character::ACTION_MOVE_RIGHT);
-		}
-		if (currentKeyStates[SDL_SCANCODE_Q]) {
-			Fireball * fb = _player2->Shoot();
-			if (fb)
-				fireballs.push_back(fb);
-		}
-
-		_player1->updatePosition(map, timems,_tiles->getTileSizeDst());
-		_player2->updatePosition(map, timems,_tiles->getTileSizeDst());
-		for(std::list<Fireball*>::iterator it = fireballs.begin();
-		    it != fireballs.end(); ++it) {
-			if ( (*it)->updatePosition(map,timems) ) {
-				std::list<Fireball*>::iterator next=it;
-				next++;
-				delete *it;
-				fireballs.erase(it);
-				it=next;
-			}
-		}
-		for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
-			int startX = (*enemy)->getPosBeforeX(); 
-			int startY = (*enemy)->getPosBeforeY();
-			AStarWay_t way1;
-			AStarWay_t way2;
-
-			DIRECT destBest = DIRECT_NO_WAY;
-			DIRECT direct1 = findAstar(way1, startX, startY,_player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-			DIRECT direct2 = findAstar(way2, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-
-			if(direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
-				destBest = direct1;
-			} else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
-					destBest = direct2;
-			} else if (direct1 != DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
-				if(way1.size() > way2.size()) {
-					destBest = direct2;
-				} else {
-					destBest = direct1;
-				}
-			}
-			
-			if (destBest != DIRECT_NO_WAY) {
-				if (destBest == DIRECT_DOWN) {
-						(*enemy)->updateDirection(map, Character::ACTION_MOVE_DOWN);
-					} else if (destBest == DIRECT_UP) {
-						(*enemy)->updateDirection(map, Character::ACTION_MOVE_UP);
-					} else if (destBest == DIRECT_LEFT) {
-						(*enemy)->updateDirection(map, Character::ACTION_MOVE_LEFT);
-					} else if (destBest == DIRECT_RIGHT) {
-						(*enemy)->updateDirection(map, Character::ACTION_MOVE_RIGHT);
-					}
-			}
-
-			(*enemy)->updatePosition(map, timems/3,_tiles->getTileSizeDst());
-		}
+	updatePlayers(timems);
+	updateFireballs(timems);
+	updateEnemies(timems);
 }
 
 void SceneGame::OnRender(SDL_Renderer* renderer)
 {
 	_background->render(renderer);
 
-	SDL_Rect topLeftViewport; 
-	topLeftViewport.x = 5; 
-	topLeftViewport.y = 100; 
-	topLeftViewport.w = EngineInst->screen_width(); 
-	topLeftViewport.h = EngineInst->screen_height(); 
-	SDL_RenderSetViewport( renderer, &topLeftViewport ); 
+	SDL_Rect topLeftViewport;
+	topLeftViewport.x = 5;
+	topLeftViewport.y = 100;
+	topLeftViewport.w = EngineInst->screen_width();
+	topLeftViewport.h = EngineInst->screen_height();
+	SDL_RenderSetViewport(renderer, &topLeftViewport);
 
 	int sizeDst = _tiles->getTileSizeDst();
 	int tilesNums = _tiles->getTilesNums();
@@ -232,9 +242,9 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 			int px_left = j * sizeDst+sizeDst/2;
 			int px_top  = i * sizeDst+0.5*sizeDst;
 			_tiles->renderTile(renderer,
-					   px_left,
-					   px_top,
-					   18+rand()%5, SDL_FLIP_NONE);
+			                   px_left,
+			                   px_top,
+			                   18+rand()%5, SDL_FLIP_NONE);
 		}
 	}
 	for (int i = 0 ; i!=map->GetHeight(); i++) {
@@ -246,14 +256,14 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 			int col = j* sizeDst;
 			int row = i * sizeDst;
 			_tiles->renderTile(renderer, col , row, tile, SDL_FLIP_NONE);
-			
+
 		}
 	}
 	//{ //Astar Example
-	//	int startX = _player1->getPosBeforeX(); 
+	//	int startX = _player1->getPosBeforeX();
 	//	int startY = _player1->getPosBeforeY();
 	//	AStarWay_t way;
-	//	
+	//
 	//	int direct = findAstar(way, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 	//	if (direct != DIRECT_NO_WAY) {
 	//		_tiles->renderTile(renderer, startX * sizeDst+margin_left, startY * sizeDst+margin_top, 8); //Start not exit in way
@@ -263,33 +273,33 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	//			_tiles->renderTile(renderer, x * sizeDst +margin_left, y * sizeDst+margin_top, 8);
 	//		}
 	//	}
-	//	
+	//
 	//}
 
-	for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
-		if ( (*enemy)->GetState()==Character::ALIVE)
+	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+		if ((*enemy)->GetState()==Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}
-	for(std::list<Fireball*>::iterator it = fireballs.begin();
-	    it != fireballs.end(); ++it) {
+	for (std::list<Fireball*>::iterator it = fireballs.begin();
+	                it != fireballs.end(); ++it) {
 		_tiles->renderTile(renderer, (*it)->getPosX(), (*it)->getPosY(), 28, SDL_FLIP_NONE);
 	}
 	/*Check victory condition*/
 	if (_player1->GetState() == Character::WON &&
-	    _player2->GetState() == Character::WON) {
+	                _player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-					     map->GetHeight()*sizeDst, "Both players won");
-		
+		                             map->GetHeight()*sizeDst, "Both players won");
+
 	} else if (_player1->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-					     map->GetHeight()*sizeDst, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
-		
+		                             map->GetHeight()*sizeDst, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
+
 	} else if (_player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-					     map->GetHeight()*sizeDst, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
-		
+		                             map->GetHeight()*sizeDst, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
+
 	}
-	
+
 	_player1->OnRender(renderer);
 	_player2->OnRender(renderer);
 
