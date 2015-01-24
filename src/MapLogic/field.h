@@ -1,6 +1,6 @@
 #ifndef __FIELD_H
 #define __FIELD_H
-
+class Character;
 class IField {
 public:
 
@@ -44,9 +44,11 @@ public:
 	 */
 	virtual int GetTileId()=0;
 	// other methods will be specific to certain types
-	virtual void SteppedOver()=0;
+	virtual void SteppedOver(Character *who)=0;
 	virtual void LeftField()=0;
 	virtual bool IsOccupied()=0;
+	virtual Character* WhoIsHere()=0;
+
 };
 
 #endif

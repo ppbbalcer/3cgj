@@ -1,10 +1,12 @@
 #include "Character.h"
 #include "../GlobalData.h"
 #include "Engine/Engine.h"
+#include "../fireball.h"
 using namespace std;
 
-Character::Character(IMap * map, RTexture *texture)
+Character::Character(IMap * _map, RTexture *texture)
 {
+	map=_map;
 	_health = MAX_HEALTH;
 	_texture = texture;
 	_state = ALIVE;
@@ -12,6 +14,8 @@ Character::Character(IMap * map, RTexture *texture)
 	_pos_before_x = 
 	_pos_after_y = 
 	_pos_before_y = 0;
+	last_dir_x=1;
+	last_dir_y=0;
 }
 
 Character::~Character()
@@ -27,7 +31,7 @@ void Character::setPosTiles(IMap * map, int x, int y)
 	_pos_after_y = y;
 	_pos_before_y = y;
 	map->GetFieldAt(_pos_after_x, _pos_before_y)
-		->SteppedOver();
+		->SteppedOver(this);
 	setPos(x * EngineInst->getTileSize(), y * EngineInst->getTileSize());
 }
 
@@ -39,8 +43,11 @@ int Character::getHealth()
 int Character::crucio(int howMuchCrucio)
 {
 	_health = max<int>(_health - howMuchCrucio, 0);
-	if (_health=0) {
+	printf("crucio! %d\n",_health);
+	if (_health==0) {
 		_state=DEAD;
+		map->GetFieldAt(_pos_before_x,_pos_before_y)
+			->LeftField();
 	}
 	return _health;
 }
@@ -91,7 +98,12 @@ int Character::getPosAfterY()
 {
 	return _pos_after_y;
 }
-
+Fireball * Character::Shoot()
+{
+	return new Fireball(getPosBeforeX()+last_dir_x,
+			    getPosBeforeY()+last_dir_y,
+			    last_dir_x, last_dir_y);
+}
 void Character::updateDirection(IMap *map, Action action)
 {
 	if (_state != ALIVE)
@@ -143,22 +155,30 @@ void Character::updatePosition(IMap *map, int time_ms, int tile_size)
 	//int tile_size = 50;
 	int target_y = _pos_after_y * tile_size;
 	int target_x = _pos_after_x * tile_size;
-	float dist = 0.3 * time_ms;
+	float dist = 0.01*tile_size * time_ms;
 	float pos_x = getPosX();
 	float pos_y = getPosY();
 	if (_state != ALIVE)
 		return;
 
 	if (pos_y > target_y) {
+		last_dir_y=-1;
+		last_dir_x=0;
 		pos_y = max<int>(target_y, pos_y - dist);
 	}
 	if (pos_y < target_y) {
+		last_dir_y=1;
+		last_dir_x=0;
 		pos_y = min<int>(target_y, pos_y + dist);
 	}
 	if (pos_x > target_x) {
+		last_dir_y=0;
+		last_dir_x=-1;
 		pos_x = max<int>(target_x, pos_x - dist);
 	}
 	if (pos_x < target_x) {
+		last_dir_y=0;
+		last_dir_x=+1;
 		pos_x = min<int>(target_x, pos_x + dist);
 	}
 
@@ -167,7 +187,7 @@ void Character::updatePosition(IMap *map, int time_ms, int tile_size)
 			map->GetFieldAt(_pos_before_x,_pos_before_y)
 				->LeftField();
 			map->GetFieldAt(_pos_after_x, _pos_before_y)
-				->SteppedOver();
+				->SteppedOver(this);
 			_pos_before_x = _pos_after_x;
 		}
 	}
@@ -176,7 +196,7 @@ void Character::updatePosition(IMap *map, int time_ms, int tile_size)
 			map->GetFieldAt(_pos_before_x,_pos_before_y)
 				->LeftField();
 			map->GetFieldAt(_pos_before_x, _pos_after_y)
-				->SteppedOver();
+				->SteppedOver(this);
 			_pos_before_y = _pos_after_y;
 		}
 	}

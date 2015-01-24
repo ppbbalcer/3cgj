@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "Engine/AStar.h"
 #include <stdio.h>
+#include "fireball.h"
 using namespace std;
 
 SceneGame::SceneGame()
@@ -103,6 +104,12 @@ void SceneGame::OnUpdate(int timems)
 			_player1->updateDirection(map, Character::ACTION_MOVE_LEFT);
 		}
 
+		if (currentKeyStates[SDL_SCANCODE_RETURN]) {
+			Fireball * fb = _player1->Shoot();
+			if (fb)
+				fireballs.push_back(fb);
+		}
+
 		if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
 			_player1->updateDirection(map, Character::ACTION_MOVE_RIGHT);
 		}
@@ -122,10 +129,24 @@ void SceneGame::OnUpdate(int timems)
 		if (currentKeyStates[SDL_SCANCODE_D]) {
 			_player2->updateDirection(map, Character::ACTION_MOVE_RIGHT);
 		}
+		if (currentKeyStates[SDL_SCANCODE_Q]) {
+			Fireball * fb = _player2->Shoot();
+			if (fb)
+				fireballs.push_back(fb);
+		}
 
 		_player1->updatePosition(map, timems,_tiles->getTileSizeDst());
 		_player2->updatePosition(map, timems,_tiles->getTileSizeDst());
-
+		for(std::list<Fireball*>::iterator it = fireballs.begin();
+		    it != fireballs.end(); ++it) {
+			if ( (*it)->updatePosition(map,timems) ) {
+				std::list<Fireball*>::iterator next=it;
+				next++;
+				delete *it;
+				fireballs.erase(it);
+				it=next;
+			}
+		}
 		for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 			int startX = (*enemy)->getPosBeforeX(); 
 			int startY = (*enemy)->getPosBeforeY();
@@ -214,10 +235,13 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 
 	for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
-		
-		_tiles->renderTile(renderer, (*enemy)->getPosX()+margin_left, (*enemy)->getPosY()+margin_top, 23);
+		if ( (*enemy)->GetState()==Character::ALIVE)
+			_tiles->renderTile(renderer, (*enemy)->getPosX()+margin_left, (*enemy)->getPosY()+margin_top, 23);
 	}
-
+	for(std::list<Fireball*>::iterator it = fireballs.begin();
+	    it != fireballs.end(); ++it) {
+		_tiles->renderTile(renderer, (*it)->getPosX()+margin_left, (*it)->getPosY()+margin_top, 28);
+	}
 	/*Check victory condition*/
 	if (_player1->GetState() == Character::WON &&
 	    _player2->GetState() == Character::WON) {

@@ -4,6 +4,7 @@
 
 #define MAX_HEALTH 100
 
+class Fireball;
 class Character
 {
 public:
@@ -13,7 +14,7 @@ public:
 		ACTION_MOVE_RIGHT,
 		ACTION_MOVE_LEFT,
 		ACTION_USE,
-		ACTION_SHOOT,
+		ACTION_SHOT,
 		ACTION_END
 	};
 	enum State {
@@ -36,6 +37,8 @@ public:
 	void setPosTiles(IMap *map, int x, int y);
 	int getPosX();
 	int getPosY();
+
+	Fireball * Shoot();
 	void updateDirection(IMap *map, Action action);
 	void updatePosition(IMap *map, int time_ms, int tile_size);
 	int getPosBeforeX();
@@ -44,13 +47,14 @@ public:
 	int getPosAfterY();
 
 private:
+	IMap * map;
 	void setPos(int x, int y);
 	RTexture *_texture;
 	int _health;
 	int _speed;
 	int _state;
-
-
+	int last_dir_x;
+	int last_dir_y;
 	float _posX;
 	float _posY;
 	int _pos_before_x;

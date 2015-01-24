@@ -55,7 +55,7 @@ int Field::GetType() {
 	return type;
 }
 
-void Field::SteppedOver()
+void Field::SteppedOver(Character * who)
 {
 	if (type==DOSKEY)
 		doskey_active++;
@@ -63,12 +63,17 @@ void Field::SteppedOver()
 		type=DOOR_VERTICAL_OPEN;
 	if (type==DOOR_HORIZONTAL_CLOSED)
 		type=DOOR_HORIZONTAL_OPEN;
-	someone_is_here=true;
+	someone_is_here=who;
 }
 
 void Field::LeftField()
 {
 	if (type==DOSKEY)
 		doskey_active--;
-	someone_is_here=false;
+	someone_is_here=0;
+}
+
+Character* Field::WhoIsHere()
+{
+	return someone_is_here;
 }
