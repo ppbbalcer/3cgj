@@ -12,10 +12,7 @@ class Character
 {
 public:
 	enum Action {
-		ACTION_MOVE_UP = 0,
-		ACTION_MOVE_DOWN,
-		ACTION_MOVE_RIGHT,
-		ACTION_MOVE_LEFT,
+		ACTION_NONE,
 		ACTION_USE,
 		ACTION_SHOT,
 		ACTION_END
@@ -48,8 +45,18 @@ public:
 	int getPosBeforeY();
 	int getPosAfterY();
 
+	/*
+	
+	int getPosX();
+	int getPosY();
+	int getPosTilesX();
+	int getPosTilesX();
+	DIRECT getActualDirect();
+	float getMoveProgress(); /*0.0f to 1.0f*/
+
+
 	Fireball * Shoot();
-	void updateDirection(IMap *map, Action action);
+	void updateDirection(IMap *map, DIRECT directMove);
 	void updatePosition(IMap *map, int time_ms);
 
 private:

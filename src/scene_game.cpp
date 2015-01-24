@@ -114,19 +114,19 @@ void SceneGame::updatePlayers(int timems)
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
 	if (currentKeyStates[PLAYER_1_MOVE_DOWN]) {
-		_player1->updateDirection(map, Character::ACTION_MOVE_DOWN);
+		_player1->updateDirection(map, DIRECT_DOWN);
 	}
 
 	if (currentKeyStates[PLAYER_1_MOVE_UP]) {
-		_player1->updateDirection(map, Character::ACTION_MOVE_UP);
+		_player1->updateDirection(map, DIRECT_UP);
 	}
 
 	if (currentKeyStates[PLAYER_1_MOVE_LEFT]) {
-		_player1->updateDirection(map, Character::ACTION_MOVE_LEFT);
+		_player1->updateDirection(map, DIRECT_LEFT);
 	}
 
 	if (currentKeyStates[PLAYER_1_MOVE_RIGHT]) {
-		_player1->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+		_player1->updateDirection(map, DIRECT_RIGHT);
 	}
 
 	if (currentKeyStates[PLAYER_1_SHOOT]) {
@@ -136,19 +136,19 @@ void SceneGame::updatePlayers(int timems)
 	}
 
 	if (currentKeyStates[PLAYER_2_MOVE_DOWN]) {
-		_player2->updateDirection(map, Character::ACTION_MOVE_DOWN);
+		_player2->updateDirection(map, DIRECT_DOWN);
 	}
 
 	if (currentKeyStates[PLAYER_2_MOVE_UP]) {
-		_player2->updateDirection(map, Character::ACTION_MOVE_UP);
+		_player2->updateDirection(map, DIRECT_UP);
 	}
 
 	if (currentKeyStates[PLAYER_2_MOVE_LEFT]) {
-		_player2->updateDirection(map, Character::ACTION_MOVE_LEFT);
+		_player2->updateDirection(map, DIRECT_LEFT);
 	}
 
 	if (currentKeyStates[PLAYER_2_MOVE_RIGHT]) {
-		_player2->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+		_player2->updateDirection(map, DIRECT_RIGHT);
 	}
 
 // <<<<<<< HEAD
@@ -257,13 +257,13 @@ void SceneGame::updateEnemies(int timems)
 
 		if (destBest != DIRECT_NO_WAY) {
 			if (destBest == DIRECT_DOWN) {
-				(*enemy)->updateDirection(map, Character::ACTION_MOVE_DOWN);
+				(*enemy)->updateDirection(map, DIRECT_DOWN);
 			} else if (destBest == DIRECT_UP) {
-				(*enemy)->updateDirection(map, Character::ACTION_MOVE_UP);
+				(*enemy)->updateDirection(map, DIRECT_UP);
 			} else if (destBest == DIRECT_LEFT) {
-				(*enemy)->updateDirection(map, Character::ACTION_MOVE_LEFT);
+				(*enemy)->updateDirection(map, DIRECT_LEFT);
 			} else if (destBest == DIRECT_RIGHT) {
-				(*enemy)->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+				(*enemy)->updateDirection(map, DIRECT_RIGHT);
 			}
 		}
 
