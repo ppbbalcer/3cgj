@@ -27,6 +27,7 @@ void Level::setCurrentScene(int scene_id) {
 }
 
 void Level::resetCurrent() {
+	scenes[current_scene]->OnFreeBase();
 	delete scenes[current_scene];
 	scenes.erase(current_scene);
 	setCurrentScene(current_scene);
