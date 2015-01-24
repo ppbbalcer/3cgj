@@ -1,6 +1,8 @@
 #include "field.h"
 #include <cassert>
 #include "field_impl.h"
+#include "../GlobalData.h"
+
 int Field::assigned_field[NUM_FIELD_TYPES];
 
 void Field::EnsureFieldIdsInitialized()
@@ -79,8 +81,10 @@ void Field::SteppedOver(Character * who)
 		type=FLOOR;
 		who->heal(100);
 	}
-	if (type==DOSKEY)
+	if (type==DOSKEY) {
 		doskey_active++;
+		globalAudios[CLICK_ON].res.sound->play(-1, 0, 0);
+	}
 	if (type==DOOR_VERTICAL_CLOSED)
 		type=DOOR_VERTICAL_OPEN;
 	if (type==DOOR_HORIZONTAL_CLOSED)
@@ -90,8 +94,10 @@ void Field::SteppedOver(Character * who)
 
 void Field::LeftField()
 {
-	if (type==DOSKEY)
+	if (type==DOSKEY) {
 		doskey_active--;
+		globalAudios[CLICK_OFF].res.sound->play(-1, 0, 0);
+	}
 	someone_is_here=0;
 }
 
