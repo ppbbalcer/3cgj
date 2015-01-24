@@ -7,6 +7,12 @@
 
 #define MAX_HEALTH 100
 #define DEFAULT_POWER_LEVEL 25;
+
+#define SMALL_POTION_HEAL_VAL 25
+#define LARGE_POTION_HEAL_VAL 50
+#define MEDKIT_HEAL_VAL MAX_HEALTH
+#define POWERUP_VAL 20
+
 class Fireball;
 class Character
 {

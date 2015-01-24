@@ -37,10 +37,28 @@ SceneGame::~SceneGame()
 {
 	delete map;
 }
+SDL_Rect SceneGame::GetDefaultViewport()
+{
+#define MARGIN_TOP 100
+#define MARGIN_BOTTOM 60
+#define MARGIN_LEFT 5
+#define MARGIN_RIGHT 5
+	
+	SDL_Rect topLeftViewport;
+	topLeftViewport.x = MARGIN_LEFT;
+	topLeftViewport.y = MARGIN_TOP;
+	topLeftViewport.w = EngineInst->screen_width()-MARGIN_LEFT-MARGIN_RIGHT;
+	topLeftViewport.h = EngineInst->screen_height()-MARGIN_TOP-MARGIN_BOTTOM;
+	return topLeftViewport;
+}
 void SceneGame::OnLoad()
 {
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
-	int tile_size = EngineInst->screen_width() / map->GetWidth();
+	SDL_Rect dvp=GetDefaultViewport();
+
+	int tile_size = min<int>(dvp.w / map->GetWidth(),
+				 dvp.h/map->GetHeight());
+
 	EngineInst->setTileSize(tile_size);
 
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
@@ -314,11 +332,15 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 {
 	// _background->render(renderer);
 
-	SDL_Rect topLeftViewport;
-	topLeftViewport.x = 5;
-	topLeftViewport.y = 100;
-	topLeftViewport.w = EngineInst->screen_width();
-	topLeftViewport.h = EngineInst->screen_height();
+	SDL_Rect topLeftViewport=GetDefaultViewport();
+	int map_width=map->GetWidth()*EngineInst->getTileSize();
+	if (topLeftViewport.w>map_width) {
+		int excess_width = topLeftViewport.w-map_width;
+		topLeftViewport.w-=excess_width;
+		topLeftViewport.x+=excess_width/2;
+	}
+	
+
 	SDL_RenderSetViewport(renderer, &topLeftViewport);
 
 	int sizeDst = _tiles->getTileSizeDst();

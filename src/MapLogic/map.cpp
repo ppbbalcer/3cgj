@@ -78,9 +78,31 @@ LoadedMap::LoadedMap(const char * path) {
 			case 'k':
 				new_field= new Field(IField::DOSKEY);
 				break;
-			case 'm':
+			case '+':
 				new_field= new Field(IField::MEDKIT);
 				break;
+			case 'm':
+				new_field= new Field(IField::SMALL_MANA_FLASK);
+				break;
+			case 'M':
+				new_field= new Field(IField::LARGE_MANA_FLASK);
+				break;
+			case 'h':
+				new_field= new Field(IField::SMALL_HEALTH_FLASK);
+				break;
+			case '^':
+				new_field= new Field(IField::SWITCH_UP);
+				break;
+			case 'v':
+				new_field= new Field(IField::SWITCH_DOWN);
+				break;
+			case 'H':
+				new_field= new Field(IField::LARGE_HEALTH_FLASK);
+				break;
+			case 'e':
+				new_field= new Field(IField::EMPTY_FLASK);
+				break;
+				
 			default:
 				new_field= new Field(IField::EMPTY);
 			}

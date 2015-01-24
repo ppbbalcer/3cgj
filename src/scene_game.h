@@ -5,6 +5,7 @@
 #include "Engine/Engine.h"
 #include "Engine/RTexture.h"
 #include "Character.h"
+#include <SDL.h>
 #include "MapLogic/map.h"
 class Fireball;
 class Level;
@@ -14,6 +15,8 @@ class Level;
 class SceneGame: public Scene
 {
 private:
+	SDL_Rect GetDefaultViewport();
+
 	std::list<Fireball *> fireballs;
 	RTexture *_background;
 	Character *_player1, *_player2;
