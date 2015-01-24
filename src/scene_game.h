@@ -5,6 +5,9 @@
 #include "Engine/Engine.h"
 #include "Engine/RTexture.h"
 #include "Character.h"
+#include "Enemy.h"
+#include "Player.h"
+#include <SDL.h>
 #include "MapLogic/map.h"
 class Fireball;
 class Level;
@@ -14,10 +17,12 @@ class Level;
 class SceneGame: public Scene
 {
 private:
+	SDL_Rect GetDefaultViewport();
+
 	std::list<Fireball *> fireballs;
 	RTexture *_background;
-	Character *_player1, *_player2;
-	std::vector<Character*> _enemys;
+	Player *_player1, *_player2;
+	std::vector<Enemy*> _enemys;
 	RTexture *_tiles;
 	int _arrayShadowW;
 	int _arrayShadowH;
@@ -25,6 +30,7 @@ private:
 	IMap *map;
 	Level *level;
 	int room_id;
+	int heartbeat_tempo;
 	void updateEnemies(int timems);
 	void updateFireballs(int timems);
 	void updatePlayers(int timems);

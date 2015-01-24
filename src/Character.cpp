@@ -81,13 +81,22 @@ void Character::OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx)
 		int cy = getPosY();
 
 	//	if(_pos_before_x == _pos_after_x && _pos_before_y == _pos_after_y) {
-
 			int alfa;
 			for(int x=-radius; x<=radius; ++x) {
 				for(int y=-radius; y<=radius; ++y) {
+					
+					int tx = (cx/title_size)+x;
+					int ty = (cy/title_size)+y;
+					if (tx < 0 || tx >= (_map)->GetWidth()) continue;
+					if (ty < 0 || ty >= (_map)->GetHeight()) continue;
+
+					if( (_map)->GetFieldAt(tx, ty)->IsObstacle()) {
+						continue;
+					}
 					alfa = calcCircleAlfaRadius4[x+radius][y+radius];
 					if(alfa > 0) {
 						_texture->setAlpha( alfa );
+
 						_texture->renderTile(renderer, cx + x*title_size, cy + y*title_size, tileIdx, SDL_FLIP_NONE);	
 					}
 				}
@@ -153,17 +162,6 @@ int Character::getPosAfterY()
 	return _pos_after_y;
 }
 
-Fireball * Character::Shoot()
-{
-	if (GetState()!=ALIVE)
-		return 0;
-	globalAudios[GameSounds::FIREBALL].res.sound->play(-1, 0, 0);
-	
-	return new Fireball(getPosBeforeX() + last_dir_x,
-	                    getPosBeforeY() + last_dir_y,
-	                    last_dir_x, last_dir_y, GetPowerLevel());
-}
-
 void Character::updateDirection(DIRECT directMove)
 {
 	if (_state != ALIVE)
@@ -209,9 +207,10 @@ void Character::OnUpdate(int time_ms)
 	int tile_size = EngineInst->getTileSize();
 	int target_y = _pos_after_y * tile_size;
 	int target_x = _pos_after_x * tile_size;
-	float dist = 0.01 * tile_size * time_ms;
-	float pos_x = getPosX();
-	float pos_y = getPosY();
+	int dist = tile_size * time_ms / 100;
+	int pos_x = getPosX();
+	int pos_y = getPosY();
+
 	if (_state != ALIVE)
 		return;
 

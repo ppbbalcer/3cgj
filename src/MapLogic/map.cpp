@@ -2,9 +2,12 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <string>
 #include "field.h"
 #include "map.h"
 #include "generic_map.h"
+#include "switch.h"
+#include "door.h"
 /* following constants define width and height of map in tiles */
 using namespace std;
 
@@ -64,7 +67,7 @@ LoadedMap::LoadedMap(const char * path) {
 				new_field= new Field(IField::FLOOR);
 				break;
 			case '|':
-				new_field= new Field(IField::DOOR);
+				new_field= new Door;
 				break;
 			case 'd':
 				new_field= new Field(IField::DESK);
@@ -78,9 +81,34 @@ LoadedMap::LoadedMap(const char * path) {
 			case 'k':
 				new_field= new Field(IField::DOSKEY);
 				break;
-			case 'm':
+			case '+':
 				new_field= new Field(IField::MEDKIT);
 				break;
+			case 'm':
+				new_field= new Field(IField::SMALL_MANA_FLASK);
+				break;
+			case 'M':
+				new_field= new Field(IField::LARGE_MANA_FLASK);
+				break;
+			case 'h':
+				new_field= new Field(IField::SMALL_HEALTH_FLASK);
+				break;
+			case '^':
+				new_field= new Switch(1);
+				break;
+			case 'v':
+				new_field= new Switch(0);
+				break;
+			case 'H':
+				new_field= new Field(IField::LARGE_HEALTH_FLASK);
+				break;
+			case 'e':
+				new_field= new Field(IField::EMPTY_FLASK);
+				break;
+			case 'E':
+				new_field= new EvilComputer;
+				break;
+				
 			default:
 				new_field= new Field(IField::EMPTY);
 			}
@@ -129,6 +157,32 @@ LoadedMap::LoadedMap(const char * path) {
 	}
 	mapfile.close();
 	SerializeOntoConsole();
+	string config_path(path);
+	config_path+=".conf";
+	mapfile.open(config_path);
+	if (!mapfile.good())
+		return;
+	while (!mapfile.eof()) {
+		/**
+		 * achtung! kein error checking! you may CTD through
+		 * bugged conf file.
+		 */
+		string command;
+		mapfile >> command;
+		if (command == "switch") {
+			int sw_x;
+			int sw_y;
+			string direction;
+			int tar_x;
+			int tar_y;
+			mapfile >> sw_x >> sw_y >> direction >> tar_x >> tar_y;
+			Switch * sw = dynamic_cast <Switch*>(GetFieldAt(sw_x, sw_y));
+			if (!sw) {assert(0);}
+			Field * tar = dynamic_cast <Field*>(GetFieldAt(tar_x, tar_y));
+			sw->AssociateField(tar,direction=="up");
+		}
+	}
+	mapfile.close();
 }
 
 void LoadedMap::SerializeOntoConsole()

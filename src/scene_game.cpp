@@ -12,6 +12,8 @@
 using namespace std;
 
 #define MAX_ROOM_PATH 255
+#define HEARTBEAT_BASE_INTERVAL 2000
+#define HEARTBEAT_MIN_INTERVAL 500
 
 /* looking for obstacles*/
 bool IMap_isObstacle(int x, int y, void* objMap)
@@ -25,6 +27,7 @@ SceneGame::SceneGame(Level *level, int room_id)
 {
 	this->room_id = room_id;
 	this->level = level;
+	this->heartbeat_tempo = 0;
 	char buff[MAX_ROOM_PATH];
 	sprintf(buff, "Resources/levels/%u/%u.txt", level->getId(), room_id);
 	map = IMap::Factory(IMap::LOADED, buff);
@@ -34,10 +37,28 @@ SceneGame::~SceneGame()
 {
 	delete map;
 }
+SDL_Rect SceneGame::GetDefaultViewport()
+{
+#define MARGIN_TOP 100
+#define MARGIN_BOTTOM 60
+#define MARGIN_LEFT 5
+#define MARGIN_RIGHT 5
+	
+	SDL_Rect topLeftViewport;
+	topLeftViewport.x = MARGIN_LEFT;
+	topLeftViewport.y = MARGIN_TOP;
+	topLeftViewport.w = EngineInst->screen_width()-MARGIN_LEFT-MARGIN_RIGHT;
+	topLeftViewport.h = EngineInst->screen_height()-MARGIN_TOP-MARGIN_BOTTOM;
+	return topLeftViewport;
+}
 void SceneGame::OnLoad()
 {
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
-	int tile_size = EngineInst->screen_width() / map->GetWidth();
+	SDL_Rect dvp=GetDefaultViewport();
+
+	int tile_size = min<int>(dvp.w / map->GetWidth(),
+				 dvp.h/map->GetHeight());
+
 	EngineInst->setTileSize(tile_size);
 
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
@@ -56,13 +77,13 @@ void SceneGame::OnLoad()
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(24);
-	_player1 = new Character(tmpTexture, map);
+	_player1 = new Player(tmpTexture, map);
 
 	tmpTexture = new RTexture(texturesScene_game[3]);
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(27);
-	_player2 = new Character(tmpTexture, map);
+	_player2 = new Player(tmpTexture, map);
 
 	_player1->setPosTiles(3, 3);
 	_player2->setPosTiles(4, 3);
@@ -72,7 +93,7 @@ void SceneGame::OnLoad()
 		tmpTexture->setTileSizeSrc(tileSizeSrc);
 		tmpTexture->setTileSizeDst(tile_size);
 		tmpTexture->setTileIdx(23);
-		Character* enemy = new Character(tmpTexture, map);
+		Enemy* enemy = new Enemy(tmpTexture, map);
 		enemy->setPosTiles(map->GetWidth() - 2, map->GetHeight() - 2 - i);
 		_enemys.push_back(enemy);
 	}
@@ -95,11 +116,13 @@ void SceneGame::OnLoad()
 		printf("Failed to load media Scene02Renderer !\n");
 		PAUSE();
 	}
+	globalAudios[HEARTBEAT].res.sound->setVolume(0.2f);
+	globalAudios[HEARTBEAT].res.sound->play(-1, 0, HEARTBEAT_BASE_INTERVAL);
 }
 
 void SceneGame::OnFree()
 {
-	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		delete *enemy;
 	}
 	_enemys.clear();
@@ -107,6 +130,8 @@ void SceneGame::OnFree()
 	_arrayShadow = NULL;
 
 	//Destroy textures???
+
+	globalAudios[HEARTBEAT].res.sound->stop();
 
 	EngineInst->unLoadResources(texturesScene, texturesSceneSize);
 
@@ -247,7 +272,7 @@ void SceneGame::updatePlayers(int timems)
 
 void SceneGame::updateEnemies(int timems)
 {
-	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		int startX = (*enemy)->getPosBeforeX();
 		int startY = (*enemy)->getPosBeforeY();
 		AStarWay_t way1;
@@ -271,6 +296,15 @@ void SceneGame::updateEnemies(int timems)
 		//if(distX*distX + distY*distY <= distQuad ) {
 			direct2 = findAstar(way2, maxSteps,  startX, startY, _player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 		//}
+
+		if (heartbeat_tempo == 0 && ((way1.size() != 0 && way1.size() < 10 ) || (way2.size() != 0 && way2.size() < 10))) {
+			heartbeat_tempo = 50;
+			globalAudios[HEARTBEAT].res.sound->setDelay(HEARTBEAT_MIN_INTERVAL);
+		} else if (heartbeat_tempo != 0) {
+			heartbeat_tempo--;
+			if (heartbeat_tempo == 0)
+				globalAudios[HEARTBEAT].res.sound->setDelay(HEARTBEAT_BASE_INTERVAL);
+		}
 
 		if (direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
 			destBest = direct1;
@@ -313,7 +347,7 @@ void SceneGame::OnUpdate(int timems)
 			return;
 		}
 	}
-
+	globalAudios[HEARTBEAT].res.sound->update(timems);
 	updatePlayers(timems);
 	updateFireballs(timems);
 	updateEnemies(timems);
@@ -366,7 +400,6 @@ void SceneGame::updateShadowsObj6(int centerTiltX, int centerTiltY)
 	}
 }
 
-
 void SceneGame::updateShadows()
 {
 	memset(_arrayShadow, 00, _arrayShadowW*_arrayShadowH*sizeof(_arrayShadowH));
@@ -395,9 +428,9 @@ void SceneGame::OnRenderShadow(SDL_Renderer* renderer) {
 	for (int y = 0 ; y < _arrayShadowH; ++y) {
 		for (int x = 0 ;x< _arrayShadowW; ++x) {
 			alfa = 255 - _arrayShadow[y*_arrayShadowW + x];
-			if (alfa >170)
+			if (alfa >140)
 			{
-				alfa = 170;
+				alfa = 140;
 			}
 			_tiles->setAlpha(alfa);
 			_tiles->renderTile(renderer, x*tileSize, y*tileSize, 35, SDL_FLIP_NONE);
@@ -447,12 +480,16 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 	int tileSize = EngineInst->getTileSize();
 
-	SDL_Rect topLeftViewport;
-	topLeftViewport.x = 5;
-	topLeftViewport.y = 100;
-	topLeftViewport.w = EngineInst->screen_width();
-	topLeftViewport.h = EngineInst->screen_height();
+	SDL_Rect topLeftViewport=GetDefaultViewport();
+	int map_width=map->GetWidth()*EngineInst->getTileSize();
+	if (topLeftViewport.w>map_width) {
+		int excess_width = topLeftViewport.w-map_width;
+		topLeftViewport.w-=excess_width;
+		topLeftViewport.x+=excess_width/2;
+	}
 	SDL_RenderSetViewport(renderer, &topLeftViewport);
+
+
 
 	OnRenderMap(renderer);
 
@@ -486,7 +523,8 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	//}
 	//_player1->OnRenderCircle(renderer, 4, 7);
 
-	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+
+	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}

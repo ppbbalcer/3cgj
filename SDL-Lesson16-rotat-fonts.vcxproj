@@ -22,12 +22,17 @@
     <ClCompile Include="src\level.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainScene.cpp" />
+    <ClCompile Include="src\MapLogic\door.cpp" />
     <ClCompile Include="src\MapLogic\field.cpp" />
     <ClCompile Include="src\MapLogic\map.cpp" />
+    <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\MapLogic\switch.cpp" />
+    <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\scene_game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Character.h" />
+    <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\Engine\AStar.h" />
     <ClInclude Include="src\Engine\Audio.h" />
     <ClInclude Include="src\Engine\Engine.h" />
@@ -40,10 +45,13 @@
     <ClInclude Include="src\KeyMap.h" />
     <ClInclude Include="src\level.h" />
     <ClInclude Include="src\MainScene.h" />
+    <ClInclude Include="src\MapLogic\door.h" />
     <ClInclude Include="src\MapLogic\field.h" />
     <ClInclude Include="src\MapLogic\field_impl.h" />
     <ClInclude Include="src\MapLogic\generic_map.h" />
     <ClInclude Include="src\MapLogic\map.h" />
+    <ClInclude Include="src\MapLogic\switch.h" />
+    <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\SceneExamples.h" />
     <ClInclude Include="src\SceneFont.h" />
     <ClInclude Include="src\scene_game.h" />
