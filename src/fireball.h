@@ -11,7 +11,7 @@ class Fireball
 	int posX; // in pixels (margin not included)
 	int posY;
 public:
-	Fireball (int start_x, int start_y, int _vx, int _vy);
+	Fireball(int start_x, int start_y, int _vx, int _vy);
 
 	/**
 	 * Attempt to update position
@@ -19,7 +19,7 @@ public:
 	 * fireball object. It either hit the wall and can be discarded
 	 * or it hit its proper target and should be discarded.
 	 */
-	int updatePosition (IMap *map, int time_ms);
+	int updatePosition(IMap *map, int time_ms);
 
 	int getPosX();
 	int getPosY();

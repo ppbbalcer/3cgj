@@ -39,6 +39,7 @@
     <ClInclude Include="src\Engine\StructsGlobal.h" />
     <ClInclude Include="src\fireball.h" />
     <ClInclude Include="src\GlobalData.h" />
+    <ClInclude Include="src\KeyMap.h" />
     <ClInclude Include="src\levels\base_level.h" />
     <ClInclude Include="src\levels\level0.h" />
     <ClInclude Include="src\MainScene.h" />

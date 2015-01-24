@@ -12,7 +12,7 @@ Fireball::Fireball(int start_x, int start_y, int _vx, int _vy)
 	posY = y * EngineInst->getTileSize();
 }
 
-int Fireball::updatePosition (IMap *map, int time_ms)
+int Fireball::updatePosition(IMap *map, int time_ms)
 {
 	int tile_size = EngineInst->getTileSize();
 	float dist = 0.01 * tile_size * time_ms;
