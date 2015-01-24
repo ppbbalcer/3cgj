@@ -176,15 +176,44 @@ LoadedMap::LoadedMap(const char * path) {
 			int tar_x;
 			int tar_y;
 			mapfile >> sw_x >> sw_y >> direction >> tar_x >> tar_y;
-			Switch * sw = dynamic_cast <Switch*>(GetFieldAt(sw_x, sw_y));
+			Switch * sw = dynamic_cast <Switch*>(
+				GetFieldAt(sw_x, sw_y));
 			if (!sw) {assert(0);}
-			Field * tar = dynamic_cast <Field*>(GetFieldAt(tar_x, tar_y));
+			Field * tar = dynamic_cast <Field*>(
+				GetFieldAt(tar_x, tar_y));
+			
 			sw->AssociateField(tar,direction=="up");
+		} else if (command == "player1_start") {
+			int x; int y;
+			mapfile >> x >> y;
+			p1_start = make_pair(x,y);
+		} else if (command == "player2_start") {
+			int x; int y;
+			mapfile >> x >> y;
+			p2_start = make_pair(x,y);
+		} else if (command == "enemy_start") {
+			int x; int y;
+			mapfile >> x >> y;
+			enemies_start.push_back(make_pair(x,y));
 		}
 	}
 	mapfile.close();
 }
 
+const starting_pos & GenericMap::GetPlayer1Start()
+{
+	return p2_start;
+}
+const starting_pos & GenericMap::GetPlayer2Start()
+{
+	return p1_start;
+}
+
+const start_list & GenericMap::GetEnemiesStart()
+{
+	return enemies_start;
+}
+	
 void LoadedMap::SerializeOntoConsole()
 {
 	ostream & stream = cout;

@@ -1,18 +1,20 @@
 #include "Player.h"
 #include "GlobalData.h"
+#include "Engine/RTexture.h"
+
+using namespace std;
+
+Player::Player(RTexture * texture, IMap * map) : Character(texture, map)
+{
+	_mana = MAX_MANA;
+	_last_shot_time = clock() - FIREBALL_MIN_DIFF_MS * (CLOCKS_PER_SEC / 1000);
+};
 
 Player::~Player(void) {};
 
 int Player::getMana()
 {
 	return _mana;
-}
-void Player::useMana(int howMuchMana)
-{
-	_mana -= howMuchMana;
-	if (_mana < 0) {
-		_mana = 0;
-	}
 }
 
 void Player::restoreMana(int howMuchMana)
@@ -25,8 +27,19 @@ void Player::restoreMana(int howMuchMana)
 
 Fireball * Player::Shoot()
 {
+	clock_t now = clock();
+
 	if (GetState() != ALIVE)
-		return 0;
+		return NULL;
+
+	if (_mana - FIREBALL_MANA_COST < 0)
+		return NULL;
+
+	if (((1.0 * now - _last_shot_time) / (CLOCKS_PER_SEC / 1000)) <= FIREBALL_MIN_DIFF_MS)
+		return NULL;
+
+	_mana -= FIREBALL_MANA_COST;
+	_last_shot_time = now;
 
 	globalAudios[GameSounds::FIREBALL].res.sound->play();
 
