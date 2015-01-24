@@ -6,6 +6,7 @@
 #include "Engine/AStar.h"
 #include <stdio.h>
 #include "fireball.h"
+#include "KeyMap.h"
 
 using namespace std;
 
@@ -112,45 +113,45 @@ void SceneGame::updatePlayers(int timems)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-	if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+	if (currentKeyStates[PLAYER_1_MOVE_DOWN]) {
 		_player1->updateDirection(map, Character::ACTION_MOVE_DOWN);
 	}
 
-	if (currentKeyStates[SDL_SCANCODE_UP]) {
+	if (currentKeyStates[PLAYER_1_MOVE_UP]) {
 		_player1->updateDirection(map, Character::ACTION_MOVE_UP);
 	}
 
-	if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+	if (currentKeyStates[PLAYER_1_MOVE_LEFT]) {
 		_player1->updateDirection(map, Character::ACTION_MOVE_LEFT);
 	}
 
-	if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+	if (currentKeyStates[PLAYER_1_MOVE_RIGHT]) {
 		_player1->updateDirection(map, Character::ACTION_MOVE_RIGHT);
 	}
 
-	if (currentKeyStates[SDL_SCANCODE_RETURN]) {
+	if (currentKeyStates[PLAYER_1_SHOOT]) {
 		Fireball * fb = _player1->Shoot();
 		if (fb)
 			fireballs.push_back(fb);
 	}
 
-	if (currentKeyStates[SDL_SCANCODE_S]) {
+	if (currentKeyStates[PLAYER_2_MOVE_DOWN]) {
 		_player2->updateDirection(map, Character::ACTION_MOVE_DOWN);
 	}
 
-	if (currentKeyStates[SDL_SCANCODE_W]) {
+	if (currentKeyStates[PLAYER_2_MOVE_UP]) {
 		_player2->updateDirection(map, Character::ACTION_MOVE_UP);
 	}
 
-	if (currentKeyStates[SDL_SCANCODE_A]) {
+	if (currentKeyStates[PLAYER_2_MOVE_LEFT]) {
 		_player2->updateDirection(map, Character::ACTION_MOVE_LEFT);
 	}
 
-	if (currentKeyStates[SDL_SCANCODE_D]) {
+	if (currentKeyStates[PLAYER_2_MOVE_RIGHT]) {
 		_player2->updateDirection(map, Character::ACTION_MOVE_RIGHT);
 	}
 
-	if (currentKeyStates[SDL_SCANCODE_F]) {
+	if (currentKeyStates[PLAYER_2_SHOOT]) {
 		Fireball * fb = _player2->Shoot();
 		if (fb)
 			fireballs.push_back(fb);

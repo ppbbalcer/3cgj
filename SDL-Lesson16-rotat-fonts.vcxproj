@@ -36,6 +36,7 @@
     <ClInclude Include="src\Engine\StructsGlobal.h" />
     <ClInclude Include="src\fireball.h" />
     <ClInclude Include="src\GlobalData.h" />
+    <ClInclude Include="src\KeyMap.h" />
     <ClInclude Include="src\MainScene.h" />
     <ClInclude Include="src\MapLogic\field.h" />
     <ClInclude Include="src\MapLogic\field_impl.h" />
