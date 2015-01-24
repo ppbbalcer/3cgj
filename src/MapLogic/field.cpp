@@ -1,4 +1,5 @@
 #include "field.h"
+#include <cassert>
 #include "field_impl.h"
 int Field::assigned_field[NUM_FIELD_TYPES];
 
@@ -22,10 +23,21 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[T_BOTTOM] =  10;
 	assigned_field[FLOOR] = 7;
 	assigned_field[DOOR] = 7;
+	assigned_field[DOOR_VERTICAL_CLOSED] = 17;
+	assigned_field[DOOR_VERTICAL_OPEN] = 16;
+	assigned_field[DOOR_HORIZONTAL_CLOSED] = 14;
+	assigned_field[DOOR_HORIZONTAL_OPEN] = 15;
 	initialized = true;
 }
 int Field::GetTileId()
 {
 	EnsureFieldIdsInitialized();
 	return assigned_field[GetType()];
+}
+void Field::SteppedOver()
+{
+	if (type==DOOR_VERTICAL_CLOSED)
+		type=DOOR_VERTICAL_OPEN;
+	if (type==DOOR_HORIZONTAL_CLOSED)
+		type=DOOR_HORIZONTAL_OPEN;
 }

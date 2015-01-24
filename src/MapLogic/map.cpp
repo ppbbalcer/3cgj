@@ -84,6 +84,12 @@ LoadedMap::LoadedMap(const char * path) {
 	for (int i = 0 ; i!=GetHeight(); i++) {
 		for (int j = 0 ; j!=GetWidth(); ++j) {
 			IField * field = GetFieldAt(j,i);
+			if (field->GetType() == IField::DOOR) {
+				if (HasWallAt(j,i-1) && HasWallAt(j,i+1) ) // horizontal piece
+					dynamic_cast <Field*>(field)->SetType(IField::DOOR_VERTICAL_CLOSED);
+				else if (HasWallAt(j-1,i) && HasWallAt(j+1,i) ) // T junction
+					dynamic_cast <Field*>(field)->SetType(IField::DOOR_HORIZONTAL_CLOSED);
+			}
 			if (field->GetType() != IField::WALL)
 				continue;
 			if (HasWallAt(j,i-1) && HasWallAt(j,i+1) && HasWallAt(j+1,i) && HasWallAt(j-1,i) ) // cross

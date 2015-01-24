@@ -25,8 +25,10 @@ public:
 		FLOOR,
 		DESK,
 		DOOR,
-		DOOR_HORIZONTAL,
-		DOOR_VERTICAL,
+		DOOR_HORIZONTAL_CLOSED,
+		DOOR_VERTICAL_CLOSED,
+		DOOR_HORIZONTAL_OPEN,
+		DOOR_VERTICAL_OPEN,
 		MEDKIT,
 
 		NUM_FIELD_TYPES
@@ -41,6 +43,7 @@ public:
 	 */
 	virtual int GetTileId()=0;
 	// other methods will be specific to certain types
+	virtual void SteppedOver()=0;
 };
 
 #endif

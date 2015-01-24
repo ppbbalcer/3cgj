@@ -135,6 +135,9 @@ void SceneGame::OnUpdate(int timems)
 			pcpos_before_x=pcpos_after_x;
 		if (posY==target_y)
 			pcpos_before_y=pcpos_after_y;
+
+		map->GetFieldAt(pcpos_before_x,pcpos_before_y)
+			->SteppedOver();
 		_player->setPos(posX, posY);
 
 		//EngineInst->font()->printTextLT(20, 20, "MSCN");
@@ -147,11 +150,21 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		int sizeDst = _tiles->getTileSizeDst();
 		int tilesNums = _tiles->getTilesNums();
 		//for (int i =  0 ; i<tilesNums; ++i) {
+		srand(1);
+		for (int i = 0 ; i!=map->GetHeight()-1; i++) {
+			for (int j = 0 ; j!=map->GetWidth()-1; ++j) {
+				_tiles->renderTile(renderer,
+						   j * sizeDst+sizeDst/2,
+						   i * sizeDst+0.5*sizeDst,
+						   18+rand()%5);
+			}
+		}
 		for (int i = 0 ; i!=map->GetHeight(); i++) {
 			for (int j = 0 ; j!=map->GetWidth(); ++j) {
 				int field= map->GetFieldAt(j,i)->GetType();
 				int tile=  map->GetFieldAt(j,i)->GetTileId();
-
+				if (field==IField::FLOOR)
+					continue;
 				int col = j;// % 20 + 2;
 				int row = i;// 20 + 2;
 				_tiles->renderTile(renderer, col * sizeDst, row * sizeDst, tile);

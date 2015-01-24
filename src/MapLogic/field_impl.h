@@ -20,6 +20,8 @@ public:
 	{
 		type=f;
 	}
+	void SteppedOver();
+
 };
 
 #endif

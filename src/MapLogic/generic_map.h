@@ -64,7 +64,8 @@ protected:
 		if (field->GetType() <=IField::T_BOTTOM &&
 		    field->GetType() >=IField::WALL)
 			return true;
-		if (field->GetType() == IField::DOOR)
+		if (field->GetType() <= IField::DOOR_VERTICAL_OPEN &&
+		    field->GetType() >= IField::DOOR)
 			return true;
 		return false;
 	}
