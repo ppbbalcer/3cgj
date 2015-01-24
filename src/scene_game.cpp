@@ -210,7 +210,7 @@ void SceneGame::updatePlayers(int timems)
 void SceneGame::updateEnemies(int timems)
 {
 	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
-		(*enemy)->OnUpdate(timems / 3);
+		(*enemy)->OnUpdate(timems);
 		if ((*enemy)->getAI() == ENEMY_AI_OFF)
 			continue;
 		int startX = (*enemy)->getPosBeforeX();
