@@ -43,11 +43,6 @@ void preCalc() {
 			}
 		}
 	}
-
-	
-
-
-
 }
 
 
@@ -94,7 +89,6 @@ int main( int argc, char* args[] )
 	EngineInst->unLoadResources(globalTextures, globalTexturesSize);
 	EngineInst->unLoadGlobalFont();
 	Engine::Destroy();
-
 
 	delete level;
 	return 0;

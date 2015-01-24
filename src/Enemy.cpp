@@ -1,6 +1,12 @@
 #include "Enemy.h"
 #include "GlobalData.h"
 
+Enemy::Enemy(RTexture *texture, IMap *map) : Character(texture, map)
+{
+	_type = TYPE_ENEMY;
+	_last_rand_direction = 0;
+}
+
 Enemy::~Enemy(void) {};
 
 int Enemy::crucio(int howMuchCrucio)
@@ -10,4 +16,15 @@ int Enemy::crucio(int howMuchCrucio)
 		globalAudios[ENEMY_DEATH].res.sound->play();
 	}
 	return hpRem;
+}
+
+DIRECT Enemy::getRandomDirection()
+{
+	clock_t now = clock();
+	if (((1.0 * now - _last_rand_direction) / (CLOCKS_PER_SEC / 1000)) <= RANDOM_DIRECTION_CHANGE_TIME_MS) {
+		return DIRECT_NO_WAY;
+	}
+
+	_last_rand_direction = now;
+	return (static_cast<DIRECT>((rand() % (DIRECT_END - 1)) + 1));
 }

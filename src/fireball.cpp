@@ -26,7 +26,7 @@ int Fireball::updatePosition(IMap *map, int time_ms)
 	if (map->GetFieldAt(x, y)->IsOccupied()) {
 		Character * whoishere =
 		        map->GetFieldAt(x, y)->WhoIsHere();
-		whoishere->crucio(20);
+		whoishere->crucio(power_level);
 		// harm someone
 		return 1;
 	}

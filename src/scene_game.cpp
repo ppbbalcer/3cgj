@@ -56,7 +56,7 @@ void SceneGame::OnLoad()
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
 	SDL_Rect dvp=GetDefaultViewport();
 
-	int tile_size = min<int>(dvp.w / map->GetWidth(),
+	int tile_size = std::min<int>(dvp.w / map->GetWidth(),
 				 dvp.h/map->GetHeight());
 
 	EngineInst->setTileSize(tile_size);
@@ -127,6 +127,8 @@ void SceneGame::OnLoad()
 	globalAudios[HEARTBEAT].res.sound->play(-1, 0, HEARTBEAT_BASE_INTERVAL);
 }
 
+extern int doskey_active;
+
 void SceneGame::OnFree()
 {
 	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
@@ -137,6 +139,7 @@ void SceneGame::OnFree()
 	_arrayShadow = NULL;
 
 	//Destroy textures???
+	doskey_active = 0;
 
 	globalAudios[HEARTBEAT].res.sound->stop();
 
@@ -254,6 +257,8 @@ void SceneGame::updateEnemies(int timems)
 			} else {
 				destBest = direct1;
 			}
+		} else {
+			destBest = (*enemy)->getRandomDirection();
 		}
 
 		if (destBest != DIRECT_NO_WAY) {
@@ -379,11 +384,23 @@ void SceneGame::OnRenderShadow(SDL_Renderer* renderer) {
 
 }
 
+static unsigned long _next = 1;
+
+static int _rand(void)
+{
+	_next = _next * 1103515245 + 12345;
+	return((unsigned)(_next/65536) % 32768);
+}
+
+void _srand(unsigned seed) {
+	_next = seed;
+}
+
 void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 	int tileSize = EngineInst->getTileSize();
 	int tilesNums = _tiles->getTilesNums();
-	//for (int i =  0 ; i<tilesNums; ++i) {
-	srand(1);
+
+	_srand(1);
 
 	/*Render background*/
 	for (int i = 0 ; i != map->GetHeight(); i++) {
@@ -393,7 +410,7 @@ void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 			_tiles->renderTile(renderer,
 			                   px_left,
 			                   px_top,
-			                   18 + rand() % 5, SDL_FLIP_NONE);
+			                   18 + _rand() % 5, SDL_FLIP_NONE);
 		}
 	}
 	/*Render actual mapiles*/
@@ -512,14 +529,11 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		level->setCurrentScene(dor->GetTargetBoard());
 	} else if (_player1->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*tileSize, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
+			map->GetHeight()*tileSize, "Player 1 has left the screen. Player 2 must join him so you can win the level together.");
 	} else if (_player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*tileSize, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
-
+			map->GetHeight()*tileSize, "Player 2 has left the screen. Player 2 must join him so you can win the level together.");
 	}
-
-	
 
 	_player1->OnRender(renderer);
 	_player2->OnRender(renderer);
