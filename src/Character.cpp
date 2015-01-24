@@ -112,7 +112,7 @@ void Character::OnRender(SDL_Renderer *renderer)
 {
 	if (GetState() == DEAD) {
 		_texture->renderTile(renderer, getPosX(), getPosY(), 30, SDL_FLIP_NONE);
-	} else {
+	} else if (GetState() == ALIVE) {
 		_texture->renderTile(renderer, getPosX(), getPosY());
 	}
 }
