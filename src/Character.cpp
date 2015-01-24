@@ -62,6 +62,7 @@ void Character::heal(int howMuchHeal)
 {
 	_health = min<int>(_health + howMuchHeal, MAX_HEALTH);
 }
+
 int Character::GetPowerLevel()
 {
 	return power_level;
