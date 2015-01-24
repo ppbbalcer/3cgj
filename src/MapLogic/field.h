@@ -45,6 +45,7 @@ public:
 	// other methods will be specific to certain types
 	virtual void SteppedOver()=0;
 	virtual void LeftField()=0;
+	virtual bool IsOccupied()=0;
 };
 
 #endif

@@ -40,9 +40,10 @@ void Field::SteppedOver()
 		type=DOOR_VERTICAL_OPEN;
 	if (type==DOOR_HORIZONTAL_CLOSED)
 		type=DOOR_HORIZONTAL_OPEN;
+	someone_is_here=true;
 }
 
 void Field::LeftField()
 {
-	
+	someone_is_here=false;
 }

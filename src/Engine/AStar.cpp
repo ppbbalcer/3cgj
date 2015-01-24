@@ -1,15 +1,25 @@
 #include "AStar.h"
 #include <string.h>
-#include <list>
+#include "../MapLogic/map.h"
+/* looking for obstacles*/
+bool IMap_isObstacle(int x, int y, void* objMap)
+{
+	
+	if (((IMap*)objMap)->GetFieldAt(x,y)->IsOccupied() )
+		return false;
+	return ((IMap*)objMap)->GetFieldAt(x,y)->IsObstacle();
+}
+
 
 #define IDXMAP(x,y) ((y) * (width) + (x))
 #define IDXOBS(x,y) (((y)+1) * (width + 1) + ((x)+1))
 static int statit_touchX[4] = {-1,1,0,0};
 static int statit_touchY[4] = {0,0,-1,1};
 
-enum DIRECT findAstar(int xStart, int yStart, int xEnd, int yEnd, int width, int height, funcIsObstacle func, void *data) {
-
+enum DIRECT findAstar(AStarWay_t &way, int xStart, int yStart, int xEnd, int yEnd, int width, int height, funcIsObstacle func, void *data)
+{
 	DIRECT result = DIRECT_NO_WAY;
+	way.clear();
 	int* map = new int[width*height];
 	int* obs = new int[(width + 2)*(height + 2)]; //Add border -1-unknow 0-ok 1-obs
 	std::list<int> query;
@@ -67,7 +77,9 @@ STEP_FIND:
 	vy = yEnd;
 	id = IDXMAP(xEnd, yEnd);
 	vValUp = map[id] -1;
-	query.push_back(id); //Dest point
+	//query.push_back(id); //Dest point
+	way.push_back(AStartPoint_t(vx, vy));
+
 
 	while(/*vx != xStart || vy != yStart*/vValUp > 0) {
 		for(i = 0; i<4; ++i) {
@@ -81,17 +93,17 @@ STEP_FIND:
 					vy = y;
 					--vValUp;
 					query.push_back(id);
+					way.push_front(AStartPoint_t(x, y));
 					break;
 				}
 			}
 		}
 	}
 
-	if(!query.empty()) {
-	vx = query.back();
+
+	/*way = query.front();
 	vy = vx / width;
-	vx = vx % width;
-	}
+	vx = vx % width;*/
 
 
 	if (xStart > vx) {

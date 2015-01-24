@@ -3,15 +3,32 @@
 
 using namespace std;
 
-Character::Character(RTexture *texture)
+Character::Character(IMap * map, RTexture *texture)
 {
 	_health = MAX_HEALTH;
 	_texture = texture;
-	_pos_after_x = 1;
-	_pos_before_x = 1;
-	_pos_after_y = 1;
-	_pos_before_y = 1;
 	_state = ALIVE;
+	_pos_after_x = 
+	_pos_before_x = 
+	_pos_after_y = 
+	_pos_before_y = 0;
+}
+
+Character::~Character()
+{
+}
+
+void Character::setPosTiles(IMap * map, int x, int y)
+{
+	map->GetFieldAt(_pos_before_x,_pos_before_y)
+		->LeftField();
+	_pos_after_x = x;
+	_pos_before_x = x;
+	_pos_after_y = y;
+	_pos_before_y = y;
+	map->GetFieldAt(_pos_after_x, _pos_before_y)
+		->SteppedOver();
+	setPos(x * TILE_SIZE, y * TILE_SIZE);
 }
 
 int Character::getHealth()
@@ -42,16 +59,17 @@ void Character::render(SDL_Renderer *renderer, RTexture *tiles)
 
 void Character::setPos(int x, int y)
 {
-	_texture->setPos(x, y);
+	_posX = x;
+	_posY = y;
 }
 
 int Character::getPosX()
 {
-	return _texture->getPosX();
+	return _posX;
 }
 int Character::getPosY()
 {
-	return _texture->getPosY();
+	return _posY;
 }
 
 int Character::getPosBeforeX()
@@ -119,10 +137,12 @@ void Character::updateDirection(IMap *map, Action action)
 	}
 }
 
-void Character::updatePosition(IMap *map, int time_ms)
+void Character::updatePosition(IMap *map, int time_ms, int tile_size)
 {
-	int target_y = _pos_after_y * TILE_SIZE;
-	int target_x = _pos_after_x * TILE_SIZE;
+	//t tile_size = EngineInst->screen_width()/map->GetWidth();
+	//int tile_size = 50;
+	int target_y = _pos_after_y * tile_size;
+	int target_x = _pos_after_x * tile_size;
 	float dist = 0.3 * time_ms;
 	float pos_x = getPosX();
 	float pos_y = getPosY();
@@ -164,6 +184,8 @@ void Character::updatePosition(IMap *map, int time_ms)
 	if (_pos_before_y == 0 || _pos_before_y == map->GetHeight()-1 ||
 	    _pos_before_x == 0 || _pos_before_x == map->GetWidth()-1) {
 		_state = WON;
+		map->GetFieldAt(_pos_before_x,_pos_before_y)
+			->LeftField();
 	}
 	setPos(pos_x, pos_y);
 }

@@ -12,6 +12,7 @@
 class SceneGame: public Scene {
 	RTexture *_background;
 	Character *_player1, *_player2;
+	std::vector<Character*> _enemys;
 	RTexture *_tiles;
 	IMap *map;
 public:

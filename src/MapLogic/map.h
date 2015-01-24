@@ -2,8 +2,6 @@
 #define __MAP_H
 #include "field.h"
 
-bool IMap_isObstacle(int x, int y, void* objMap);
-
 class IMap {
   
 public:

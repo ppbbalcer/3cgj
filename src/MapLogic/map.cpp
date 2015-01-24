@@ -8,9 +8,6 @@
 /* following constants define width and height of map in tiles */
 using namespace std;
 
-bool IMap_isObstacle(int x, int y, void* objMap) {
-	return ((IMap*)objMap)->GetFieldAt(x,y)->IsObstacle();
-}
 
 /*
  * a map loaded from file
