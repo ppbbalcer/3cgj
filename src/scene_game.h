@@ -25,6 +25,7 @@ private:
 	IMap *map;
 	Level *level;
 	int room_id;
+	int heartbeat_tempo;
 	void updateEnemies(int timems);
 	void updateFireballs(int timems);
 	void updatePlayers(int timems);
