@@ -50,31 +50,32 @@ public:
 	 */
 	int GetState();
 	int getHealth();
+	/**
+	 * Unforgivable curse ;-) Inflicit damage on character
+	 * @param howMuchCrucio amount of HPs to remove
+	 */
 	virtual int crucio(int howMuchCrucio);
 	void heal(int howMuchHeal);
 
 	void OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx);
 	void OnRender(SDL_Renderer *renderer);
 	void setPosTiles(int x, int y);
+	/* strength of damage dealt by character*/
 	int GetPowerLevel();
 	int SetPowerLevel(int x);
 
+	/* in pixels */
 	int getPosX();
 	int getPosY();
+	/* following four routines return position in TILES */
+	/* position FROM which character is moving */
 	int getPosBeforeX();
 	int getPosAfterX();
+	/* position to which character is moving */
 	int getPosBeforeY();
 	int getPosAfterY();
-
-	/*
+	/* if position TO equals FROM, character is NOT moving */
 	
-	int getPosX();
-	int getPosY();
-	int getPosTilesX();
-	int getPosTilesX();
-	DIRECT getActualDirect();
-	float getMoveProgress(); /*0.0f to 1.0f*/
-
 	void updateDirection(DIRECT directMove);
 	void OnUpdate(int time_ms);
 	CharacterType getType() { return _type; }
