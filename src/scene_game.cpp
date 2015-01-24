@@ -77,13 +77,13 @@ void SceneGame::OnLoad()
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(24);
-	_player1 = new Character(tmpTexture, map);
+	_player1 = new Player(tmpTexture, map);
 
 	tmpTexture = new RTexture(texturesScene_game[3]);
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(27);
-	_player2 = new Character(tmpTexture, map);
+	_player2 = new Player(tmpTexture, map);
 
 	_player1->setPosTiles(3, 3);
 	_player2->setPosTiles(4, 3);
@@ -93,7 +93,7 @@ void SceneGame::OnLoad()
 		tmpTexture->setTileSizeSrc(tileSizeSrc);
 		tmpTexture->setTileSizeDst(tile_size);
 		tmpTexture->setTileIdx(23);
-		Character* enemy = new Character(tmpTexture, map);
+		Enemy* enemy = new Enemy(tmpTexture, map);
 		enemy->setPosTiles(map->GetWidth() - 2, map->GetHeight() - 2 - i);
 		_enemys.push_back(enemy);
 	}
@@ -113,7 +113,7 @@ void SceneGame::OnLoad()
 
 void SceneGame::OnFree()
 {
-	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		delete *enemy;
 	}
 	_enemys.clear();
@@ -261,7 +261,7 @@ void SceneGame::updatePlayers(int timems)
 
 void SceneGame::updateEnemies(int timems)
 {
-	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		int startX = (*enemy)->getPosBeforeX();
 		int startY = (*enemy)->getPosBeforeY();
 		AStarWay_t way1;
@@ -391,12 +391,12 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 
 	/*render enemies */
-	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRenderCircle(renderer, 4, 7);
 	}
 
-	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}
