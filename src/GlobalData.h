@@ -16,7 +16,8 @@ extern size_t gScenesSize;
 enum GameSounds {
 	CLICK_ON = 0,
 	CLICK_OFF = 1,
-	FIREBALL = 2
+	FIREBALL = 2,
+	SLURP = 3
 };
 
 extern AudioResource globalAudios[];

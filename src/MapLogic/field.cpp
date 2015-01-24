@@ -18,7 +18,7 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[WALL_LT] = 3;
 	assigned_field[WALL_RT] = 9;
 	assigned_field[WALL_LB] = 1;
-	assigned_field[WALL_RB] = 4; 
+	assigned_field[WALL_RB] = 4;
 	assigned_field[T_LEFT] =  6;
 	assigned_field[T_RIGHT] = 11;
 	assigned_field[T_TOP] =  12;
@@ -44,20 +44,22 @@ int Field::GetTileId()
 	EnsureFieldIdsInitialized();
 	return assigned_field[GetType()];
 }
-bool Field::IsObstacle() {
+bool Field::IsObstacle()
+{
 	if (someone_is_here) {
 		return true;
 	}
-	if (GetType()==DOOR_VERTICAL_CLOSED ||
-	    GetType()==DOOR_HORIZONTAL_CLOSED)
-	 	return true;
-	return (type>=WALL && type <=T_BOTTOM);
+	if (GetType() == DOOR_VERTICAL_CLOSED ||
+	                GetType() == DOOR_HORIZONTAL_CLOSED)
+		return true;
+	return (type >= WALL && type <= T_BOTTOM);
 }
-int doskey_active=0;
-int Field::GetType() {
-	if (type==DOOR_VERTICAL_CLOSED && doskey_active)
+int doskey_active = 0;
+int Field::GetType()
+{
+	if (type == DOOR_VERTICAL_CLOSED && doskey_active)
 		return DOOR_VERTICAL_OPEN;
-	if (type==DOOR_HORIZONTAL_CLOSED && doskey_active)
+	if (type == DOOR_HORIZONTAL_CLOSED && doskey_active)
 		return DOOR_HORIZONTAL_OPEN;
 
 	return type;
@@ -65,40 +67,42 @@ int Field::GetType() {
 
 void Field::SteppedOver(Character * who)
 {
-	if (type==POWERUP) {
-		type=FLOOR;
-		who->SetPowerLevel(who->GetPowerLevel()+20);
+	if (type == POWERUP) {
+		type = FLOOR;
+		who->SetPowerLevel(who->GetPowerLevel() + POWERUP_VAL);
 	}
-	if (type==LARGE_HEALTH_FLASK) {
-		type=EMPTY_FLASK;
-		who->heal(50);
+	if (type == LARGE_HEALTH_FLASK) {
+		type = EMPTY_FLASK;
+		who->heal(LARGE_POTION_HEAL_VAL);
+		globalAudios[SLURP].res.sound->play();
 	}
-	if (type==SMALL_HEALTH_FLASK) {
-		type=EMPTY_FLASK;
-		who->heal(25);
+	if (type == SMALL_HEALTH_FLASK) {
+		type = EMPTY_FLASK;
+		who->heal(SMALL_POTION_HEAL_VAL);
+		globalAudios[SLURP].res.sound->play();
 	}
-	if (type==MEDKIT) {
-		type=FLOOR;
-		who->heal(100);
+	if (type == MEDKIT) {
+		type = FLOOR;
+		who->heal(MEDKIT_HEAL_VAL);
 	}
-	if (type==DOSKEY) {
+	if (type == DOSKEY) {
 		doskey_active++;
-		globalAudios[CLICK_ON].res.sound->play(-1, 0, 0);
+		globalAudios[CLICK_ON].res.sound->play();
 	}
-	if (type==DOOR_VERTICAL_CLOSED)
-		type=DOOR_VERTICAL_OPEN;
-	if (type==DOOR_HORIZONTAL_CLOSED)
-		type=DOOR_HORIZONTAL_OPEN;
-	someone_is_here=who;
+	if (type == DOOR_VERTICAL_CLOSED)
+		type = DOOR_VERTICAL_OPEN;
+	if (type == DOOR_HORIZONTAL_CLOSED)
+		type = DOOR_HORIZONTAL_OPEN;
+	someone_is_here = who;
 }
 
 void Field::LeftField()
 {
-	if (type==DOSKEY) {
+	if (type == DOSKEY) {
 		doskey_active--;
-		globalAudios[CLICK_OFF].res.sound->play(-1, 0, 0);
+		globalAudios[CLICK_OFF].res.sound->play();
 	}
-	someone_is_here=0;
+	someone_is_here = 0;
 }
 
 Character* Field::WhoIsHere()
