@@ -215,16 +215,22 @@ void SceneGame::OnUpdate(int timems)
 void SceneGame::OnRender(SDL_Renderer* renderer)
 {
 	_background->render(renderer);
-	int margin_top = 100;
-	int margin_left = 5;
+
+	SDL_Rect topLeftViewport; 
+	topLeftViewport.x = 5; 
+	topLeftViewport.y = 100; 
+	topLeftViewport.w = EngineInst->screen_width(); 
+	topLeftViewport.h = EngineInst->screen_height(); 
+	SDL_RenderSetViewport( renderer, &topLeftViewport ); 
+
 	int sizeDst = _tiles->getTileSizeDst();
 	int tilesNums = _tiles->getTilesNums();
 	//for (int i =  0 ; i<tilesNums; ++i) {
 	srand(1);
 	for (int i = 0 ; i!=map->GetHeight()-1; i++) {
 		for (int j = 0 ; j!=map->GetWidth()-1; ++j) {
-			int px_left = j * sizeDst+sizeDst/2 + margin_left;
-			int px_top  = i * sizeDst+0.5*sizeDst + margin_top;
+			int px_left = j * sizeDst+sizeDst/2;
+			int px_top  = i * sizeDst+0.5*sizeDst;
 			_tiles->renderTile(renderer,
 					   px_left,
 					   px_top,
@@ -237,8 +243,8 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 			int tile=  map->GetFieldAt(j,i)->GetTileId();
 			if (field==IField::FLOOR)
 				continue;
-			int col = j* sizeDst+margin_left;
-			int row = i * sizeDst +margin_top;
+			int col = j* sizeDst;
+			int row = i * sizeDst;
 			_tiles->renderTile(renderer, col , row, tile, SDL_FLIP_NONE);
 			
 		}
@@ -263,25 +269,24 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ( (*enemy)->GetState()==Character::ALIVE)
 			(*enemy)->OnRender(renderer);
-			//_tiles->renderTile(renderer, (*enemy)->getPosX()+margin_left, (*enemy)->getPosY()+margin_top, 23, flip);
 	}
 	for(std::list<Fireball*>::iterator it = fireballs.begin();
 	    it != fireballs.end(); ++it) {
-		_tiles->renderTile(renderer, (*it)->getPosX()+margin_left, (*it)->getPosY()+margin_top, 28, SDL_FLIP_NONE);
+		_tiles->renderTile(renderer, (*it)->getPosX(), (*it)->getPosY(), 28, SDL_FLIP_NONE);
 	}
 	/*Check victory condition*/
 	if (_player1->GetState() == Character::WON &&
 	    _player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-					     map->GetHeight()*sizeDst+margin_top, "Both players won");
+					     map->GetHeight()*sizeDst, "Both players won");
 		
 	} else if (_player1->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-					     map->GetHeight()*sizeDst+margin_top, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
+					     map->GetHeight()*sizeDst, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
 		
 	} else if (_player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-					     map->GetHeight()*sizeDst+margin_top, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
+					     map->GetHeight()*sizeDst, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
 		
 	}
 	
