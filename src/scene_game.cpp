@@ -303,6 +303,10 @@ void SceneGame::OnUpdate(int timems)
 			EngineInst->breakMainLoop();
 			return;
 		}
+		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r) {
+			level->resetCurrent();
+			return;
+		}
 	}
 
 	updatePlayers(timems);
@@ -397,6 +401,8 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	                _player2->GetState() == Character::DEAD) {
 		EngineInst->font()->printfLT(100,
 		                             map->GetHeight()*sizeDst, "You lost!");
+		EngineInst->font()->printfLT(100,
+		                             (map->GetHeight()*sizeDst)+30, "Press R to try again");
 	}
 	/*Check victory condition*/
 	else if (_player1->GetState() == Character::WON &&
