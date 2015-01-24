@@ -57,11 +57,6 @@ bool Field::IsObstacle() {
 }
 int doskey_active=0;
 int Field::GetType() {
-	if (type==DOOR_VERTICAL_CLOSED && doskey_active)
-		return DOOR_VERTICAL_OPEN;
-	if (type==DOOR_HORIZONTAL_CLOSED && doskey_active)
-		return DOOR_HORIZONTAL_OPEN;
-
 	return type;
 }
 
@@ -87,10 +82,6 @@ void Field::SteppedOver(Character * who)
 		doskey_active++;
 		globalAudios[CLICK_ON].res.sound->play(-1, 0, 0);
 	}
-	if (type==DOOR_VERTICAL_CLOSED)
-		type=DOOR_VERTICAL_OPEN;
-	if (type==DOOR_HORIZONTAL_CLOSED)
-		type=DOOR_HORIZONTAL_OPEN;
 	someone_is_here=who;
 }
 
