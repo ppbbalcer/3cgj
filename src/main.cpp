@@ -55,7 +55,6 @@ bool loadMedia() {
 int main( int argc, char* args[] )
 {
 	Level *level = new Level(0);
-	//Start up SDL and create window
 	if( !Engine::Create() )
 	{
 		printf( "Failed to initialize!\n" );

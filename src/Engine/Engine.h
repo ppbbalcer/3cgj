@@ -27,7 +27,6 @@ public:
 		return _tile_size;
 	}
 	
-	
 	bool					loadTexture(ResourceItem &resItem); 
 	void					unLoadTexture(ResourceItem &resItem);
 	bool					loadResources(ResourceItem resources[], unsigned int size);

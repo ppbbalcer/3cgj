@@ -43,4 +43,5 @@ ResourceItem texturesScene_game[] = {
 	{"Resources/ludek.png",				false, false, true, 0xFFFF,	NULL, NULL, 0, 0},
 	{"Resources/tiles/walls.png",			false, false, true, 0x0,	NULL, NULL, 0, 0},
 };
-size_t texturesScene_gameSize = sizeof(texturesScene03) / sizeof(texturesScene03[0]);
+
+size_t texturesScene_gameSize = sizeof(texturesScene_game) / sizeof(texturesScene_game[0]);
