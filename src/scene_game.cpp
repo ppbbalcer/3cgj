@@ -362,10 +362,10 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	for (std::list<Fireball*>::iterator it = fireballs.begin();
 	                it != fireballs.end(); ++it) {
 		int sprite;
-		if ( (*it)->GetPowerLevel() >30)
-			sprite= 29;
+		if ((*it)->GetPowerLevel() > 30)
+			sprite = 29;
 		else
-			sprite=28;
+			sprite = 28;
 		_tiles->renderTile(renderer, (*it)->getPosX(), (*it)->getPosY(), sprite, SDL_FLIP_NONE);
 	}
 	/* check loss condition */
@@ -394,19 +394,23 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	_player1->OnRender(renderer);
 	_player2->OnRender(renderer);
 
-	SDL_Rect bottomViewport;
-	bottomViewport.x = map->GetHeight();
-	bottomViewport.y = 0;
-	bottomViewport.w = EngineInst->screen_width();
-	bottomViewport.h = EngineInst->screen_height();
+	// Render top bar
+	SDL_Rect veryTopBar;
+	int hpBarXPadding = 20;
+	int hpBarHeight = 20;
 
-	SDL_RenderSetViewport(renderer, &bottomViewport);
+	veryTopBar.x = 0;
+	veryTopBar.y = 20;
+	veryTopBar.w = EngineInst->screen_width();
+	veryTopBar.h = 50;
 
-	SDL_Rect p1_hp_rect = {10, 0, _player1->getHealth(), 20};
+	SDL_RenderSetViewport(renderer, &veryTopBar);
+
+	SDL_Rect p1_hp_rect = { hpBarXPadding, 0, _player1->getHealth() * 2, hpBarHeight};
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderDrawRect(renderer, &p1_hp_rect);
+	SDL_RenderFillRect(renderer, &p1_hp_rect);
 
-	SDL_Rect p2_hp_rect = { EngineInst->screen_width() - 10 - MAX_HEALTH, 0, _player2->getHealth(), 20};
+	SDL_Rect p2_hp_rect = { EngineInst->screen_width() - hpBarXPadding - _player2->getHealth() * 2, 0, _player2->getHealth() * 2, hpBarHeight};
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderDrawRect(renderer, &p2_hp_rect);
+	SDL_RenderFillRect(renderer, &p2_hp_rect);
 }
