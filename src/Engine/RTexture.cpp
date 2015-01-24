@@ -107,7 +107,7 @@ void RTexture::renderTile(SDL_Renderer* renderer, int x, int y, int tileIdx, SDL
 		SDL_Rect renderQuadSrc = { col * _tileSizeSrc, row * _tileSizeSrc, _tileSizeSrc, _tileSizeSrc };
 		SDL_Rect renderQuadDst = { x, y, _tileSizeDst, _tileSizeDst };
 
-		if (_flip == SDL_FLIP_NONE ) {
+		if (flip == SDL_FLIP_NONE ) {
 			SDL_RenderCopy( renderer, _texture, &renderQuadSrc, &renderQuadDst );
 		} else {
 			SDL_RenderCopyEx( renderer, _texture,   &renderQuadSrc, &renderQuadDst, 0.0f, NULL, flip );

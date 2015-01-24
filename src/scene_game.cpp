@@ -386,10 +386,10 @@ void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 	srand(1);
 
 	/*Render background*/
-	for (int i = 0 ; i != map->GetHeight() - 1; i++) {
-		for (int j = 0 ; j != map->GetWidth() - 1; ++j) {
-			int px_left = j * tileSize + tileSize / 2;
-			int px_top  = i * tileSize + tileSize / 2;
+	for (int i = 0 ; i != map->GetHeight(); i++) {
+		for (int j = 0 ; j != map->GetWidth(); ++j) {
+			int px_left = j * tileSize;
+			int px_top  = i * tileSize;
 			_tiles->renderTile(renderer,
 			                   px_left,
 			                   px_top,
@@ -408,6 +408,25 @@ void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 			_tiles->renderTile(renderer, col , row, tile, SDL_FLIP_NONE);
 
 		}
+	}
+	#define MARGIN_TOP 41
+	#define MARGIN_CORNER 42
+	#define MARGIN_LEFT 43
+	for (int i = 0 ; i != map->GetHeight(); i++) {
+		//left and right column
+		int col = 0 * tileSize;
+		int row = i * tileSize;
+		_tiles->renderTile(renderer, col , row, MARGIN_LEFT, SDL_FLIP_NONE);
+		col = (map->GetWidth()-1)*tileSize;
+		_tiles->renderTile(renderer, col , row, MARGIN_LEFT, SDL_FLIP_HORIZONTAL);	
+	}
+	for (int j = 0 ; j != map->GetWidth(); ++j) {
+		// top and bottom line0
+		int col = j * tileSize;
+		int row = 0;
+		_tiles->renderTile(renderer, col , row, MARGIN_TOP, SDL_FLIP_NONE);
+		row = (map->GetHeight()-1)*tileSize;
+		_tiles->renderTile(renderer, col , row, MARGIN_TOP, SDL_FLIP_VERTICAL);	
 	}
 }
 
