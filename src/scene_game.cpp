@@ -6,8 +6,8 @@
 #include "Engine/AStar.h"
 #include <stdio.h>
 
-#define TILE_SIZE 32
 using namespace std;
+
 SceneGame::SceneGame()
 {
 	map = IMap::Factory(IMap::LOADED, "Resources/map_example.txt");
@@ -22,16 +22,19 @@ void SceneGame::OnLoad()
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
 
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
+	RTexture *player1Texture = new RTexture(texturesScene_game[2]); 
+	RTexture *player2Texture = new RTexture(texturesScene_game[2]);
+
+	player1Texture->setPos(TILE_SIZE, TILE_SIZE);
+	player2Texture->setPos(TILE_SIZE, TILE_SIZE);
 
 	_background = new RTexture(texturesScene_game[1]);
-	_player = new RTexture(texturesScene_game[2]);
-	_player->setPos(TILE_SIZE,TILE_SIZE);
+	_player1 = new Character(player1Texture);
+	_player2 = new Character(player2Texture);
 	
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(64);
 	_tiles->setTileSizeDst(TILE_SIZE);
-	pcpos_before_x=pcpos_after_x=pcpos_before_y=pcpos_after_y=
-		1;
 	//Load media
 	if( !success )
 	{
@@ -52,12 +55,11 @@ void SceneGame::OnUpdate(int timems)
 		//Event handler
 		SDL_Event e;
 		printf("X: %d->%d; XY %d->%d %d\n",
-	 pcpos_before_x,
-	 pcpos_after_x,
-	 pcpos_before_y,
-		       pcpos_after_y,
-		       timems
-
+			_player1->getPosBeforeX(),
+			_player1->getPosAfterX(),
+			_player1->getPosBeforeY(),
+			_player1->getPosAfterY(),
+			timems
 			);
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
@@ -73,75 +75,42 @@ void SceneGame::OnUpdate(int timems)
 			}
 		}
 
-		float dist = 0.3*timems;
-		float posX = _player->getPosX();
-		float posY = _player->getPosY();
-		int width = _player->getWidth();
+		const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-		const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
-
-		
-		if( currentKeyStates[ SDL_SCANCODE_DOWN ] ) {
-			if ( (!map->GetFieldAt(pcpos_before_x,pcpos_before_y+1)
-			      ->IsObstacle()) &&
-			     (!map->GetFieldAt(pcpos_after_x,pcpos_before_y+1)
-			      ->IsObstacle()) )
-			{
-				pcpos_after_y=pcpos_before_y+1;
-			}
-		}
-		if( currentKeyStates[ SDL_SCANCODE_UP ] ) {
-			if ( (!map->GetFieldAt(pcpos_before_x,pcpos_before_y-1)
-			      ->IsObstacle()) &&
-			     (!map->GetFieldAt(pcpos_after_x,pcpos_before_y-1)
-			      ->IsObstacle()) ) {
-				pcpos_after_y=pcpos_before_y-1;
-			}
-		}
-		if( currentKeyStates[ SDL_SCANCODE_RIGHT ] ) {
-			if ( (!map->GetFieldAt(pcpos_before_x+1,pcpos_before_y)
-			      ->IsObstacle()) &&
-			     (!map->GetFieldAt(pcpos_before_x+1,pcpos_after_y)
-			      ->IsObstacle()) ) {
-				pcpos_after_x=pcpos_before_x +1;
-			}
-		}
-		if( currentKeyStates[ SDL_SCANCODE_LEFT ] ) {
-			if ( (!map->GetFieldAt(pcpos_before_x-1,pcpos_before_y)
-			      ->IsObstacle()) &&
-			     (!map->GetFieldAt(pcpos_before_x-1,pcpos_after_y)
-			      ->IsObstacle()) ) {
-				pcpos_after_x=pcpos_before_x -1;
-			}
-		}
-		
-		int target_y = pcpos_after_y*TILE_SIZE;
-		int target_x = pcpos_after_x*TILE_SIZE;
-
-		/* character should be moving moving down*/
-		if (posY>target_y) {
-			posY = max<int>(target_y,posY-dist);
-		}
-		if (posY<target_y) {
-			posY = min<int>(target_y,posY+dist);
-		}
-		if (posX>target_x) {
-			posX = max<int>(target_x,posX-dist);
-		}
-		if (posX<target_x) {
-			posX = min<int>(target_x,posX+dist);
+		if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+			_player1->updateDirection(map, Character::ACTION_MOVE_DOWN);
 		}
 
-		if (posX==target_x)
-			pcpos_before_x=pcpos_after_x;
-		if (posY==target_y)
-			pcpos_before_y=pcpos_after_y;
+		if (currentKeyStates[SDL_SCANCODE_UP]) {
+			_player1->updateDirection(map, Character::ACTION_MOVE_UP);
+		}
 
-		map->GetFieldAt(pcpos_before_x,pcpos_before_y)
-			->SteppedOver();
-		_player->setPos(posX, posY);
+		if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+			_player1->updateDirection(map, Character::ACTION_MOVE_LEFT);
+		}
 
-		//EngineInst->font()->printTextLT(20, 20, "MSCN");
+		if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+			_player1->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+		}
+
+		if (currentKeyStates[SDL_SCANCODE_S]) {
+			_player2->updateDirection(map, Character::ACTION_MOVE_DOWN);
+		}
+
+		if (currentKeyStates[SDL_SCANCODE_W]) {
+			_player2->updateDirection(map, Character::ACTION_MOVE_UP);
+		}
+
+		if (currentKeyStates[SDL_SCANCODE_A]) {
+			_player2->updateDirection(map, Character::ACTION_MOVE_LEFT);
+		}
+
+		if (currentKeyStates[SDL_SCANCODE_D]) {
+			_player2->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+		}
+
+		_player1->updatePosition(map, timems);
+		_player2->updatePosition(map, timems);
 }
 
 void SceneGame::OnRender(SDL_Renderer* renderer)
@@ -173,17 +142,14 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 			}
 		}
 
-		
-		
-		
 		{ //Astar Example
-			int startX = 18; 
-			int startY = 13;
+			int startX = _player1->getPosBeforeX(); 
+			int startY = _player1->getPosBeforeY();
 
 			_tiles->renderTile(renderer, startX * sizeDst, startY * sizeDst, 8);
 
-			while(startX != pcpos_after_x || startY != pcpos_after_y) {
-				int direct = findAstar(startX, startY,pcpos_after_x, pcpos_after_y, map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+			while (startX != _player2->getPosBeforeX() || startY != _player2->getPosBeforeY()) {
+				int direct = findAstar(startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 				if (direct == DIRECT_NO_WAY) {
 					break;
 				}
@@ -200,12 +166,9 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 					++startY;
 				}
 				_tiles->renderTile(renderer, startX * sizeDst, startY * sizeDst, 8);
-
 			}
 		}
 
-		_tiles->renderTile(renderer, _player->getPosX(), _player->getPosY(), 24);
-
-
-
+		_tiles->renderTile(renderer, _player1->getPosX(), _player1->getPosY(), 24);
+		_tiles->renderTile(renderer, _player2->getPosX(), _player2->getPosY(), 24);
 }

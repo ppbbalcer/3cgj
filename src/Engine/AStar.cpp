@@ -1,6 +1,6 @@
 #include "AStar.h"
-#include <String.h>
-#include <List>
+#include <string.h>
+#include <list>
 
 #define IDXMAP(x,y) ((y) * (width) + (x))
 #define IDXOBS(x,y) (((y)+1) * (width + 1) + ((x)+1))

@@ -21,7 +21,7 @@ public:
 		type=f;
 	}
 	void SteppedOver();
-
+	void LeftField();
 };
 
 #endif

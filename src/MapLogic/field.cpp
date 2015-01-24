@@ -41,3 +41,8 @@ void Field::SteppedOver()
 	if (type==DOOR_HORIZONTAL_CLOSED)
 		type=DOOR_HORIZONTAL_OPEN;
 }
+
+void Field::LeftField()
+{
+	
+}

@@ -62,7 +62,6 @@ void RTexture::setScaleSize(float scale) {
 	_scaleHeight = (int)(scale * _height); 
 }
 
-
 int RTexture::getWidth() {
 	return _width;
 }

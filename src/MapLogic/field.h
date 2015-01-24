@@ -44,6 +44,7 @@ public:
 	virtual int GetTileId()=0;
 	// other methods will be specific to certain types
 	virtual void SteppedOver()=0;
+	virtual void LeftField()=0;
 };
 
 #endif
