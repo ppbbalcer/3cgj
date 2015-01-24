@@ -69,6 +69,10 @@ LoadedMap::LoadedMap(const char * path) {
 			case '|':
 				new_field= new Door;
 				break;
+			case '[':
+				new_field= new Door;
+				new_field->Activate();
+				break;
 			case 'd':
 				new_field= new Field(IField::DESK);
 				break;
@@ -115,8 +119,11 @@ LoadedMap::LoadedMap(const char * path) {
 			default:
 				new_field= new Field(IField::EMPTY);
 			}
+			if (c != 'w' && c != ' ') {
+				printf("Object: %c at %u %u\n", c, j, i);
+			}
+			
 			PlaceField(j,i,new_field);
-
 		}
 		mapfile.get(); //consume endline character
 	}
@@ -127,10 +134,14 @@ LoadedMap::LoadedMap(const char * path) {
 		for (int j = 0 ; j!=GetWidth(); ++j) {
 			IField * field = GetFieldAt(j,i);
 			if (field->GetType() == IField::DOOR) {
+				Door *d = (Door *)field;
 				if (HasWallAt(j,i-1) && HasWallAt(j,i+1) ) // horizontal piece
-					dynamic_cast <Field*>(field)->SetType(IField::DOOR_VERTICAL_CLOSED);
+					d->SetType(IField::DOOR_VERTICAL_CLOSED);
 				else if (HasWallAt(j-1,i) && HasWallAt(j+1,i) ) // T junction
-					dynamic_cast <Field*>(field)->SetType(IField::DOOR_HORIZONTAL_CLOSED);
+					d->SetType(IField::DOOR_HORIZONTAL_CLOSED);
+				if (d->isOpen()){
+					d->Activate();
+				}
 			}
 			if (field->GetType() != IField::WALL)
 				continue;
