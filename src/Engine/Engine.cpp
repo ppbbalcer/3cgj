@@ -313,7 +313,7 @@ void Engine::mainLoop() {
 		if (_font) {
 			_font->OnUpdate();
 		}
-	
+
 		_scene->OnUpdate(delta);
 
 		//Change scene

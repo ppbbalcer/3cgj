@@ -25,3 +25,9 @@ void Level::setCurrentScene(int scene_id) {
 	current_scene = id;
 	EngineInst->setNextScene(getCurrentScene());
 }
+
+void Level::resetCurrent() {
+	delete scenes[current_scene];
+	scenes.erase(current_scene);
+	setCurrentScene(current_scene);
+}
