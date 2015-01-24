@@ -57,8 +57,6 @@ bool loadMedia() {
 
 int main( int argc, char* args[] )
 {
-	
-	//Start up SDL and create window
 	if( !Engine::Create() )
 	{
 		printf( "Failed to initialize!\n" );

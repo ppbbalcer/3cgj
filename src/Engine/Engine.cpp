@@ -12,6 +12,9 @@ void PAUSE() {
 	assert(false);
 }
 
+#define DEF_SCREEN_WIDTH 800
+#define DEF_SCREEN_HEIGHT 600
+
 float Q_rsqrt( float number )
 {
 	long i;
@@ -59,7 +62,7 @@ int Engine::screen_width()
 	SDL_GetDisplayMode(display_index, mode_index, &mode);
 	return mode.w;
 #else
-	return 800;
+	return DEF_SCREEN_WIDTH;
 #endif
 }
 int Engine::screen_height()
@@ -70,7 +73,7 @@ int Engine::screen_height()
 	SDL_GetDisplayMode(display_index, mode_index, &mode);
 	return mode.h;
 #else
-	return 600;
+	return DEF_SCREEN_HEIGHT;
 #endif
 }
 
