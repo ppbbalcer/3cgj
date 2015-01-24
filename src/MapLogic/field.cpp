@@ -34,7 +34,7 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[DOSKEY] = 26;
 	assigned_field[POWERUP] = 31;
 	assigned_field[SMALL_MANA_FLASK] = 36;
-	assigned_field[LARGE_MANA_FLASK] = 35;
+	assigned_field[LARGE_MANA_FLASK] = 40;
 	assigned_field[SMALL_HEALTH_FLASK] = 34;
 	assigned_field[LARGE_HEALTH_FLASK] = 33;
 	assigned_field[EMPTY_FLASK] = 32;
