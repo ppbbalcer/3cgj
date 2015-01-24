@@ -6,6 +6,7 @@ using namespace std;
 
 Player::Player(RTexture * texture, IMap * map) : Character(texture, map)
 {
+	_type = TYPE_PLAYER;
 	_mana = MAX_MANA;
 	_last_shot_time = clock() - FIREBALL_MIN_DIFF_MS * (CLOCKS_PER_SEC / 1000);
 };

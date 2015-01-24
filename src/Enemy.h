@@ -6,7 +6,7 @@
 class Enemy : public Character
 {
 public:
-	Enemy(RTexture* texture, IMap * map) : Character(texture, map) {};
+	Enemy(RTexture* texture, IMap * map) : Character(texture, map) {_type = TYPE_ENEMY; };
 	~Enemy(void);
 };
 

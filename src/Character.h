@@ -9,7 +9,7 @@
 #define MAX_HEALTH 100
 #define MAX_MANA 100
 #define DEFAULT_POWER_LEVEL 25;
-
+#define SMALL_POTION_MANA_VAL 25
 #define SMALL_POTION_HEAL_VAL 25
 #define LARGE_POTION_HEAL_VAL 50
 #define MEDKIT_HEAL_VAL MAX_HEALTH
@@ -17,6 +17,13 @@
 
 #define FIREBALL_MANA_COST 10
 #define FIREBALL_MIN_DIFF_MS 500
+
+enum CharacterType {
+	TYPE_UNKNOWN,
+	TYPE_ENEMY,
+	TYPE_PLAYER,
+	MAX_PLAYER_TYPE
+};
 
 class Character
 {
@@ -69,6 +76,7 @@ public:
 
 	void updateDirection(DIRECT directMove);
 	void OnUpdate(int time_ms);
+	CharacterType getType() { return _type; }
 
 private:
 	RTexture *_texture;
@@ -89,6 +97,8 @@ private:
 protected:
 	int last_dir_x;
 	int last_dir_y;
+	CharacterType _type;
+
 };
 
 #endif
