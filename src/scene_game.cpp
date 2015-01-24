@@ -32,7 +32,7 @@ void SceneGame::OnLoad()
 	_player2 = new Character(player2Texture);
 	
 	_tiles = new RTexture(texturesScene_game[3]);
-	_tiles->setTileSizeSrc(32);
+	_tiles->setTileSizeSrc(64);
 	_tiles->setTileSizeDst(TILE_SIZE);
 	pcpos_before_x = pcpos_after_x = pcpos_before_y = pcpos_after_y = 1;
 	//Load media
@@ -85,26 +85,35 @@ void SceneGame::OnUpdate(int timems)
 		const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
 
 		if( currentKeyStates[ SDL_SCANCODE_DOWN ] ) {
-			if (!map->GetFieldAt(pcpos_before_x,pcpos_before_y+1)
-			    ->IsObstacle()) {
+			if ( (!map->GetFieldAt(pcpos_before_x,pcpos_before_y+1)
+			      ->IsObstacle()) &&
+			     (!map->GetFieldAt(pcpos_after_x,pcpos_before_y+1)
+			      ->IsObstacle()) )
+			{
 				pcpos_after_y=pcpos_before_y+1;
 			}
 		}
 		if( currentKeyStates[ SDL_SCANCODE_UP ] ) {
-			if (!map->GetFieldAt(pcpos_before_x,pcpos_before_y-1)
-			    ->IsObstacle()) {
+			if ( (!map->GetFieldAt(pcpos_before_x,pcpos_before_y-1)
+			      ->IsObstacle()) &&
+			     (!map->GetFieldAt(pcpos_after_x,pcpos_before_y-1)
+			      ->IsObstacle()) ) {
 				pcpos_after_y=pcpos_before_y-1;
 			}
 		}
 		if( currentKeyStates[ SDL_SCANCODE_RIGHT ] ) {
-			if (!map->GetFieldAt(pcpos_before_x+1,pcpos_before_y)
-			    ->IsObstacle()) {
+			if ( (!map->GetFieldAt(pcpos_before_x+1,pcpos_before_y)
+			      ->IsObstacle()) &&
+			     (!map->GetFieldAt(pcpos_before_x+1,pcpos_after_y)
+			      ->IsObstacle()) ) {
 				pcpos_after_x=pcpos_before_x +1;
 			}
 		}
 		if( currentKeyStates[ SDL_SCANCODE_LEFT ] ) {
-			if (!map->GetFieldAt(pcpos_before_x-1,pcpos_before_y)
-			    ->IsObstacle()) {
+			if ( (!map->GetFieldAt(pcpos_before_x-1,pcpos_before_y)
+			      ->IsObstacle()) &&
+			     (!map->GetFieldAt(pcpos_before_x-1,pcpos_after_y)
+			      ->IsObstacle()) ) {
 				pcpos_after_x=pcpos_before_x -1;
 			}
 		}
@@ -148,12 +157,10 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		for (int i = 0 ; i!=map->GetHeight(); i++) {
 			for (int j = 0 ; j!=map->GetWidth(); ++j) {
 				int field= map->GetFieldAt(j,i)->GetType();
+				int tile=  map->GetFieldAt(j,i)->GetTileId();
 
 				int col = j;// % 20 + 2;
 				int row = i;// 20 + 2;
-				int tile = 6;
-				if (field==WALL)
-					tile=5;
 				_tiles->renderTile(renderer, col * sizeDst, row * sizeDst, tile);
 
 			}

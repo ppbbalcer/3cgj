@@ -53,6 +53,21 @@ protected:
 		}
 		delete[] fields;
 	}
+	bool HasWallAt(int x, int y)
+	{
+		if (x<0) return false;
+		if (y<0) return false;
+		if (x>=GetWidth()) return false;
+		if (y>=GetHeight()) return false;
+		IField * field = GetFieldAt(x,y);
+		if (!field) return false;
+		if (field->GetType() <=IField::T_BOTTOM &&
+		    field->GetType() >=IField::WALL)
+			return true;
+		if (field->GetType() == IField::DOOR)
+			return true;
+		return false;
+	}
 public:
 	IField* GetFieldAt(int x, int y) {
 		return fields[x+y*width];
