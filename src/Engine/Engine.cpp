@@ -322,7 +322,6 @@ void Engine::mainLoop() {
 
 		//Change scene
 		if (_sceneNext) {
-			_scene->OnFreeBase();
 			_scene = _sceneNext;
 			_sceneNext = NULL;
 			_scene->OnLoadBase();
