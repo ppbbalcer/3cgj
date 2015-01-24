@@ -12,8 +12,6 @@
 void preCalc() {
 	//Precalculate variables
 
-	calcCircleAlfaRadius4[9][9];
-
 	int radius = 4;
 	int radQuad =  radius * radius;
 	for(int x=-radius; x<=radius; ++x) {
@@ -22,13 +20,31 @@ void preCalc() {
 			int rq = (xQuad + y*y);
 			if(rq <= radQuad ) {
 				int alfa =  radius - sqrt(rq);
-				alfa =  alfa * 160 / radius;
-				calcCircleAlfaRadius4[x + radius][y + radius] = 50 +alfa ;
+				alfa =  alfa * 255 / radius;
+				calcCircleAlfaRadius4[x + radius][y + radius] = 0 +alfa ;
 			} else {
 				calcCircleAlfaRadius4[x + radius][y + radius] = 0;
 			}
 		}
 	}
+
+	radius = 6;
+	radQuad =  radius * radius;
+	for(int x=-radius; x<=radius; ++x) {
+		int xQuad = x * x;
+		for(int y=-radius; y<=radius; ++y) {
+			int rq = (xQuad + y*y);
+			if(rq <= radQuad ) {
+				int alfa =  radius - sqrt(rq);
+				alfa =  alfa * 255 / radius;
+				calcCircleAlfaRadius6[x + radius][y + radius] = alfa ;
+			} else {
+				calcCircleAlfaRadius6[x + radius][y + radius] = 0;
+			}
+		}
+	}
+
+	
 
 
 
