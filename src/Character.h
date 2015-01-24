@@ -58,7 +58,7 @@ public:
 	void heal(int howMuchHeal);
 
 	void OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx);
-	void OnRender(SDL_Renderer *renderer);
+	virtual void OnRender(SDL_Renderer *renderer);
 	void setPosTiles(int x, int y);
 	/* strength of damage dealt by character*/
 	int GetPowerLevel();
@@ -79,6 +79,7 @@ public:
 	void updateDirection(DIRECT directMove);
 	virtual void OnUpdate(int time_ms);
 	CharacterType getType() { return _type; }
+
 protected:
 	RTexture *_texture;
 	int power_level;

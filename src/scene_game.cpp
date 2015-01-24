@@ -210,7 +210,7 @@ void SceneGame::updatePlayers(int timems)
 void SceneGame::updateEnemies(int timems)
 {
 	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
-		(*enemy)->OnUpdate(timems / 3);
+		(*enemy)->OnUpdate(timems);
 		if ((*enemy)->getAI() == ENEMY_AI_OFF)
 			continue;
 		int startX = (*enemy)->getPosBeforeX();
@@ -248,13 +248,17 @@ void SceneGame::updateEnemies(int timems)
 
 		if (direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
 			destBest = direct1;
+			//(*enemy)->way = way1; 	//For debug A*
 		} else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
 			destBest = direct2;
+			//(*enemy)->way = way2;
 		} else if (direct1 != DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
 			if (way1.size() > way2.size()) {
 				destBest = direct2;
+				//(*enemy)->way = way2;
 			} else {
 				destBest = direct1;
+				//(*enemy)->way = way1;
 			}
 		} else {
 			destBest = (*enemy)->getRandomDirection();
@@ -360,7 +364,6 @@ void SceneGame::updateShadows()
 	}
 	
 }
-
 
 void SceneGame::OnRenderShadow(SDL_Renderer* renderer) {
 	
@@ -543,16 +546,58 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	SDL_Rect p1_hp_rect = { playerBarXPadding, 0, _player1->getHealth() * 2, playerBarHeight};
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, &p1_hp_rect);
+	
+	//Frame
+	SDL_SetRenderDrawColor(renderer, 200, 0, 30, SDL_ALPHA_OPAQUE);
+	p1_hp_rect.w = 200;
+	SDL_RenderDrawRect( renderer, &p1_hp_rect );
+	p1_hp_rect.x++;
+	p1_hp_rect.y++;
+	p1_hp_rect.w -= 2;
+	p1_hp_rect.h -= 2;
+	SDL_RenderDrawRect( renderer, &p1_hp_rect );
 
 	SDL_Rect p1_mana_rect = { playerBarXPadding, playerBarHeight + paddingBetweenBars, _player1->getMana() * 2, playerBarHeight};
 	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, &p1_mana_rect);
 
+	//Frame
+	SDL_SetRenderDrawColor(renderer, 20, 20, 180, SDL_ALPHA_OPAQUE);
+	p1_mana_rect.w = 200;
+	SDL_RenderDrawRect( renderer, &p1_mana_rect );
+	p1_mana_rect.x++;
+	p1_mana_rect.y++;
+	p1_mana_rect.w -= 2;
+	p1_mana_rect.h -= 2;
+	SDL_RenderDrawRect( renderer, &p1_mana_rect );
+
 	SDL_Rect p2_hp_rect = { EngineInst->screen_width() - playerBarXPadding - _player2->getHealth() * 2, 0, _player2->getHealth() * 2, playerBarHeight};
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, &p2_hp_rect);
 
+	//Frame
+	SDL_SetRenderDrawColor(renderer, 200, 0, 30, SDL_ALPHA_OPAQUE);
+	p2_hp_rect.x = EngineInst->screen_width() - playerBarXPadding - 200;
+	p2_hp_rect.w = 200;
+	SDL_RenderDrawRect( renderer, &p2_hp_rect );
+	p2_hp_rect.x++;
+	p2_hp_rect.y++;
+	p2_hp_rect.w -= 2;
+	p2_hp_rect.h -= 2;
+	SDL_RenderDrawRect( renderer, &p2_hp_rect );
+
 	SDL_Rect p2_mana_rect = { EngineInst->screen_width() - playerBarXPadding - _player2->getMana() * 2, playerBarHeight + paddingBetweenBars, _player2->getMana() * 2, playerBarHeight};;
 	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, &p2_mana_rect);
+
+	//Frame
+	SDL_SetRenderDrawColor(renderer, 20, 20, 180, SDL_ALPHA_OPAQUE);
+	p2_mana_rect.x = EngineInst->screen_width() - playerBarXPadding - 200;
+	p2_mana_rect.w = 200;
+	SDL_RenderDrawRect( renderer, &p2_mana_rect );
+	p2_mana_rect.x++;
+	p2_mana_rect.y++;
+	p2_mana_rect.w -= 2;
+	p2_mana_rect.h -= 2;
+	SDL_RenderDrawRect( renderer, &p2_mana_rect );
 }

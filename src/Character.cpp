@@ -221,6 +221,11 @@ void Character::OnUpdate(int time_ms)
 	int target_y = _pos_after_y * tile_size;
 	int target_x = _pos_after_x * tile_size;
 	int dist = tile_size * time_ms / 100;
+	//if (getType() == TYPE_ENEMY) {
+	//	dist /= 3;
+	//	if (dist < 1) dist = 1;
+	//}
+
 	int pos_x = getPosX();
 	int pos_y = getPosY();
 
