@@ -31,7 +31,7 @@ public:
 		DOOR_VERTICAL_OPEN,
 		MEDKIT,
 		DOSKEY, /* dos computer that opens doors */
-
+		POWERUP,
 		NUM_FIELD_TYPES
   
   

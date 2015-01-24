@@ -69,6 +69,9 @@ LoadedMap::LoadedMap(const char * path) {
 			case 'd':
 				new_field= new Field(IField::DESK);
 				break;
+			case 'u':
+				new_field= new Field(IField::POWERUP);
+				break;
 			case 'w':
 				new_field= new Field(IField::WALL);
 				break;

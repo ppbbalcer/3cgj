@@ -29,6 +29,7 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[DOOR_HORIZONTAL_OPEN] = 15;
 	assigned_field[MEDKIT] = 25;
 	assigned_field[DOSKEY] = 26;
+	assigned_field[POWERUP] = 31;
 	initialized = true;
 }
 int Field::GetTileId()
@@ -57,6 +58,10 @@ int Field::GetType() {
 
 void Field::SteppedOver(Character * who)
 {
+	if (type==POWERUP) {
+		type=FLOOR;
+		who->SetPowerLevel(who->GetPowerLevel()+20);
+	}
 	if (type==DOSKEY)
 		doskey_active++;
 	if (type==DOOR_VERTICAL_CLOSED)

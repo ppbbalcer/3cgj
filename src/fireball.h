@@ -10,8 +10,9 @@ class Fireball
 	int vy;
 	int posX; // in pixels (margin not included)
 	int posY;
+	int power_level;
 public:
-	Fireball(int start_x, int start_y, int _vx, int _vy);
+	Fireball(int start_x, int start_y, int _vx, int _vy, int _power);
 
 	/**
 	 * Attempt to update position
@@ -20,7 +21,7 @@ public:
 	 * or it hit its proper target and should be discarded.
 	 */
 	int updatePosition(IMap *map, int time_ms);
-
+	int GetPowerLevel();
 	int getPosX();
 	int getPosY();
 };
