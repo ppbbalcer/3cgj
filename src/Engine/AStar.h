@@ -7,7 +7,8 @@
  *  get values x, y and data from findAstar()
  */
 typedef bool (*funcIsObstacle)(int, int, void*);
-typedef std::list<std::pair<int,int>> AStarWay_t;
+typedef std::pair<int,int> AStartPoint_t;
+typedef std::list<AStartPoint_t> AStarWay_t;
 
 enum DIRECT {
 	DIRECT_NO_WAY = 0,

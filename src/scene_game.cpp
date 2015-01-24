@@ -129,22 +129,40 @@ void SceneGame::OnUpdate(int timems)
 		_player2->updatePosition(map, timems);
 
 		for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+			int startX = (*enemy)->getPosBeforeX(); 
+			int startY = (*enemy)->getPosBeforeY();
+			AStarWay_t way1;
+			AStarWay_t way2;
 
+			DIRECT destBest = DIRECT_NO_WAY;
+			DIRECT direct1 = findAstar(way1, startX, startY,_player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+			DIRECT direct2 = findAstar(way2, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 
+			if(direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
+				destBest = direct1;
+			} else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
+					destBest = direct2;
+			} else if (direct1 != DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
+				if(way1.size() > way2.size()) {
+					destBest = direct2;
+				} else {
+					destBest = direct1;
+				}
+			}
+			
+			if (destBest != DIRECT_NO_WAY) {
+				if (destBest == DIRECT_DOWN) {
+						(*enemy)->updateDirection(map, Character::ACTION_MOVE_DOWN);
+					} else if (destBest == DIRECT_UP) {
+						(*enemy)->updateDirection(map, Character::ACTION_MOVE_UP);
+					} else if (destBest == DIRECT_LEFT) {
+						(*enemy)->updateDirection(map, Character::ACTION_MOVE_LEFT);
+					} else if (destBest == DIRECT_RIGHT) {
+						(*enemy)->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+					}
+			}
 
-
-
-
-
-
-
-
-
-
-
-
-
-			(*enemy)->updatePosition(map, timems);
+			(*enemy)->updatePosition(map, timems/3);
 		}
 }
 
@@ -180,30 +198,18 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		{ //Astar Example
 			int startX = _player1->getPosBeforeX(); 
 			int startY = _player1->getPosBeforeY();
-
-			_tiles->renderTile(renderer, startX * sizeDst, startY * sizeDst, 8);
-
 			AStarWay_t way;
 
-			while (startX != _player2->getPosBeforeX() || startY != _player2->getPosBeforeY()) {
-				int direct = findAstar(way, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-				if (direct == DIRECT_NO_WAY) {
-					break;
+			int direct = findAstar(way, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+			if (direct != DIRECT_NO_WAY) {
+				_tiles->renderTile(renderer, startX * sizeDst, startY * sizeDst, 8); //Start not exit in way
+				for(AStarWay_t::iterator point = way.begin(); point != way.end(); point++) {
+					int x = (*point).first;
+					int y = (*point).second;
+					_tiles->renderTile(renderer, x * sizeDst, y * sizeDst, 8);
 				}
-
-				if(direct & DIRECT_LEFT) {
-					--startX;
-				} else if(direct & DIRECT_RIGHT) {
-					++startX;
-				}
-
-				if(direct & DIRECT_UP) {
-					--startY;
-				} else if(direct & DIRECT_DOWN) {
-					++startY;
-				}
-				_tiles->renderTile(renderer, startX * sizeDst, startY * sizeDst, 8);
 			}
+
 		}
 
 		for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
