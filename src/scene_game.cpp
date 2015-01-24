@@ -20,16 +20,20 @@ void SceneGame::OnLoad()
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
 	
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
+	RTexture *player1Texture = new RTexture(texturesScene_game[2]); 
+	RTexture *player2Texture = new RTexture(texturesScene_game[2]);
+
+	player1Texture->setPos(TILE_SIZE, TILE_SIZE);
+	player2Texture->setPos(TILE_SIZE, TILE_SIZE);
 
 	_background = new RTexture(texturesScene_game[1]);
-	_player = new RTexture(texturesScene_game[2]);
-	_player->setPos(TILE_SIZE,TILE_SIZE);
+	_player1 = new Character(player1Texture);
+	_player2 = new Character(player2Texture);
 	
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(64);
 	_tiles->setTileSizeDst(TILE_SIZE);
-	pcpos_before_x=pcpos_after_x=pcpos_before_y=pcpos_after_y=
-		1;
+	pcpos_before_x = pcpos_after_x = pcpos_before_y = pcpos_after_y = 1;
 	//Load media
 	if( !success )
 	{
@@ -50,12 +54,11 @@ void SceneGame::OnUpdate(int timems)
 		//Event handler
 		SDL_Event e;
 		printf("X: %d->%d; XY %d->%d %d\n",
-	 pcpos_before_x,
-	 pcpos_after_x,
-	 pcpos_before_y,
-		       pcpos_after_y,
-		       timems
-
+			pcpos_before_x,
+			pcpos_after_x,
+			pcpos_before_y,
+			pcpos_after_y,
+			timems
 			);
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
@@ -72,13 +75,14 @@ void SceneGame::OnUpdate(int timems)
 		}
 
 		float dist = 0.3*timems;
-		float posX = _player->getPosX();
-		float posY = _player->getPosY();
-		int width = _player->getWidth();
+
+		float p1PosX = _player1->getPosX();
+		float p1PosY = _player1->getPosY();
+		float p2PosX = _player2->getPosX();
+		float p2PosY = _player2->getPosY();
 
 		const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
 
-		
 		if( currentKeyStates[ SDL_SCANCODE_DOWN ] ) {
 			if (!map->GetFieldAt(pcpos_before_x,pcpos_before_y+1)
 			    ->IsObstacle()) {
@@ -108,24 +112,25 @@ void SceneGame::OnUpdate(int timems)
 		int target_x = pcpos_after_x*TILE_SIZE;
 
 		/* character should be moving moving down*/
-		if (posY>target_y) {
-			posY = max<int>(target_y,posY-dist);
+		if (p1PosY>target_y) {
+			p1PosY = max<int>(target_y,p1PosY-dist);
 		}
-		if (posY<target_y) {
-			posY = min<int>(target_y,posY+dist);
+		if (p1PosY<target_y) {
+			p1PosY = min<int>(target_y,p1PosY+dist);
 		}
-		if (posX>target_x) {
-			posX = max<int>(target_x,posX-dist);
+		if (p1PosX>target_x) {
+			p1PosX = max<int>(target_x,p1PosX-dist);
 		}
-		if (posX<target_x) {
-			posX = min<int>(target_x,posX+dist);
+		if (p1PosX<target_x) {
+			p1PosX = min<int>(target_x,p1PosX+dist);
 		}
 
-		if (posX==target_x)
+		if (p1PosX==target_x)
 			pcpos_before_x=pcpos_after_x;
-		if (posY==target_y)
+		if (p1PosY==target_y)
 			pcpos_before_y=pcpos_after_y;
-		_player->setPos(posX, posY);
+
+		_player1->setPos(p1PosX, p1PosY);
 
 		//EngineInst->font()->printTextLT(20, 20, "MSCN");
 }
@@ -150,8 +155,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 			}
 		}
-//}
-		_player->render(renderer);
 
-
+		_player1->render(renderer, _tiles);
+		_player2->render(renderer, _tiles);
 }

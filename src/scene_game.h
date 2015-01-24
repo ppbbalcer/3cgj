@@ -4,13 +4,14 @@
 #include "Engine/Scene.h"
 #include "Engine/Engine.h"
 #include "Engine/RTexture.h"
+#include "Engine/Character.h"
 #include "MapLogic/map.h"
 /**
  * scene that contains map and character
  */
 class SceneGame: public Scene {
 	RTexture *_background;
-	RTexture *_player;
+	Character *_player1, *_player2;
 	RTexture *_tiles;
 	IMap *map;
 	int pcpos_before_x;
