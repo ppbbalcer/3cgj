@@ -382,7 +382,7 @@ void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 	for (int i = 0 ; i != map->GetHeight() - 1; i++) {
 		for (int j = 0 ; j != map->GetWidth() - 1; ++j) {
 			int px_left = j * tileSize + tileSize / 2;
-			int px_top  = i * tileSize + 0.5 * tileSize;
+			int px_top  = i * tileSize + tileSize / 2;
 			_tiles->renderTile(renderer,
 			                   px_left,
 			                   px_top,
