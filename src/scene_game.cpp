@@ -301,6 +301,8 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	int tilesNums = _tiles->getTilesNums();
 	//for (int i =  0 ; i<tilesNums; ++i) {
 	srand(1);
+	
+	/*Render background*/
 	for (int i = 0 ; i != map->GetHeight() - 1; i++) {
 		for (int j = 0 ; j != map->GetWidth() - 1; ++j) {
 			int px_left = j * sizeDst + sizeDst / 2;
@@ -311,6 +313,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 			                   18 + rand() % 5, SDL_FLIP_NONE);
 		}
 	}
+	/*Render actual mapiles*/
 	for (int i = 0 ; i != map->GetHeight(); i++) {
 		for (int j = 0 ; j != map->GetWidth(); ++j) {
 			int field = map->GetFieldAt(j, i)->GetType();
@@ -340,6 +343,8 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	//
 	//}
 
+	
+	/*render enemies */
 	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRenderCircle(renderer, 4, 7);
@@ -349,12 +354,20 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}
+	/* render fireballs */
 	for (std::list<Fireball*>::iterator it = fireballs.begin();
 	                it != fireballs.end(); ++it) {
 		_tiles->renderTile(renderer, (*it)->getPosX(), (*it)->getPosY(), 28, SDL_FLIP_NONE);
 	}
+	/* check loss condition */
+	if (_player1->GetState() == Character::DEAD &&
+	                _player2->GetState() == Character::DEAD) {
+		EngineInst->font()->printfLT(100,
+		                             map->GetHeight()*sizeDst, "You lost!");
+		
+	}
 	/*Check victory condition*/
-	if (_player1->GetState() == Character::WON &&
+	else if (_player1->GetState() == Character::WON &&
 	                _player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
 		                             map->GetHeight()*sizeDst, "Both players won");
