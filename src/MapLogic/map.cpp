@@ -64,24 +64,56 @@ LoadedMap::LoadedMap(const char * path) {
 			char c = mapfile.get();
 			switch(c) {
 			case ' ':
-				new_field= new Field(FLOOR);
+				new_field= new Field(IField::FLOOR);
 				break;
 			case '|':
-				new_field= new Field(DOOR);
+				new_field= new Field(IField::DOOR);
 				break;
 			case 'd':
-				new_field= new Field(DESK);
+				new_field= new Field(IField::DESK);
 				break;
 			case 'w':
-				new_field= new Field(WALL);
+				new_field= new Field(IField::WALL);
 				break;
 			default:
-				new_field= new Field(EMPTY);
+				new_field= new Field(IField::EMPTY);
 			}
 			PlaceField(j,i,new_field);
 
 		}
 		mapfile.get(); //consume endline character
+	}
+
+	/* replace fields of type "wall" for wall of appropriate 
+	 * orientation */
+	for (int i = 0 ; i!=GetHeight(); i++) {
+		for (int j = 0 ; j!=GetWidth(); ++j) {
+			IField * field = GetFieldAt(j,i);
+			if (field->GetType() != IField::WALL)
+				continue;
+			if (HasWallAt(j,i-1) && HasWallAt(j,i+1) && HasWallAt(j+1,i) && HasWallAt(j-1,i) ) // cross
+				dynamic_cast <Field*>(field)->SetType(IField::WALL_CROSS);
+			else if (HasWallAt(j,i+1) && HasWallAt(j+1,i) && HasWallAt(j-1,i) ) // T junction without top
+				dynamic_cast <Field*>(field)->SetType(IField::T_BOTTOM);
+			else if (HasWallAt(j,i-1) && HasWallAt(j+1,i) && HasWallAt(j-1,i) ) // T junction without bottom
+				 dynamic_cast <Field*>(field)->SetType(IField::T_TOP);
+			else if (HasWallAt(j,i-1) && HasWallAt(j,i+1) && HasWallAt(j-1,i) ) // T junction without right piece
+				dynamic_cast <Field*>(field)->SetType(IField::T_LEFT);
+			else if (HasWallAt(j,i-1) && HasWallAt(j,i+1) && HasWallAt(j+1,i) ) // T junction
+				dynamic_cast <Field*>(field)->SetType(IField::T_RIGHT);
+			else if (HasWallAt(j,i+1) && HasWallAt(j+1,i) ) // L rb
+				dynamic_cast <Field*>(field)->SetType(IField::WALL_RB);
+			else if (HasWallAt(j,i-1)  && HasWallAt(j-1,i) ) // L lt
+				 dynamic_cast <Field*>(field)->SetType(IField::WALL_LT);
+			else if (HasWallAt(j,i+1) && HasWallAt(j-1,i) ) // L lb
+				dynamic_cast <Field*>(field)->SetType(IField::WALL_LB);
+			else if (HasWallAt(j,i-1)  && HasWallAt(j+1,i) ) // L rt
+				dynamic_cast <Field*>(field)->SetType(IField::WALL_RT);
+			else if (HasWallAt(j,i-1) && HasWallAt(j,i+1) ) // horizontal piece
+				dynamic_cast <Field*>(field)->SetType(IField::WALL_VERTICAL);
+			else if (HasWallAt(j-1,i) && HasWallAt(j+1,i) ) // T junction
+				dynamic_cast <Field*>(field)->SetType(IField::WALL_HORIZONTAL);
+		}
 	}
 	mapfile.close();
 	SerializeOntoConsole();
@@ -93,7 +125,7 @@ void LoadedMap::SerializeOntoConsole()
 	for (int i = 0 ; i!=GetHeight(); i++) {
 		for (int j = 0 ; j!=GetWidth(); ++j) {
 			int field= GetFieldAt(j,i)->GetType();
-			stream << (field==WALL?'w':'_');
+			stream << (field==IField::WALL?'w':'_');
 		}
 		stream << endl;
 	}
@@ -113,3 +145,4 @@ public:
 IMap * IMap::Factory(int type, const char * parameter) {
 	return new LoadedMap(parameter);
 }
+ 

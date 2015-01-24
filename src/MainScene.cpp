@@ -102,8 +102,8 @@ void MainScene::OnRender(SDL_Renderer* renderer) {
 	int sizeDst = _tiles->getTileSizeDst() + 5;
 	int tilesNums = _tiles->getTilesNums();
 	for (int i =  0 ; i<tilesNums; ++i) {
-		int col = i % 20 + 2;
-		int row = i / 20 + 2;
+		int col = i % 30 + 2;
+		int row = i / 30 + 2;
 
 		_tiles->renderTile(renderer, col * sizeDst, row * sizeDst, i);
 
