@@ -9,8 +9,6 @@
 #include "KeyMap.h"
 #include "level.h"
 
-using namespace std;
-
 #define MAX_ROOM_PATH 255
 #define HEARTBEAT_BASE_INTERVAL 2000
 #define HEARTBEAT_MIN_INTERVAL 500
@@ -56,7 +54,7 @@ void SceneGame::OnLoad()
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
 	SDL_Rect dvp=GetDefaultViewport();
 
-	int tile_size = min<int>(dvp.w / map->GetWidth(),
+	int tile_size = std::min<int>(dvp.w / map->GetWidth(),
 				 dvp.h/map->GetHeight());
 
 	EngineInst->setTileSize(tile_size);
@@ -254,6 +252,8 @@ void SceneGame::updateEnemies(int timems)
 			} else {
 				destBest = direct1;
 			}
+		} else {
+			destBest = (*enemy)->getRandomDirection();
 		}
 
 		if (destBest != DIRECT_NO_WAY) {
@@ -379,11 +379,23 @@ void SceneGame::OnRenderShadow(SDL_Renderer* renderer) {
 
 }
 
+static unsigned long next = 1;
+
+static int _rand(void)
+{
+    next = next * 1103515245 + 12345;
+    return((unsigned)(next/65536) % 32768);
+}
+
+void _srand(unsigned seed) {
+	next = seed;
+}
+
 void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 	int tileSize = EngineInst->getTileSize();
 	int tilesNums = _tiles->getTilesNums();
-	//for (int i =  0 ; i<tilesNums; ++i) {
-	srand(1);
+
+	_srand(1);
 
 	/*Render background*/
 	for (int i = 0 ; i != map->GetHeight() - 1; i++) {
@@ -393,7 +405,7 @@ void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 			_tiles->renderTile(renderer,
 			                   px_left,
 			                   px_top,
-			                   18 + rand() % 5, SDL_FLIP_NONE);
+			                   18 + _rand() % 5, SDL_FLIP_NONE);
 		}
 	}
 	/*Render actual mapiles*/
