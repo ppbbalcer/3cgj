@@ -5,6 +5,14 @@
 #include <SDL_image.h>
 #include "Audio.h"
 
+enum DIRECT {
+	DIRECT_NO_WAY = 0,
+	DIRECT_LEFT = 1,
+	DIRECT_RIGHT = 2,
+	DIRECT_UP = 4,
+	DIRECT_DOWN = 8 
+};
+
 struct ResourceItem {
 	/* Configure part */
 	const char*		path;

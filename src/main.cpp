@@ -10,7 +10,34 @@
 #include <stdio.h>
 #include <string>
 
+void preCalc() {
+	//Precalculate variables
+
+	calcCircleAlfaRadius4[9][9];
+
+	int radius = 4;
+	int radQuad =  radius * radius;
+	for(int x=-radius; x<=radius; ++x) {
+		int xQuad = x * x;
+		for(int y=-radius; y<=radius; ++y) {
+			int rq = (xQuad + y*y);
+			if(rq <= radQuad ) {
+				int alfa =  radius - sqrt(rq);
+				alfa =  alfa * 160 / radius;
+				calcCircleAlfaRadius4[x + radius][y + radius] = 50 +alfa ;
+			} else {
+				calcCircleAlfaRadius4[x + radius][y + radius] = 0;
+			}
+		}
+	}
+
+
+
+}
+
+
 bool loadMedia() {
+	 preCalc();
 	//Loading success flag 
 	bool success = true; 
 
@@ -20,8 +47,8 @@ bool loadMedia() {
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
 //	gScene = new MainScene();
 	// uncomment this to instead get scene with first preview of map
-//	gScene = new SceneGame();
-	gScene = new BaseLevel(0, 4);
+	gScene = new SceneGame();
+//	gScene = new BaseLevel(0, 4);
 	if (!EngineInst->loadAudioResources(globalAudios, globalAudiosSize))
 		success = false;
 

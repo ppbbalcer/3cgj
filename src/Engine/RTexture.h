@@ -22,6 +22,7 @@ public:
 	inline int		getHeight();
 	inline int		getScaleWidth();
 	inline int		getScaleHeight();
+	void			setAlpha( Uint8 alpha );
 
 	void			setTileSizeSrc(int size); //Size in file
 	void			setTileSizeDst(int size); //Size on screen

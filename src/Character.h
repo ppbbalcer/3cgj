@@ -36,6 +36,8 @@ public:
 	int crucio(int howMuchCrucio);
 	void heal(int howMuchHeal);
 
+	
+	void OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx);
 	void OnRender(SDL_Renderer *renderer);
 	void setPosTiles(IMap *map, int x, int y);
 
@@ -48,7 +50,7 @@ public:
 
 	Fireball * Shoot();
 	void updateDirection(IMap *map, Action action);
-	void updatePosition(IMap *map, int time_ms, int tile_size);
+	void updatePosition(IMap *map, int time_ms);
 
 private:
 	RTexture *_texture;

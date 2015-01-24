@@ -23,7 +23,6 @@ private:
 	void updateEnemies(int timems);
 	void updateFireballs(int timems);
 	void updatePlayers(int timems);
-
 public:
 	SceneGame();
 	virtual void OnLoad();

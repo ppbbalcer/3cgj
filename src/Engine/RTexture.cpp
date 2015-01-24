@@ -36,7 +36,8 @@ RTexture::RTexture(const ResourceItem &resItem):
 	SDL_assert(_texture && _width > 0 && _height > 0);
 }
 
-void RTexture::renderAll(SDL_Renderer* renderer, int x, int y ) {
+void RTexture::renderAll(SDL_Renderer* renderer, int x, int y )
+{
 	SDL_Rect renderQuad = { x, y, _scaleWidth, _scaleHeight};
 
 	 if (_flip == SDL_FLIP_NONE ) {
@@ -46,7 +47,8 @@ void RTexture::renderAll(SDL_Renderer* renderer, int x, int y ) {
 	 }
 }
 
-void RTexture::setTileSizeSrc(int size) {
+void RTexture::setTileSizeSrc(int size)
+{
 	_tileSizeSrc = size;
 	if(_tileSizeSrc > 0 ) {
 		_tileColumns = _width / _tileSizeSrc;
@@ -57,28 +59,40 @@ void RTexture::setTileSizeSrc(int size) {
 	}
 }
 
-void RTexture::setTileSizeDst(int size) {
+void RTexture::setTileSizeDst(int size)
+{
 	_tileSizeDst = size;
 }
 
-int RTexture::getTileSizeSrc() {
+int RTexture::getTileSizeSrc()
+{
 	return _tileSizeSrc;
 }
 
-int RTexture::getTileSizeDst() {
+int RTexture::getTileSizeDst()
+{
 	return _tileSizeDst;
 }
 
-int RTexture::getTilesNums() {
+int RTexture::getTilesNums()
+{
 	return _tileColumns * _tileRows;
 }
 
-void RTexture::setTileIdx(int tileIdx) {
+void RTexture::setTileIdx(int tileIdx)
+{
 	_tileIdx = tileIdx;
 }
 
-int RTexture::getTileIdx() {
+int RTexture::getTileIdx()
+{
 	return _tileIdx;
+}
+
+void  RTexture::setAlpha( Uint8 alpha )
+{
+	 //Modulate texture alpha 
+	SDL_SetTextureAlphaMod( _texture, alpha );
 }
 
 void RTexture::renderTile(SDL_Renderer* renderer, int x, int y) {
