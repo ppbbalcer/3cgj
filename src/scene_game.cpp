@@ -81,6 +81,15 @@ void SceneGame::OnLoad()
 	_tiles->setTileSizeSrc(tileSizeSrc);
 	_tiles->setTileSizeDst(tile_size);
 
+	_arrayShadowW = map->GetWidth();
+	_arrayShadowH = map->GetHeight();
+	_arrayShadow = new int[_arrayShadowW*_arrayShadowH*sizeof(_arrayShadowH)];
+	
+	
+
+
+	
+
 	//Load media
 	if (!success) {
 		printf("Failed to load media Scene02Renderer !\n");
@@ -94,6 +103,8 @@ void SceneGame::OnFree()
 		delete *enemy;
 	}
 	_enemys.clear();
+	delete _arrayShadow;
+	_arrayShadow = NULL;
 
 	//Destroy textures???
 
@@ -242,10 +253,24 @@ void SceneGame::updateEnemies(int timems)
 		AStarWay_t way1;
 		AStarWay_t way2;
 
-		int maxSteps = 5;
+		int maxSteps = 0;
 		DIRECT destBest = DIRECT_NO_WAY;
-		DIRECT direct1 = findAstar(way1, maxSteps, startX, startY, _player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-		DIRECT direct2 = findAstar(way2, maxSteps,  startX, startY, _player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+		DIRECT direct1 = DIRECT_NO_WAY;
+		DIRECT direct2 = DIRECT_NO_WAY;
+
+		int distQuad = EngineInst->getTileSize()*EngineInst->getTileSize()*6*6;
+		int distX = _player1->getPosX() - (*enemy)->getPosX();
+		int distY = _player1->getPosY() - (*enemy)->getPosY();
+
+		//if(distX*distX + distY*distY <= distQuad ) {
+			direct1 = findAstar(way1, maxSteps, startX, startY, _player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+		//}
+
+		distX = _player2->getPosX() - (*enemy)->getPosX();
+		distY = _player2->getPosY() - (*enemy)->getPosY();
+		//if(distX*distX + distY*distY <= distQuad ) {
+			direct2 = findAstar(way2, maxSteps,  startX, startY, _player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+		//}
 
 		if (direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
 			destBest = direct1;
@@ -292,20 +317,99 @@ void SceneGame::OnUpdate(int timems)
 	updatePlayers(timems);
 	updateFireballs(timems);
 	updateEnemies(timems);
+	updateShadows();
 }
 
-void SceneGame::OnRender(SDL_Renderer* renderer)
+void SceneGame::updateShadowsObj4(int centerTiltX, int centerTiltY) 
 {
-	// _background->render(renderer);
+	int radius = 4;
+	int alfa,xx,yy;
+	int idx;
+	for(int y=-radius; y<=radius; ++y) {
+		for(int x=-radius; x<=radius; ++x) {
+			alfa = calcCircleAlfaRadius4[x+radius][y+radius];
+			if(alfa > 0) {
+				xx = x + centerTiltX;
+				yy = y + centerTiltY;
+				if(xx >= 0 && xx < _arrayShadowW && yy >= 0 && yy < _arrayShadowH) {
+					idx = yy*_arrayShadowW + xx;
+					_arrayShadow[idx] += alfa;
+					if(_arrayShadow[idx] > 255) {
+						_arrayShadow[idx] = 255;
+					}
+				}
+			}
+		}
+	}
+}
 
-	SDL_Rect topLeftViewport;
-	topLeftViewport.x = 5;
-	topLeftViewport.y = 100;
-	topLeftViewport.w = EngineInst->screen_width();
-	topLeftViewport.h = EngineInst->screen_height();
-	SDL_RenderSetViewport(renderer, &topLeftViewport);
+void SceneGame::updateShadowsObj6(int centerTiltX, int centerTiltY) 
+{
+	int radius = 6;
+	int alfa,xx,yy;
+	int idx;
+	for(int y=-radius; y<=radius; ++y) {
+		for(int x=-radius; x<=radius; ++x) {
+			alfa = calcCircleAlfaRadius6[x+radius][y+radius];
+			if(alfa > 0) {
+				xx = x + centerTiltX;
+				yy = y + centerTiltY;
+				if(xx >= 0 && xx < _arrayShadowW && yy >= 0 && yy < _arrayShadowH) {
+					idx = yy*_arrayShadowW + xx;
+					_arrayShadow[idx] += alfa;
+					if(_arrayShadow[idx] > 255) {
+						_arrayShadow[idx] = 255;
+					}
+				}
+			}
+		}
+	}
+}
 
-	int sizeDst = _tiles->getTileSizeDst();
+
+void SceneGame::updateShadows()
+{
+	memset(_arrayShadow, 00, _arrayShadowW*_arrayShadowH*sizeof(_arrayShadowH));
+
+	updateShadowsObj6(_player1->getPosAfterX(), _player1->getPosAfterY());
+	updateShadowsObj6(_player2->getPosAfterX(), _player2->getPosAfterY());
+	
+	for (int i = 0 ; i != map->GetHeight(); i++) {
+		for (int j = 0 ; j != map->GetWidth(); ++j) {
+			int field = map->GetFieldAt(j, i)->GetType();
+			//int tile =  map->GetFieldAt(j, i)->GetTileId();
+			if (field == IField::MEDKIT || field == IField::DOSKEY || field == IField::POWERUP) {
+				updateShadowsObj4(j, i);
+			}
+
+		}
+	}
+	
+}
+
+
+void SceneGame::OnRenderShadow(SDL_Renderer* renderer) {
+	
+	int tileSize = EngineInst->getTileSize();
+	int alfa;
+	for (int y = 0 ; y < _arrayShadowH; ++y) {
+		for (int x = 0 ;x< _arrayShadowW; ++x) {
+			alfa = 255 - _arrayShadow[y*_arrayShadowW + x];
+			if (alfa >170)
+			{
+				alfa = 170;
+			}
+			_tiles->setAlpha(alfa);
+			_tiles->renderTile(renderer, x*tileSize, y*tileSize, 35, SDL_FLIP_NONE);
+		}
+	}
+
+	_tiles->setAlpha(255);
+
+}
+
+void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
+	int tileSize = EngineInst->getTileSize();
 	int tilesNums = _tiles->getTilesNums();
 	//for (int i =  0 ; i<tilesNums; ++i) {
 	srand(1);
@@ -313,8 +417,8 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	/*Render background*/
 	for (int i = 0 ; i != map->GetHeight() - 1; i++) {
 		for (int j = 0 ; j != map->GetWidth() - 1; ++j) {
-			int px_left = j * sizeDst + sizeDst / 2;
-			int px_top  = i * sizeDst + 0.5 * sizeDst;
+			int px_left = j * tileSize + tileSize / 2;
+			int px_top  = i * tileSize + 0.5 * tileSize;
 			_tiles->renderTile(renderer,
 			                   px_left,
 			                   px_top,
@@ -328,12 +432,36 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 			int tile =  map->GetFieldAt(j, i)->GetTileId();
 			if (field == IField::FLOOR)
 				continue;
-			int col = j * sizeDst;
-			int row = i * sizeDst;
+			int col = j * tileSize;
+			int row = i * tileSize;
 			_tiles->renderTile(renderer, col , row, tile, SDL_FLIP_NONE);
 
 		}
 	}
+}
+
+
+void SceneGame::OnRender(SDL_Renderer* renderer)
+{
+	// _background->render(renderer);
+
+	int tileSize = EngineInst->getTileSize();
+
+	SDL_Rect topLeftViewport;
+	topLeftViewport.x = 5;
+	topLeftViewport.y = 100;
+	topLeftViewport.w = EngineInst->screen_width();
+	topLeftViewport.h = EngineInst->screen_height();
+	SDL_RenderSetViewport(renderer, &topLeftViewport);
+
+	OnRenderMap(renderer);
+
+	topLeftViewport.x = 10;
+	topLeftViewport.y = 105;
+	topLeftViewport.w = map->GetWidth() * tileSize -10;
+	topLeftViewport.h =  map->GetHeight() * tileSize -10;
+	SDL_RenderSetViewport(renderer, &topLeftViewport);
+	
 	//{ //Astar Example
 	//	int startX = _player1->getPosBeforeX();
 	//	int startY = _player1->getPosBeforeY();
@@ -351,17 +479,19 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	//
 	//}
 
-
 	/*render enemies */
-	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
-		if ((*enemy)->GetState() == Character::ALIVE)
-			(*enemy)->OnRenderCircle(renderer, 4, 7);
-	}
+	//for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+	//	if ((*enemy)->GetState() == Character::ALIVE)
+	//		(*enemy)->OnRenderCircle(renderer, 4, 7);
+	//}
+	//_player1->OnRenderCircle(renderer, 4, 7);
 
 	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}
+
+
 	/* render fireballs */
 	for (std::list<Fireball*>::iterator it = fireballs.begin();
 	                it != fireballs.end(); ++it) {
@@ -376,29 +506,32 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	if (_player1->GetState() == Character::DEAD ||
 	                _player2->GetState() == Character::DEAD) {
 		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*sizeDst, "You lost!");
+		                             map->GetHeight()*tileSize, "You lost!");
 		EngineInst->font()->printfLT(100,
-		                             (map->GetHeight()*sizeDst)+30, "Press R to try again");
+		                             (map->GetHeight()*tileSize)+30, "Press R to try again");
 	}
 	/*Check victory condition*/
 	else if (_player1->GetState() == Character::WON &&
 	                _player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*sizeDst, "Both players won");
+		                             map->GetHeight()*tileSize, "Both players won");
 		level->setCurrentScene(room_id + 1);
 	} else if (_player1->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*sizeDst, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
+		                             map->GetHeight()*tileSize, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
 	} else if (_player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*sizeDst, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
+		                             map->GetHeight()*tileSize, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
 
 	}
 
-	_player1->OnRenderCircle(renderer, 4, 7);
+	
 
 	_player1->OnRender(renderer);
 	_player2->OnRender(renderer);
+
+
+	OnRenderShadow(renderer);
 
 	// Render top bar
 	SDL_Rect veryTopBar;

@@ -1,6 +1,7 @@
 #include "GlobalData.h"
 
 int calcCircleAlfaRadius4[9][9];
+int calcCircleAlfaRadius6[13][13];
 
 const char GlobalFontPath[] = "Resources/gabriele-bad.ttf";
 

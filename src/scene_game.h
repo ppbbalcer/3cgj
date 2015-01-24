@@ -19,18 +19,26 @@ private:
 	Character *_player1, *_player2;
 	std::vector<Character*> _enemys;
 	RTexture *_tiles;
+	int _arrayShadowW;
+	int _arrayShadowH;
+	int *_arrayShadow;
 	IMap *map;
 	Level *level;
 	int room_id;
 	void updateEnemies(int timems);
 	void updateFireballs(int timems);
 	void updatePlayers(int timems);
+	void updateShadowsObj4(int centerTiltX, int centerTiltY); 
+	void updateShadowsObj6(int centerTiltX, int centerTiltY); 
+	void updateShadows();
 public:
 	SceneGame(Level *level, int room_id);
 	virtual void OnLoad();
 	virtual void OnFree();
 	virtual void OnUpdate(int timems);
 	virtual void OnRender(SDL_Renderer* renderer);
+	virtual void OnRenderMap(SDL_Renderer* renderer);
+	virtual void OnRenderShadow(SDL_Renderer* renderer);
 	virtual ~SceneGame();
 };
 
