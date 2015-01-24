@@ -93,6 +93,9 @@ LoadedMap::LoadedMap(const char * path) {
 			case 'h':
 				new_field= new Field(IField::SMALL_HEALTH_FLASK);
 				break;
+			case 't':
+				new_field= new Field(IField::TRAP);
+				break;
 			case '^':
 				new_field= new Switch(1);
 				break;
@@ -112,6 +115,10 @@ LoadedMap::LoadedMap(const char * path) {
 			default:
 				new_field= new Field(IField::EMPTY);
 			}
+			if (c != 'w' && c != ' ') {
+				printf("Object: %c at %u %u\n", c, j, i);
+			}
+			
 			PlaceField(j,i,new_field);
 
 		}
@@ -192,9 +199,15 @@ LoadedMap::LoadedMap(const char * path) {
 			mapfile >> x >> y;
 			p2_start = make_pair(x,y);
 		} else if (command == "enemy_start") {
-			int x; int y;
-			mapfile >> x >> y;
-			enemies_start.push_back(make_pair(x,y));
+			enemy_definition *enemy = new enemy_definition();
+			mapfile >> enemy->x >> enemy->y >> enemy->hp >> enemy->ai;
+			enemies.push_back(enemy);
+		} else if (command == "exit") {
+			int x; int y, target;
+			mapfile >> x >> y >> target;
+			Door * dor = dynamic_cast <Door*>(
+				GetFieldAt(x, y));
+			dor->SetTargetBoard(target);
 		}
 	}
 	mapfile.close();
@@ -209,9 +222,9 @@ const starting_pos & GenericMap::GetPlayer2Start()
 	return p1_start;
 }
 
-const start_list & GenericMap::GetEnemiesStart()
+const enemies_list & GenericMap::GetEnemies()
 {
-	return enemies_start;
+	return enemies;
 }
 	
 void LoadedMap::SerializeOntoConsole()

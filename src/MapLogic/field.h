@@ -38,6 +38,7 @@ public:
 		LARGE_HEALTH_FLASK,
 		EMPTY_FLASK,
 		SWITCH_UP,
+		TRAP,
 		SWITCH_DOWN,
 		EVIL_COMPUTER, /*spawns fireballs everywhere*/
 		NUM_FIELD_TYPES

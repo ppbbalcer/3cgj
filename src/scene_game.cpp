@@ -6,8 +6,11 @@
 #include "Engine/AStar.h"
 #include <stdio.h>
 #include "fireball.h"
+#include "Enemy.h"
 #include "KeyMap.h"
 #include "level.h"
+#include "MapLogic/door.h"
+using namespace std;
 
 #define MAX_ROOM_PATH 255
 #define HEARTBEAT_BASE_INTERVAL 2000
@@ -88,18 +91,18 @@ void SceneGame::OnLoad()
 	_player2->setPosTiles(map->GetPlayer2Start().first,
 			      map->GetPlayer2Start().second);
 
-	const start_list &ens = map->GetEnemiesStart();
+	const enemies_list &ens = map->GetEnemies();
 
 	//int i=0;
-	for (start_list::const_iterator it=ens.begin() ; it!=ens.end();
+	for (enemies_list::const_iterator it=ens.begin() ; it!=ens.end();
 	     ++it)
 	{
 		tmpTexture = new RTexture(texturesScene_game[3]);
 		tmpTexture->setTileSizeSrc(tileSizeSrc);
 		tmpTexture->setTileSizeDst(tile_size);
 		tmpTexture->setTileIdx(23);
-		Enemy* enemy = new Enemy(tmpTexture, map);
-		enemy->setPosTiles(it->first, it->second);
+		Enemy* enemy = new Enemy(tmpTexture, map, (*it)->hp, (*it)->ai);
+		enemy->setPosTiles((*it)->x, (*it)->y);
 		_enemys.push_back(enemy);
 	}
 
@@ -110,11 +113,6 @@ void SceneGame::OnLoad()
 	_arrayShadowW = map->GetWidth();
 	_arrayShadowH = map->GetHeight();
 	_arrayShadow = new int[_arrayShadowW*_arrayShadowH*sizeof(_arrayShadowH)];
-	
-	
-
-
-	
 
 	//Load media
 	if (!success) {
@@ -212,6 +210,9 @@ void SceneGame::updatePlayers(int timems)
 void SceneGame::updateEnemies(int timems)
 {
 	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+		(*enemy)->OnUpdate(timems / 3);
+		if ((*enemy)->getAI() == ENEMY_AI_OFF)
+			continue;
 		int startX = (*enemy)->getPosBeforeX();
 		int startY = (*enemy)->getPosBeforeY();
 		AStarWay_t way1;
@@ -271,7 +272,6 @@ void SceneGame::updateEnemies(int timems)
 			}
 		}
 
-		(*enemy)->OnUpdate(timems / 3);
 	}
 }
 
@@ -382,16 +382,16 @@ void SceneGame::OnRenderShadow(SDL_Renderer* renderer) {
 
 }
 
-static unsigned long next = 1;
+static unsigned long _next = 1;
 
 static int _rand(void)
 {
-    next = next * 1103515245 + 12345;
-    return((unsigned)(next/65536) % 32768);
+	_next = _next * 1103515245 + 12345;
+	return((unsigned)(_next/65536) % 32768);
 }
 
 void _srand(unsigned seed) {
-	next = seed;
+	_next = seed;
 }
 
 void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
@@ -462,35 +462,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	SDL_RenderSetViewport(renderer, &topLeftViewport);
 	OnRenderMap(renderer);
 
-
-
-
-	
-	//{ //Astar Example
-	//	int startX = _player1->getPosBeforeX();
-	//	int startY = _player1->getPosBeforeY();
-	//	AStarWay_t way;
-	//
-	//	int direct = findAstar(way, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-	//	if (direct != DIRECT_NO_WAY) {
-	//		_tiles->renderTile(renderer, startX * sizeDst+margin_left, startY * sizeDst+margin_top, 8); //Start not exit in way
-	//		for(AStarWay_t::iterator point = way.begin(); point != way.end(); point++) {
-	//			int x = (*point).first;
-	//			int y = (*point).second;
-	//			_tiles->renderTile(renderer, x * sizeDst +margin_left, y * sizeDst+margin_top, 8);
-	//		}
-	//	}
-	//
-	//}
-
-	/*render enemies */
-	//for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
-	//	if ((*enemy)->GetState() == Character::ALIVE)
-	//		(*enemy)->OnRenderCircle(renderer, 4, 7);
-	//}
-	//_player1->OnRenderCircle(renderer, 4, 7);
-
-
+	/* render enemies */
 	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRender(renderer);
@@ -518,9 +490,29 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	/*Check victory condition*/
 	else if (_player1->GetState() == Character::WON &&
 	                _player2->GetState() == Character::WON) {
-		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*tileSize, "Both players won");
-		level->setCurrentScene(room_id + 1);
+		Door * dor = dynamic_cast <Door*>(
+			map->GetFieldAt(_player1->getPosAfterX(),
+					_player1->getPosAfterY()));
+		int target_level1=dor->GetTargetBoard();
+
+		dor = dynamic_cast <Door*>(
+			map->GetFieldAt(_player2->getPosAfterX(),
+					_player2->getPosAfterY()));
+		int target_level2=dor->GetTargetBoard();
+		
+		if (target_level2==target_level1) {
+			EngineInst->font()->printfLT(100,
+						     map->GetHeight()*tileSize, "Both players won");
+			level->setCurrentScene(target_level2);
+		} else {
+			/* did we really win? */
+			EngineInst->
+			font()->printfLT(100,
+					 map->GetHeight()*tileSize, "You lost - you have left level through different doors.");
+			EngineInst->font()->printfLT(100,
+						     (map->GetHeight()*tileSize)+30, "Press R to try again");
+			
+		}
 	} else if (_player1->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
 			map->GetHeight()*tileSize, "Player 1 has left the screen. Player 2 must join him so you can win the level together.");
