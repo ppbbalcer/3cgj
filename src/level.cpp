@@ -19,7 +19,7 @@ SceneGame* Level::getCurrentScene() {
 }
 
 void Level::setCurrentScene(int scene_id) {
-	if (scenes[id] == NULL) {
+	if (scenes.find(scene_id) == scenes.end()) {
 		scenes[id] = new SceneGame(this, scene_id);
 	}
 	current_scene = id;

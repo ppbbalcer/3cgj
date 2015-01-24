@@ -23,6 +23,8 @@ bool IMap_isObstacle(int x, int y, void* objMap)
 
 SceneGame::SceneGame(Level *level, int room_id)
 {
+	this->room_id = room_id;
+	this->level = level;
 	char buff[MAX_ROOM_PATH];
 	sprintf(buff, "Resources/levels/%u/%u.txt", level->getId(), room_id);
 	map = IMap::Factory(IMap::LOADED, buff);
@@ -373,18 +375,16 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	                _player2->GetState() == Character::DEAD) {
 		EngineInst->font()->printfLT(100,
 		                             map->GetHeight()*sizeDst, "You lost!");
-		
 	}
 	/*Check victory condition*/
 	else if (_player1->GetState() == Character::WON &&
 	                _player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
 		                             map->GetHeight()*sizeDst, "Both players won");
-
+		level->setCurrentScene(room_id + 1);
 	} else if (_player1->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
 		                             map->GetHeight()*sizeDst, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
-
 	} else if (_player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
 		                             map->GetHeight()*sizeDst, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");

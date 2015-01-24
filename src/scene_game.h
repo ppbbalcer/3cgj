@@ -20,7 +20,8 @@ private:
 	std::vector<Character*> _enemys;
 	RTexture *_tiles;
 	IMap *map;
-
+	Level *level;
+	int room_id;
 	void updateEnemies(int timems);
 	void updateFireballs(int timems);
 	void updatePlayers(int timems);
