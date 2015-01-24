@@ -1,12 +1,15 @@
 #include "Player.h"
 #include "GlobalData.h"
 
+using namespace std;
+
 Player::~Player(void) {};
 
 int Player::getMana()
 {
 	return _mana;
 }
+
 void Player::useMana(int howMuchMana)
 {
 	_mana -= howMuchMana;
@@ -25,8 +28,15 @@ void Player::restoreMana(int howMuchMana)
 
 Fireball * Player::Shoot()
 {
+	clock_t now = clock();
+
 	if (GetState() != ALIVE)
-		return 0;
+		return NULL;
+
+	if (((1.0 * now - _last_shot_time) / (CLOCKS_PER_SEC / 1000)) <= FIREBALL_MIN_DIFF_MS)
+		return NULL;
+
+	_last_shot_time = now;
 
 	globalAudios[GameSounds::FIREBALL].res.sound->play();
 

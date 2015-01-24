@@ -15,6 +15,8 @@
 #define MEDKIT_HEAL_VAL MAX_HEALTH
 #define POWERUP_VAL 20
 
+#define FIREBALL_MIN_DIFF_MS 500
+
 class Character
 {
 public:
