@@ -1,6 +1,6 @@
-#include "RTexture.h"
+#include "Engine/RTexture.h"
 #include <unordered_map>
-#include "../MapLogic/map.h"
+#include "MapLogic/map.h"
 
 #define MAX_HEALTH 100
 
@@ -22,7 +22,7 @@ public:
 		DEAD,
 		WON /* not playing now, because player has left the labyrinth */
 	};
-	Character(IMap * map, RTexture *texture);
+	Character(RTexture* texture, IMap * map);
 	~Character();
 
 	/**
@@ -33,7 +33,7 @@ public:
 	int crucio(int howMuchCrucio);
 	void heal(int howMuchHeal);
 
-	void render(SDL_Renderer *renderer, RTexture *tiles);
+	void OnRender(SDL_Renderer *renderer);
 	void setPosTiles(IMap *map, int x, int y);
 	int getPosX();
 	int getPosY();
@@ -45,12 +45,12 @@ public:
 	int getPosAfterX();
 	int getPosBeforeY();
 	int getPosAfterY();
-	int getDirRight() {return _dirRight;}
 
 private:
-	IMap * map;
-	void setPos(int x, int y);
 	RTexture *_texture;
+
+	IMap * _map;
+	void setPos(int x, int y);
 	int _health;
 	int _speed;
 	int _state;
@@ -62,7 +62,4 @@ private:
 	int _pos_after_x;
 	int _pos_before_y;
 	int _pos_after_y;
-
-
-	bool _dirRight;
 };

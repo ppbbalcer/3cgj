@@ -8,6 +8,15 @@
 #include "fireball.h"
 using namespace std;
 
+/* looking for obstacles*/
+bool IMap_isObstacle(int x, int y, void* objMap)
+{
+	
+	if (((IMap*)objMap)->GetFieldAt(x,y)->IsOccupied() )
+		return false;
+	return ((IMap*)objMap)->GetFieldAt(x,y)->IsObstacle();
+}
+
 SceneGame::SceneGame()
 {
 	map = IMap::Factory(IMap::LOADED, "Resources/map_example.txt");
@@ -24,29 +33,47 @@ void SceneGame::OnLoad()
 	EngineInst->setTileSize(tile_size);
 
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
-	RTexture *player1Texture = new RTexture(texturesScene_game[2]); 
-	RTexture *player2Texture = new RTexture(texturesScene_game[2]);
+	/*RTexture *player1Texture = new RTexture(texturesScene_game[2]); 
+	RTexture *player2Texture = new RTexture(texturesScene_game[2]);*/
 
 	//player1Texture->setPos(TILE_SIZE, TILE_SIZE);
 	//player2Texture->setPos(TILE_SIZE, TILE_SIZE);
+	int tileSizeSrc = 64;
 
+	RTexture *tmpTexture;
+	
+	
 	_background = new RTexture(texturesScene_game[1]);
 	_background ->setScaleSize(1.0*EngineInst->screen_width()/_background->getWidth());
-	_player1 = new Character(map,player1Texture);
-	_player2 = new Character(map,player2Texture);
+	
+	tmpTexture = new RTexture(texturesScene_game[3]); 
+	tmpTexture->setTileSizeSrc(tileSizeSrc);
+	tmpTexture->setTileSizeDst(tile_size);
+	tmpTexture->setTileIdx(24);
+	_player1 = new Character(tmpTexture, map);
+
+	tmpTexture = new RTexture(texturesScene_game[3]); 
+	tmpTexture->setTileSizeSrc(tileSizeSrc);
+	tmpTexture->setTileSizeDst(tile_size);
+	tmpTexture->setTileIdx(27);
+	_player2 = new Character(tmpTexture, map);
 
 	_player1->setPosTiles(map,3,3);
 	_player2->setPosTiles(map,4,3);
 
 	for(int i = 0; i<5; ++i) {
-		Character* enemy = new Character(map,player2Texture);
+		tmpTexture = new RTexture(texturesScene_game[3]); 
+		tmpTexture->setTileSizeSrc(tileSizeSrc);
+		tmpTexture->setTileSizeDst(tile_size);
+		tmpTexture->setTileIdx(23);
+		Character* enemy = new Character(tmpTexture, map);
 		enemy->setPosTiles(map,map->GetWidth()-2, map->GetHeight()-2-i);
 		_enemys.push_back(enemy);
 	}
 
 	
 	_tiles = new RTexture(texturesScene_game[3]);
-	_tiles->setTileSizeSrc(64);
+	_tiles->setTileSizeSrc(tileSizeSrc);
 
 	_tiles->setTileSizeDst(tile_size);
 	
@@ -201,7 +228,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 			_tiles->renderTile(renderer,
 					   px_left,
 					   px_top,
-					   18+rand()%5);
+					   18+rand()%5, SDL_FLIP_NONE);
 		}
 	}
 	for (int i = 0 ; i!=map->GetHeight(); i++) {
@@ -212,7 +239,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 				continue;
 			int col = j* sizeDst+margin_left;
 			int row = i * sizeDst +margin_top;
-			_tiles->renderTile(renderer, col , row, tile);
+			_tiles->renderTile(renderer, col , row, tile, SDL_FLIP_NONE);
 			
 		}
 	}
@@ -233,19 +260,14 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	//	
 	//}
 
-	SDL_RendererFlip flip;
-
 	for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ( (*enemy)->GetState()==Character::ALIVE)
-			flip = SDL_FLIP_NONE;
-			if(!(*enemy)->getDirRight()) {
-				 flip = SDL_FLIP_HORIZONTAL;
-			}
-			_tiles->renderTile(renderer, (*enemy)->getPosX()+margin_left, (*enemy)->getPosY()+margin_top, 23, flip);
+			(*enemy)->OnRender(renderer);
+			//_tiles->renderTile(renderer, (*enemy)->getPosX()+margin_left, (*enemy)->getPosY()+margin_top, 23, flip);
 	}
 	for(std::list<Fireball*>::iterator it = fireballs.begin();
 	    it != fireballs.end(); ++it) {
-		_tiles->renderTile(renderer, (*it)->getPosX()+margin_left, (*it)->getPosY()+margin_top, 28);
+		_tiles->renderTile(renderer, (*it)->getPosX()+margin_left, (*it)->getPosY()+margin_top, 28, SDL_FLIP_NONE);
 	}
 	/*Check victory condition*/
 	if (_player1->GetState() == Character::WON &&
@@ -263,16 +285,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		
 	}
 	
-	
-	flip = SDL_FLIP_NONE;
-	if(!_player1->getDirRight()) {
-		 flip = SDL_FLIP_HORIZONTAL;
-	}
-	_tiles->renderTile(renderer, _player1->getPosX()+margin_left, _player1->getPosY()+margin_top, 24, flip);
+	_player1->OnRender(renderer);
+	_player2->OnRender(renderer);
 
-	flip = SDL_FLIP_NONE;
-	if(!_player2->getDirRight()) {
-		 flip = SDL_FLIP_HORIZONTAL;
-	}
-	_tiles->renderTile(renderer, _player2->getPosX()+margin_left, _player2->getPosY()+margin_top, 27, flip);
 }

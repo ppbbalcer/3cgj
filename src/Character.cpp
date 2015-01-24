@@ -1,14 +1,15 @@
 #include "Character.h"
-#include "../GlobalData.h"
-#include "Engine.h"
-#include "../fireball.h"
+#include "GlobalData.h"
+#include "Engine/Engine.h"
+#include "fireball.h"
 using namespace std;
 
-Character::Character(IMap * _map, RTexture *texture)
+Character::Character(RTexture* texture, IMap * map)
 {
-	map=_map;
-	_health = MAX_HEALTH;
 	_texture = texture;
+
+	_map=map;
+	_health = MAX_HEALTH;
 	_state = ALIVE;
 	_pos_after_x = 
 	_pos_before_x = 
@@ -16,11 +17,12 @@ Character::Character(IMap * _map, RTexture *texture)
 	_pos_before_y = 0;
 	last_dir_x=1;
 	last_dir_y=0;
-	_dirRight = true;
 }
 
 Character::~Character()
 {
+	delete _texture;
+	_texture = NULL;
 }
 
 void Character::setPosTiles(IMap * map, int x, int y)
@@ -47,7 +49,7 @@ int Character::crucio(int howMuchCrucio)
 	printf("crucio! %d\n",_health);
 	if (_health==0) {
 		_state=DEAD;
-		map->GetFieldAt(_pos_before_x,_pos_before_y)
+		_map->GetFieldAt(_pos_before_x,_pos_before_y)
 			->LeftField();
 	}
 	return _health;
@@ -60,9 +62,14 @@ void Character::heal(int howMuchHeal)
 	_health = min<int>(_health + howMuchHeal, MAX_HEALTH);
 }
 
-void Character::render(SDL_Renderer *renderer, RTexture *tiles)
+void Character::OnRender(SDL_Renderer *renderer)
 {
-	_texture->render(renderer);
+
+	int margin_top = 100; //???
+	int margin_left = 5;
+
+	//_texture->render(renderer);
+	_texture->renderTile(renderer, getPosX()+margin_left, getPosY()+margin_top);
 }
 
 void Character::setPos(int x, int y)
@@ -173,13 +180,13 @@ void Character::updatePosition(IMap *map, int time_ms, int tile_size)
 		pos_y = min<int>(target_y, pos_y + dist);
 	}
 	if (pos_x > target_x) {
-		_dirRight = false;
+		_texture->setFlip(SDL_FLIP_HORIZONTAL);
 		last_dir_y=0;
 		last_dir_x=-1;
 		pos_x = max<int>(target_x, pos_x - dist);
 	}
 	if (pos_x < target_x) {
-		_dirRight = true;
+		_texture->setFlip(SDL_FLIP_NONE);
 		last_dir_y=0;
 		last_dir_x=+1;
 		pos_x = min<int>(target_x, pos_x + dist);

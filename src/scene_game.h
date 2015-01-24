@@ -4,7 +4,7 @@
 #include "Engine/Scene.h"
 #include "Engine/Engine.h"
 #include "Engine/RTexture.h"
-#include "Engine/Character.h"
+#include "Character.h"
 #include "MapLogic/map.h"
 class Fireball;
 /**
@@ -26,6 +26,8 @@ public:
 	virtual ~SceneGame();
 };
 
+
+bool IMap_isObstacle(int x, int y, void* objMap);
 
 #endif
 

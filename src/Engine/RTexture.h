@@ -28,7 +28,10 @@ public:
 	int			getTileSizeSrc();
 	int			getTileSizeDst();
 	int			getTilesNums();
-	void		renderTile(SDL_Renderer* renderer, int x, int y, int tileIdx, SDL_RendererFlip flip = SDL_FLIP_NONE);
+	void		setTileIdx(int tileIdx);
+	int			getTileIdx();
+	void		renderTile(SDL_Renderer* renderer, int x, int y);
+	void		renderTile(SDL_Renderer* renderer, int x, int y, int tileIdx, SDL_RendererFlip flip);
 
 private: 
 	SDL_Texture* _texture; 
@@ -44,6 +47,7 @@ private:
 	int _tileSizeDst;
 	int _tileColumns;
 	int _tileRows;
+	int _tileIdx;
 	
 };
 

@@ -106,7 +106,7 @@ void MainScene::OnRender(SDL_Renderer* renderer) {
 		int col = i % 30 + 2;
 		int row = i / 30 + 2;
 
-		_tiles->renderTile(renderer, col * sizeDst, row * sizeDst, i);
+		_tiles->renderTile(renderer, col * sizeDst, row * sizeDst, i, SDL_FLIP_NONE);
 
 		EngineInst->font()->printfLT(col * sizeDst, row * sizeDst, "%i", i);
 	}

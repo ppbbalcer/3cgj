@@ -18,8 +18,6 @@ enum DIRECT {
 	DIRECT_DOWN = 8 
 };
 
-bool IMap_isObstacle(int x, int y, void* objMap);
-
 /* 
  *	Can return direction DIRECT_LEFT & DIRECT_UP etc. 
  */

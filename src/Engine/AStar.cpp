@@ -1,15 +1,5 @@
 #include "AStar.h"
 #include <string.h>
-#include "../MapLogic/map.h"
-/* looking for obstacles*/
-bool IMap_isObstacle(int x, int y, void* objMap)
-{
-	
-	if (((IMap*)objMap)->GetFieldAt(x,y)->IsOccupied() )
-		return false;
-	return ((IMap*)objMap)->GetFieldAt(x,y)->IsObstacle();
-}
-
 
 #define IDXMAP(x,y) ((y) * (width) + (x))
 #define IDXOBS(x,y) (((y)+1) * (width + 1) + ((x)+1))

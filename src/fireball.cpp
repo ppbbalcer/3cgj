@@ -1,6 +1,6 @@
 #include "fireball.h"
 #include "Engine/Engine.h"
-#include "Engine/Character.h"
+#include "Character.h"
 
 Fireball::	Fireball(int start_x, int start_y, int _vx, int _vy)
 {
