@@ -77,14 +77,14 @@ public:
 	/* if position TO equals FROM, character is NOT moving */
 	
 	void updateDirection(DIRECT directMove);
-	void OnUpdate(int time_ms);
+	virtual void OnUpdate(int time_ms);
 	CharacterType getType() { return _type; }
-
-private:
+protected:
 	RTexture *_texture;
 	int power_level;
 
 	IMap * _map;
+private:
 	void setPos(int x, int y);
 	int _speed;
 	int _state;
