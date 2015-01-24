@@ -16,8 +16,8 @@ public:
 	static bool Create();
 	static void Destroy();
 
-	inline int				screen_width()	{ return 640; }
-	inline int				screen_height() { return 480; }
+	inline int				screen_width()	{ return 1400; }
+	inline int				screen_height() { return 1000; }
 
 	bool					loadTexture(ResourceItem &resItem); 
 	void					unLoadTexture(ResourceItem &resItem);
