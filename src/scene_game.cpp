@@ -3,6 +3,7 @@
 #include "scene_game.h"
 #include "GlobalData.h"
 #include <algorithm>
+#include <stdio.h>
 
 #define TILE_SIZE 32
 using namespace std;
@@ -18,7 +19,7 @@ SceneGame::~SceneGame()
 void SceneGame::OnLoad()
 {
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
-	
+
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
 
 	_background = new RTexture(texturesScene_game[1]);
@@ -26,7 +27,7 @@ void SceneGame::OnLoad()
 	_player->setPos(TILE_SIZE,TILE_SIZE);
 	
 	_tiles = new RTexture(texturesScene_game[3]);
-	_tiles->setTileSizeSrc(64);
+	_tiles->setTileSizeSrc(32);
 	_tiles->setTileSizeDst(TILE_SIZE);
 	pcpos_before_x=pcpos_after_x=pcpos_before_y=pcpos_after_y=
 		1;
@@ -44,7 +45,7 @@ void SceneGame::OnFree()
 		EngineInst->unLoadResources(texturesScene, texturesSceneSize);
 
 }
-#include <stdio.h>
+
 void SceneGame::OnUpdate(int timems)
 {
 		//Event handler
@@ -132,7 +133,7 @@ void SceneGame::OnUpdate(int timems)
 
 void SceneGame::OnRender(SDL_Renderer* renderer)
 {
-		_background->render(renderer);
+		//_background->render(renderer);
 
 		int sizeDst = _tiles->getTileSizeDst();
 		int tilesNums = _tiles->getTilesNums();
@@ -141,17 +142,18 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 			for (int j = 0 ; j!=map->GetWidth(); ++j) {
 				int field= map->GetFieldAt(j,i)->GetType();
 
-				int col = j;//  % 20 + 2;
-				int row = i;// / 20 + 2;
-				int tile = 7;
+				int col = j;// % 20 + 2;
+				int row = i;// 20 + 2;
+				int tile = 6;
 				if (field==WALL)
-					tile=4;
+					tile=5;
 				_tiles->renderTile(renderer, col * sizeDst, row * sizeDst, tile);
 
 			}
 		}
 //}
-		_player->render(renderer);
+		_tiles->renderTile(renderer, _player->getPosX(), _player->getPosY(), 24);
+		//_player->render(renderer);
 
 
 }
