@@ -20,8 +20,14 @@ SceneGame* Level::getCurrentScene() {
 
 void Level::setCurrentScene(int scene_id) {
 	if (scenes.find(scene_id) == scenes.end()) {
-		scenes[id] = new SceneGame(this, scene_id);
+		scenes[scene_id] = new SceneGame(this, scene_id);
 	}
-	current_scene = id;
+	current_scene = scene_id;
 	EngineInst->setNextScene(getCurrentScene());
+}
+
+void Level::resetCurrent() {
+	delete scenes[current_scene];
+	scenes.erase(current_scene);
+	setCurrentScene(current_scene);
 }

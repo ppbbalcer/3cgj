@@ -16,6 +16,7 @@ public:
 	Level(int id);
 	~Level();
 	void setCurrentScene(int scene_id);
+	void resetCurrent();
 	SceneGame* getCurrentScene(); 
 	int getId() { return id; }
 };
