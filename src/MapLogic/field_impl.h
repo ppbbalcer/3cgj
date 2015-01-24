@@ -11,15 +11,8 @@ public:
 		someone_is_here=false;
 		type=f;
 	}
-	int GetType() {
-		return type;
-	}
-	bool IsObstacle() {
-		if (someone_is_here) {
-			return true;
-		}
-		return (type>=WALL && type <=T_BOTTOM);
-	}
+	int GetType();
+	bool IsObstacle();
 	int GetTileId();
 	void SetType(int f)
 	{

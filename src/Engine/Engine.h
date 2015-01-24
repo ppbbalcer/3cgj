@@ -17,6 +17,15 @@ public:
 	static void Destroy();
 	int screen_width();
 	int screen_height();
+	void setTileSize(int ts)
+	{
+		_tile_size=ts;
+	}
+	int getTileSize()
+	{
+		return _tile_size;
+	}
+	
 	
 	bool					loadTexture(ResourceItem &resItem); 
 	void					unLoadTexture(ResourceItem &resItem);
@@ -39,7 +48,7 @@ private:
 	Engine& operator=(const Engine&);
 	Engine(const Engine&);
 	Engine(){}
-
+	int _tile_size;
 	/* Engine members */
 	SDL_Window*			_window;		//The window we'll be rendering to 
 	SDL_Surface*			_screenSurface;		//The surface contained by the window 

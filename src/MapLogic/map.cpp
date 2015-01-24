@@ -72,6 +72,12 @@ LoadedMap::LoadedMap(const char * path) {
 			case 'w':
 				new_field= new Field(IField::WALL);
 				break;
+			case 'k':
+				new_field= new Field(IField::DOSKEY);
+				break;
+			case 'm':
+				new_field= new Field(IField::MEDKIT);
+				break;
 			default:
 				new_field= new Field(IField::EMPTY);
 			}

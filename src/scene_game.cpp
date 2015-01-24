@@ -19,6 +19,8 @@ SceneGame::~SceneGame()
 void SceneGame::OnLoad()
 {
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
+	int tile_size = EngineInst->screen_width()/map->GetWidth();
+	EngineInst->setTileSize(tile_size);
 
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
 	RTexture *player1Texture = new RTexture(texturesScene_game[2]); 
@@ -37,7 +39,7 @@ void SceneGame::OnLoad()
 
 	for(int i = 0; i<5; ++i) {
 		Character* enemy = new Character(map,player2Texture);
-		enemy->setPosTiles(map,map->GetWidth()/2 + i, map->GetHeight()-4);
+		enemy->setPosTiles(map,map->GetWidth()-2, map->GetHeight()-2-i);
 		_enemys.push_back(enemy);
 	}
 
@@ -45,8 +47,6 @@ void SceneGame::OnLoad()
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(64);
 
-	int tile_size = EngineInst->screen_width()/map->GetWidth();
-	
 	_tiles->setTileSizeDst(tile_size);
 	
 	
@@ -234,5 +234,5 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		
 	}
 	_tiles->renderTile(renderer, _player1->getPosX()+margin_left, _player1->getPosY()+margin_top, 24);
-	_tiles->renderTile(renderer, _player2->getPosX()+margin_left, _player2->getPosY()+margin_top, 24);
+	_tiles->renderTile(renderer, _player2->getPosX()+margin_left, _player2->getPosY()+margin_top, 27);
 }

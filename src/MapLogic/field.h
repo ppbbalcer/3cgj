@@ -30,6 +30,7 @@ public:
 		DOOR_HORIZONTAL_OPEN,
 		DOOR_VERTICAL_OPEN,
 		MEDKIT,
+		DOSKEY, /* dos computer that opens doors */
 
 		NUM_FIELD_TYPES
   

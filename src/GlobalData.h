@@ -3,7 +3,6 @@
 #include "Engine/Scene.h"
 #include "Engine/StructsGlobal.h"
 
-#define TILE_SIZE 32
 
 extern const char GlobalFontPath[];
 

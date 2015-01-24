@@ -1,6 +1,6 @@
 #include "Character.h"
 #include "../GlobalData.h"
-
+#include "Engine/Engine.h"
 using namespace std;
 
 Character::Character(IMap * map, RTexture *texture)
@@ -28,7 +28,7 @@ void Character::setPosTiles(IMap * map, int x, int y)
 	_pos_before_y = y;
 	map->GetFieldAt(_pos_after_x, _pos_before_y)
 		->SteppedOver();
-	setPos(x * TILE_SIZE, y * TILE_SIZE);
+	setPos(x * EngineInst->getTileSize(), y * EngineInst->getTileSize());
 }
 
 int Character::getHealth()

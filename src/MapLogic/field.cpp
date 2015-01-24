@@ -27,6 +27,8 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[DOOR_VERTICAL_OPEN] = 16;
 	assigned_field[DOOR_HORIZONTAL_CLOSED] = 14;
 	assigned_field[DOOR_HORIZONTAL_OPEN] = 15;
+	assigned_field[MEDKIT] = 25;
+	assigned_field[DOSKEY] = 26;
 	initialized = true;
 }
 int Field::GetTileId()
@@ -34,8 +36,29 @@ int Field::GetTileId()
 	EnsureFieldIdsInitialized();
 	return assigned_field[GetType()];
 }
+bool Field::IsObstacle() {
+	if (someone_is_here) {
+		return true;
+	}
+	if (GetType()==DOOR_VERTICAL_CLOSED ||
+	    GetType()==DOOR_HORIZONTAL_CLOSED)
+	 	return true;
+	return (type>=WALL && type <=T_BOTTOM);
+}
+int doskey_active=0;
+int Field::GetType() {
+	if (type==DOOR_VERTICAL_CLOSED && doskey_active)
+		return DOOR_VERTICAL_OPEN;
+	if (type==DOOR_HORIZONTAL_CLOSED && doskey_active)
+		return DOOR_HORIZONTAL_OPEN;
+
+	return type;
+}
+
 void Field::SteppedOver()
 {
+	if (type==DOSKEY)
+		doskey_active++;
 	if (type==DOOR_VERTICAL_CLOSED)
 		type=DOOR_VERTICAL_OPEN;
 	if (type==DOOR_HORIZONTAL_CLOSED)
@@ -45,5 +68,7 @@ void Field::SteppedOver()
 
 void Field::LeftField()
 {
+	if (type==DOSKEY)
+		doskey_active--;
 	someone_is_here=false;
 }
