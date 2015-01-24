@@ -150,7 +150,8 @@ void Engine::resetViewport() {
 bool Engine::loadResources(ResourceItem resources[], unsigned int size) {
 	bool result = true;
 	for (unsigned i=0; i<size && result; ++i) {
-		result &= loadTexture(resources[i]);
+		if (resources[i].texture == NULL)
+			result &= loadTexture(resources[i]);
 	}
 	return result;
 }
@@ -312,7 +313,7 @@ void Engine::mainLoop() {
 		if (_font) {
 			_font->OnUpdate();
 		}
-	
+
 		_scene->OnUpdate(delta);
 
 		//Change scene
