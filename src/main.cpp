@@ -19,7 +19,7 @@ void preCalc() {
 		for(int y=-radius; y<=radius; ++y) {
 			int rq = (xQuad + y*y);
 			if(rq <= radQuad ) {
-				int alfa =  radius - sqrt(rq);
+				int alfa =  radius - (int) sqrt(rq);
 				alfa =  alfa * 255 / radius;
 				calcCircleAlfaRadius4[x + radius][y + radius] = 0 +alfa ;
 			} else {
@@ -35,7 +35,7 @@ void preCalc() {
 		for(int y=-radius; y<=radius; ++y) {
 			int rq = (xQuad + y*y);
 			if(rq <= radQuad ) {
-				int alfa =  radius - sqrt(rq);
+				int alfa =  radius - (int) sqrt(rq);
 				alfa =  alfa * 255 / radius;
 				calcCircleAlfaRadius6[x + radius][y + radius] = alfa ;
 			} else {

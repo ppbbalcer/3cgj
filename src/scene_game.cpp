@@ -198,75 +198,6 @@ void SceneGame::updatePlayers(int timems)
 		_player2->updateDirection(DIRECT_RIGHT);
 	}
 
-// <<<<<<< HEAD
-	// _player1->updatePosition(map, timems,_tiles->getTileSizeDst());
-	// _player2->updatePosition(map, timems,_tiles->getTileSizeDst());
-	// for(std::list<Fireball*>::iterator it = fireballs.begin();
-	// it != fireballs.end(); ++it) {
-	// if ( (*it)->updatePosition(map,timems) ) {
-	// std::list<Fireball*>::iterator next=it;
-	// next++;
-	// delete *it;
-	// fireballs.erase(it);
-	// it=next;
-	// }
-	// }
-
-	// //int enemys = _enemys.size();
-	// //calc_enemy_timer += timems;
-	// //calc_enemy_last = 0;
-	// //int tipePerOne = /*period to update all enemys*/1000 /enemys;
-	// //int enemysToUpdate = calc_enemy_timer/tipePerOne + 3;
-	// //calc_enemy_timer = calc_enemy_timer%tipePerOne;
-
-	// //int enemy_start = -1;
-	// //int enemy_stop = -1;
-	// //if(enemysToUpdate > 0) {
-	// //	enemy_start = calc_enemy_last + 1;
-	// //	enemy_stop = (enemy_start + enemysToUpdate -1)%enemys;
-	// //	enemy_start %= enemys;
-	// //	calc_enemy_last = enemy_stop;
-	// //}
-
-	// //int index = 0;
-	// for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
-
-	// /*if((index >= enemy_start && index <= enemy_stop) || (index <= enemy_start && index >= enemy_stop)) {*/
-	// int startX = (*enemy)->getPosBeforeX();
-	// int startY = (*enemy)->getPosBeforeY();
-	// AStarWay_t way1;
-	// AStarWay_t way2;
-
-	// DIRECT destBest = DIRECT_NO_WAY;
-	// DIRECT direct1 = findAstar(way1, 5, startX, startY,_player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-	// DIRECT direct2 = findAstar(way2, 5, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-
-	// if(direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
-	// destBest = direct1;
-	// } else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
-	// destBest = direct2;
-	// } else if (direct1 != DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
-	// if(way1.size() > way2.size()) {
-	// destBest = direct2;
-	// } else {
-	// destBest = direct1;
-	// }
-	// }
-
-	// if (destBest != DIRECT_NO_WAY) {
-	// if (destBest == DIRECT_DOWN) {
-	// (*enemy)->updateDirection(map, Character::ACTION_MOVE_DOWN);
-	// } else if (destBest == DIRECT_UP) {
-	// (*enemy)->updateDirection(map, Character::ACTION_MOVE_UP);
-	// } else if (destBest == DIRECT_LEFT) {
-	// (*enemy)->updateDirection(map, Character::ACTION_MOVE_LEFT);
-	// } else if (destBest == DIRECT_RIGHT) {
-	// (*enemy)->updateDirection(map, Character::ACTION_MOVE_RIGHT);
-	// }
-	// }
-	// /*}
-	// index++;*/
-
 	if (currentKeyStates[PLAYER_2_SHOOT]) {
 		Fireball * fb = _player2->Shoot();
 		if (fb)
@@ -458,7 +389,7 @@ void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 	for (int i = 0 ; i != map->GetHeight() - 1; i++) {
 		for (int j = 0 ; j != map->GetWidth() - 1; ++j) {
 			int px_left = j * tileSize + tileSize / 2;
-			int px_top  = i * tileSize + 0.5 * tileSize;
+			int px_top  = i * tileSize + tileSize / 2;
 			_tiles->renderTile(renderer,
 			                   px_left,
 			                   px_top,
@@ -580,8 +511,9 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 	// Render top bar
 	SDL_Rect veryTopBar;
-	int hpBarXPadding = 20;
-	int hpBarHeight = 20;
+	int playerBarXPadding = 20;
+	int playerBarHeight = 20;
+	int paddingBetweenBars = 5;
 
 	veryTopBar.x = 0;
 	veryTopBar.y = 20;
@@ -590,11 +522,19 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 	SDL_RenderSetViewport(renderer, &veryTopBar);
 
-	SDL_Rect p1_hp_rect = { hpBarXPadding, 0, _player1->getHealth() * 2, hpBarHeight};
+	SDL_Rect p1_hp_rect = { playerBarXPadding, 0, _player1->getHealth() * 2, playerBarHeight};
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, &p1_hp_rect);
 
-	SDL_Rect p2_hp_rect = { EngineInst->screen_width() - hpBarXPadding - _player2->getHealth() * 2, 0, _player2->getHealth() * 2, hpBarHeight};
+	SDL_Rect p1_mana_rect = { playerBarXPadding, playerBarHeight + paddingBetweenBars, _player1->getMana() * 2, playerBarHeight};
+	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+	SDL_RenderFillRect(renderer, &p1_mana_rect);
+
+	SDL_Rect p2_hp_rect = { EngineInst->screen_width() - playerBarXPadding - _player2->getHealth() * 2, 0, _player2->getHealth() * 2, playerBarHeight};
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, &p2_hp_rect);
+
+	SDL_Rect p2_mana_rect = { EngineInst->screen_width() - playerBarXPadding - _player2->getMana() * 2, playerBarHeight + paddingBetweenBars, _player2->getMana() * 2, playerBarHeight};;
+	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+	SDL_RenderFillRect(renderer, &p2_mana_rect);
 }
