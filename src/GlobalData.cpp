@@ -6,7 +6,7 @@ const char GlobalFontPath[] = "Resources/gabriele-bad.ttf";
 
 ResourceItem globalTextures[] = {
 	{"Resources/tiles3.png",		false, true, true, 0,		NULL, NULL, 0, 0}, //Alfa problem fixed
-	{"Resources/laughing_man_logo.png",		true, true, false, 0,		NULL, NULL, 0, 0},
+	{"Resources/tiles/walls.png",		false, false, true, 0,		NULL, NULL, 0, 0},
 	{"Resources/laughing_man.bmp",			true, true, false, 0,		NULL, NULL, 0, 0},
 	{"Resources/background.png",			false, true, false, 0,		NULL, NULL, 0, 0},
 };

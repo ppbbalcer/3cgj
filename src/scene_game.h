@@ -24,7 +24,7 @@ private:
 	void updateFireballs(int timems);
 	void updatePlayers(int timems);
 public:
-	SceneGame();
+	SceneGame(int level_id, int room_id);
 	virtual void OnLoad();
 	virtual void OnFree();
 	virtual void OnUpdate(int timems);
