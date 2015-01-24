@@ -1,3 +1,6 @@
+#ifndef __CHARACTER_H__
+#define __CHARACTER_H__
+
 #include "Engine/RTexture.h"
 #include <unordered_map>
 #include "MapLogic/map.h"
@@ -37,16 +40,17 @@ public:
 	void OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx);
 	void OnRender(SDL_Renderer *renderer);
 	void setPosTiles(IMap *map, int x, int y);
+
 	int getPosX();
 	int getPosY();
-
-	Fireball * Shoot();
-	void updateDirection(IMap *map, Action action);
-	void updatePosition(IMap *map, int time_ms, int tile_size);
 	int getPosBeforeX();
 	int getPosAfterX();
 	int getPosBeforeY();
 	int getPosAfterY();
+
+	Fireball * Shoot();
+	void updateDirection(IMap *map, Action action);
+	void updatePosition(IMap *map, int time_ms);
 
 private:
 	RTexture *_texture;
@@ -65,3 +69,5 @@ private:
 	int _pos_before_y;
 	int _pos_after_y;
 };
+
+#endif

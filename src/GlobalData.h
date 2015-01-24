@@ -14,6 +14,12 @@ extern size_t globalTexturesSize;
 extern class Scene* gScene;
 extern size_t gScenesSize;
 
+enum GameSounds {
+	CLICK_ON = 0,
+	CLICK_OFF = 1,
+	FIREBALL = 2
+};
+
 extern AudioResource globalAudios[];
 extern size_t globalAudiosSize;
 

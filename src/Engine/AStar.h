@@ -1,6 +1,7 @@
 #ifndef __ASTAR_H__
 #define __ASTAR_H__
 #include <list>
+#include "StructsGlobal.h"
 
 /* 
  * Handler to return that in position is obstacle 
@@ -9,14 +10,6 @@
 typedef bool (*funcIsObstacle)(int, int, void*);
 typedef std::pair<int,int> AStartPoint_t;
 typedef std::list<AStartPoint_t> AStarWay_t;
-
-enum DIRECT {
-	DIRECT_NO_WAY = 0,
-	DIRECT_LEFT = 1,
-	DIRECT_RIGHT = 2,
-	DIRECT_UP = 4,
-	DIRECT_DOWN = 8 
-};
 
 /* 
  *	Can return direction DIRECT_LEFT & DIRECT_UP etc. 

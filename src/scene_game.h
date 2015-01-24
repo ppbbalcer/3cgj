@@ -10,7 +10,9 @@ class Fireball;
 /**
  * scene that contains map and character
  */
-class SceneGame: public Scene {
+class SceneGame: public Scene
+{
+private:
 	std::list<Fireball *> fireballs;
 	RTexture *_background;
 	Character *_player1, *_player2;
@@ -18,8 +20,9 @@ class SceneGame: public Scene {
 	RTexture *_tiles;
 	IMap *map;
 
-	int calc_enemy_timer;
-	int calc_enemy_last;
+	void updateEnemies(int timems);
+	void updateFireballs(int timems);
+	void updatePlayers(int timems);
 public:
 	SceneGame();
 	virtual void OnLoad();
@@ -28,7 +31,6 @@ public:
 	virtual void OnRender(SDL_Renderer* renderer);
 	virtual ~SceneGame();
 };
-
 
 bool IMap_isObstacle(int x, int y, void* objMap);
 

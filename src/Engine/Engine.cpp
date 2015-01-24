@@ -6,14 +6,10 @@
 #include <SDL_mixer.h>
 #include "Engine.h"
 #include "Scene.h"
-
+#include <assert.h>
 
 void PAUSE() {
-#ifdef WIN32
-	system("pause");
-#else
-	system("read");
-#endif
+	assert(false);
 }
 
 float Q_rsqrt( float number )

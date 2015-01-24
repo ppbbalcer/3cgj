@@ -1,7 +1,9 @@
 #ifndef __FIREBALL_H
 #define __FIREBALL_H
 #include "MapLogic/map.h"
-class Fireball {
+
+class Fireball
+{
 	int x; // in tiles
 	int y;
 	int vx;
