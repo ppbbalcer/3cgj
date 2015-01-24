@@ -10,18 +10,21 @@
 
 using namespace std;
 
+#define MAX_ROOM_PATH 255
+
 /* looking for obstacles*/
 bool IMap_isObstacle(int x, int y, void* objMap)
 {
-
 	if (((IMap*)objMap)->GetFieldAt(x, y)->IsOccupied())
 		return false;
 	return ((IMap*)objMap)->GetFieldAt(x, y)->IsObstacle();
 }
 
-SceneGame::SceneGame()
+SceneGame::SceneGame(int level_id, int room_id)
 {
-	map = IMap::Factory(IMap::LOADED, "Resources/map_example.txt");
+	char buff[MAX_ROOM_PATH];
+	sprintf(buff, "Resources/levels/%u/%u.txt", level_id, room_id);
+	map = IMap::Factory(IMap::LOADED, buff);
 }
 
 SceneGame::~SceneGame()

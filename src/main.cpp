@@ -47,8 +47,8 @@ bool loadMedia() {
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
 //	gScene = new MainScene();
 	// uncomment this to instead get scene with first preview of map
-//	gScene = new SceneGame();
-	gScene = new BaseLevel(0, 4);
+	gScene = new SceneGame(0, 0);
+//	gScene = new BaseLevel(0, 4);
 	if (!EngineInst->loadAudioResources(globalAudios, globalAudiosSize))
 		success = false;
 
