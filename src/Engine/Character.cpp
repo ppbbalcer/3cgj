@@ -7,10 +7,20 @@ Character::Character(RTexture *texture)
 {
 	_health = MAX_HEALTH;
 	_texture = texture;
-	_pos_after_x = 1;
-	_pos_before_x = 1;
-	_pos_after_y = 1;
-	_pos_before_y = 1;
+	setPosTiles(1,1);
+}
+
+Character::~Character()
+{
+}
+
+void Character::setPosTiles(int x, int y)
+{
+	_pos_after_x = x;
+	_pos_before_x = x;
+	_pos_after_y = y;
+	_pos_before_y = y;
+	setPos(x * TILE_SIZE, y * TILE_SIZE);
 }
 
 int Character::getHealth()
@@ -36,16 +46,17 @@ void Character::render(SDL_Renderer *renderer, RTexture *tiles)
 
 void Character::setPos(int x, int y)
 {
-	_texture->setPos(x, y);
+	_posX = x;
+	_posY = y;
 }
 
 int Character::getPosX()
 {
-	return _texture->getPosX();
+	return _posX;
 }
 int Character::getPosY()
 {
-	return _texture->getPosY();
+	return _posY;
 }
 
 int Character::getPosBeforeX()

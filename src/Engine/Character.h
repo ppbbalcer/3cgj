@@ -18,14 +18,14 @@ public:
 	};
 
 	Character(RTexture *texture);
-	~Character(void);
+	~Character();
 
 	int getHealth();
 	int crucio(int howMuchCrucio);
 	void heal(int howMuchHeal);
 
 	void render(SDL_Renderer *renderer, RTexture *tiles);
-	void setPos(int x, int y);
+	void setPosTiles(int x, int y);
 	int getPosX();
 	int getPosY();
 	void updateDirection(IMap *map, Action action);
@@ -36,10 +36,14 @@ public:
 	int getPosAfterY();
 
 private:
+	void setPos(int x, int y);
 	RTexture *_texture;
 	int _health;
 	int _speed;
 
+
+	int _posX;
+	int _posY;
 	int _pos_before_x;
 	int _pos_after_x;
 	int _pos_before_y;

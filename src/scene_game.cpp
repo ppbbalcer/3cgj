@@ -25,12 +25,22 @@ void SceneGame::OnLoad()
 	RTexture *player1Texture = new RTexture(texturesScene_game[2]); 
 	RTexture *player2Texture = new RTexture(texturesScene_game[2]);
 
-	player1Texture->setPos(TILE_SIZE, TILE_SIZE);
-	player2Texture->setPos(TILE_SIZE, TILE_SIZE);
+	//player1Texture->setPos(TILE_SIZE, TILE_SIZE);
+	//player2Texture->setPos(TILE_SIZE, TILE_SIZE);
 
 	_background = new RTexture(texturesScene_game[1]);
 	_player1 = new Character(player1Texture);
 	_player2 = new Character(player2Texture);
+
+	_player1->setPosTiles(3,3);
+	_player2->setPosTiles(4,3);
+
+	for(int i = 0; i<5; ++i) {
+		Character* enemy = new Character(player2Texture);
+		enemy->setPosTiles(map->GetWidth()/2 + i, map->GetHeight()-4);
+		_enemys.push_back(enemy);
+	}
+
 	
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(64);
@@ -46,7 +56,14 @@ void SceneGame::OnLoad()
 
 void SceneGame::OnFree()
 {
-		EngineInst->unLoadResources(texturesScene, texturesSceneSize);
+	for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+		delete *enemy;
+	}
+	_enemys.clear();
+
+	//Destroy textures???
+
+	EngineInst->unLoadResources(texturesScene, texturesSceneSize);
 
 }
 
@@ -64,8 +81,7 @@ void SceneGame::OnUpdate(int timems)
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
 		{
-			Engine::eventDebug(&e);
-
+			//Engine::eventDebug(&e);
 			//User requests quit, Press Esc
 			if( e.type == SDL_QUIT || (e.type == SDL_KEYDOWN  && e.key.keysym.sym == SDLK_ESCAPE) )
 			{
@@ -111,6 +127,25 @@ void SceneGame::OnUpdate(int timems)
 
 		_player1->updatePosition(map, timems);
 		_player2->updatePosition(map, timems);
+
+		for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			(*enemy)->updatePosition(map, timems);
+		}
 }
 
 void SceneGame::OnRender(SDL_Renderer* renderer)
@@ -148,8 +183,10 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 			_tiles->renderTile(renderer, startX * sizeDst, startY * sizeDst, 8);
 
+			AStarWay_t way;
+
 			while (startX != _player2->getPosBeforeX() || startY != _player2->getPosBeforeY()) {
-				int direct = findAstar(startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+				int direct = findAstar(way, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 				if (direct == DIRECT_NO_WAY) {
 					break;
 				}
@@ -169,6 +206,12 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 			}
 		}
 
+		for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+
+			_tiles->renderTile(renderer, (*enemy)->getPosX(), (*enemy)->getPosY(), 23);
+		}
+
+		
 		_tiles->renderTile(renderer, _player1->getPosX(), _player1->getPosY(), 24);
 		_tiles->renderTile(renderer, _player2->getPosX(), _player2->getPosY(), 24);
 }

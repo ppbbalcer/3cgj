@@ -1,13 +1,14 @@
 #include "AStar.h"
 #include <string.h>
-#include <list>
+
 
 #define IDXMAP(x,y) ((y) * (width) + (x))
 #define IDXOBS(x,y) (((y)+1) * (width + 1) + ((x)+1))
 static int statit_touchX[4] = {-1,1,0,0};
 static int statit_touchY[4] = {0,0,-1,1};
 
-enum DIRECT findAstar(int xStart, int yStart, int xEnd, int yEnd, int width, int height, funcIsObstacle func, void *data) {
+enum DIRECT findAstar(AStarWay_t &way, int xStart, int yStart, int xEnd, int yEnd, int width, int height, funcIsObstacle func, void *data)
+{
 
 	DIRECT result = DIRECT_NO_WAY;
 	int* map = new int[width*height];
