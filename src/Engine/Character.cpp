@@ -1,6 +1,6 @@
 #include "Character.h"
 #include "../GlobalData.h"
-#include "Engine/Engine.h"
+#include "Engine.h"
 #include "../fireball.h"
 using namespace std;
 
@@ -16,6 +16,7 @@ Character::Character(IMap * _map, RTexture *texture)
 	_pos_before_y = 0;
 	last_dir_x=1;
 	last_dir_y=0;
+	_dirRight = true;
 }
 
 Character::~Character()
@@ -172,11 +173,13 @@ void Character::updatePosition(IMap *map, int time_ms, int tile_size)
 		pos_y = min<int>(target_y, pos_y + dist);
 	}
 	if (pos_x > target_x) {
+		_dirRight = false;
 		last_dir_y=0;
 		last_dir_x=-1;
 		pos_x = max<int>(target_x, pos_x - dist);
 	}
 	if (pos_x < target_x) {
+		_dirRight = true;
 		last_dir_y=0;
 		last_dir_x=+1;
 		pos_x = min<int>(target_x, pos_x + dist);

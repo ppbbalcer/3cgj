@@ -216,27 +216,32 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 			
 		}
 	}
-	{ //Astar Example
-		int startX = _player1->getPosBeforeX(); 
-		int startY = _player1->getPosBeforeY();
-		AStarWay_t way;
-		
-		int direct = findAstar(way, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-		if (direct != DIRECT_NO_WAY) {
-			_tiles->renderTile(renderer, startX * sizeDst+margin_left, startY * sizeDst+margin_top, 8); //Start not exit in way
-			for(AStarWay_t::iterator point = way.begin(); point != way.end(); point++) {
-				int x = (*point).first;
-				int y = (*point).second;
-				_tiles->renderTile(renderer, x * sizeDst +margin_left, y * sizeDst+margin_top, 8);
-			}
-		}
-		
-	}
+	//{ //Astar Example
+	//	int startX = _player1->getPosBeforeX(); 
+	//	int startY = _player1->getPosBeforeY();
+	//	AStarWay_t way;
+	//	
+	//	int direct = findAstar(way, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+	//	if (direct != DIRECT_NO_WAY) {
+	//		_tiles->renderTile(renderer, startX * sizeDst+margin_left, startY * sizeDst+margin_top, 8); //Start not exit in way
+	//		for(AStarWay_t::iterator point = way.begin(); point != way.end(); point++) {
+	//			int x = (*point).first;
+	//			int y = (*point).second;
+	//			_tiles->renderTile(renderer, x * sizeDst +margin_left, y * sizeDst+margin_top, 8);
+	//		}
+	//	}
+	//	
+	//}
 
+	SDL_RendererFlip flip;
 
 	for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ( (*enemy)->GetState()==Character::ALIVE)
-			_tiles->renderTile(renderer, (*enemy)->getPosX()+margin_left, (*enemy)->getPosY()+margin_top, 23);
+			flip = SDL_FLIP_NONE;
+			if(!(*enemy)->getDirRight()) {
+				 flip = SDL_FLIP_HORIZONTAL;
+			}
+			_tiles->renderTile(renderer, (*enemy)->getPosX()+margin_left, (*enemy)->getPosY()+margin_top, 23, flip);
 	}
 	for(std::list<Fireball*>::iterator it = fireballs.begin();
 	    it != fireballs.end(); ++it) {
@@ -257,6 +262,17 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 					     map->GetHeight()*sizeDst+margin_top, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
 		
 	}
-	_tiles->renderTile(renderer, _player1->getPosX()+margin_left, _player1->getPosY()+margin_top, 24);
-	_tiles->renderTile(renderer, _player2->getPosX()+margin_left, _player2->getPosY()+margin_top, 27);
+	
+	
+	flip = SDL_FLIP_NONE;
+	if(!_player1->getDirRight()) {
+		 flip = SDL_FLIP_HORIZONTAL;
+	}
+	_tiles->renderTile(renderer, _player1->getPosX()+margin_left, _player1->getPosY()+margin_top, 24, flip);
+
+	flip = SDL_FLIP_NONE;
+	if(!_player2->getDirRight()) {
+		 flip = SDL_FLIP_HORIZONTAL;
+	}
+	_tiles->renderTile(renderer, _player2->getPosX()+margin_left, _player2->getPosY()+margin_top, 27, flip);
 }

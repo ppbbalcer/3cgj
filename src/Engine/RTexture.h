@@ -12,9 +12,11 @@ public:
 	inline int		getPosX();
 	inline int		getPosY();
 	inline void		setScaleSize(float scale);
+	inline void		setFlip(SDL_RendererFlip flip);
 
 	inline void		render(SDL_Renderer* renderer);
 	void			renderAll(SDL_Renderer* renderer, int x, int y );
+
 
 	inline int		getWidth();
 	inline int		getHeight();
@@ -26,10 +28,11 @@ public:
 	int			getTileSizeSrc();
 	int			getTileSizeDst();
 	int			getTilesNums();
-	void			renderTile(SDL_Renderer* renderer, int x, int y, int tileIdx );
+	void		renderTile(SDL_Renderer* renderer, int x, int y, int tileIdx, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 private: 
 	SDL_Texture* _texture; 
+	SDL_RendererFlip _flip;
 	int _width; 
 	int _height;
 	int _scaleWidth; 
@@ -60,6 +63,10 @@ int RTexture::getPosY() {
 void RTexture::setScaleSize(float scale) {
 	_scaleWidth = (int)(scale * _width); 
 	_scaleHeight = (int)(scale * _height); 
+}
+
+void RTexture::setFlip(SDL_RendererFlip flip) {
+	_flip = flip;
 }
 
 int RTexture::getWidth() {

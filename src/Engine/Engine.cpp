@@ -35,17 +35,19 @@ void Engine::Destroy() {
 }
 int Engine::screen_width()
 {
-	int display_count = 0, display_index = 0, mode_index = 0;
-	SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
-	SDL_GetDisplayMode(display_index, mode_index, &mode);
-	return mode.w;
+	//int display_count = 0, display_index = 0, mode_index = 0;
+	//SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+	//SDL_GetDisplayMode(display_index, mode_index, &mode);
+	//return mode.w;
+	return 800;
 }
 int Engine::screen_height()
 {
 	int display_count = 0, display_index = 0, mode_index = 0;
-	SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
-	SDL_GetDisplayMode(display_index, mode_index, &mode);
-	return mode.h;
+	//SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+	//SDL_GetDisplayMode(display_index, mode_index, &mode);
+	//return mode.h;
+	return 600;
 }
 
 
@@ -60,7 +62,7 @@ bool Engine::init() {
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError()); 
 		return false; 
 	}
-	SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN);
+	//SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN);
 		
 	
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);

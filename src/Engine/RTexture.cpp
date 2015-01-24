@@ -2,6 +2,7 @@
 
 RTexture::RTexture(SDL_Texture* texture, int w, int h):
 	_texture(texture),
+	_flip(SDL_FLIP_NONE),
 	_width(w),
 	_height(h),
 	_x(0),
@@ -18,6 +19,7 @@ RTexture::RTexture(SDL_Texture* texture, int w, int h):
 
 RTexture::RTexture(const ResourceItem &resItem):
 	_texture(resItem.texture),
+	_flip(SDL_FLIP_NONE),
 	_width(resItem.width),
 	_height(resItem.height),
 	_x(0),
@@ -34,7 +36,12 @@ RTexture::RTexture(const ResourceItem &resItem):
 
 void RTexture::renderAll(SDL_Renderer* renderer, int x, int y ) {
 	SDL_Rect renderQuad = { x, y, _scaleWidth, _scaleHeight};
-	SDL_RenderCopy( renderer, _texture, NULL, &renderQuad );
+
+	 if (_flip == SDL_FLIP_NONE ) {
+		SDL_RenderCopy( renderer, _texture, NULL, &renderQuad );
+	 } else {
+		 SDL_RenderCopyEx( renderer, _texture,  NULL, &renderQuad, 0.0f, NULL, _flip );
+	 }
 }
 
 void RTexture::setTileSizeSrc(int size) {
@@ -64,14 +71,18 @@ int RTexture::getTilesNums() {
 	return _tileColumns * _tileRows;
 }
 
-void RTexture::renderTile(SDL_Renderer* renderer, int x, int y, int tileIdx ) {
+void RTexture::renderTile(SDL_Renderer* renderer, int x, int y, int tileIdx, SDL_RendererFlip flip) {
 	if( _tileColumns > 0 && _tileRows > 0 && _tileSizeDst > 0 ) {
 		int row = tileIdx / _tileColumns;
 		int col = tileIdx % _tileColumns;
 
 		SDL_Rect renderQuadSrc = { col * _tileSizeSrc, row * _tileSizeSrc, _tileSizeSrc, _tileSizeSrc };
 		SDL_Rect renderQuadDst = { x, y, _tileSizeDst, _tileSizeDst };
-		SDL_RenderCopy( renderer, _texture, &renderQuadSrc, &renderQuadDst );
 
+		if (flip == SDL_FLIP_NONE ) {
+			SDL_RenderCopy( renderer, _texture, &renderQuadSrc, &renderQuadDst );
+		} else {
+			SDL_RenderCopyEx( renderer, _texture,   &renderQuadSrc, &renderQuadDst, 0.0f, NULL, flip );
+		}
 	}
 }

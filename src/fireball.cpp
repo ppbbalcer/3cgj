@@ -1,7 +1,7 @@
 #include "fireball.h"
 #include "Engine/Engine.h"
 #include "Engine/Character.h"
-#include <cmath>
+
 Fireball::	Fireball(int start_x, int start_y, int _vx, int _vy)
 {
 	x=start_x;
@@ -18,8 +18,8 @@ int Fireball::updatePosition(IMap *map, int time_ms)
 	posX=posX+dist*vx;
 	posY=posY+dist*vy;
 
-	x=round(1.0*posX/tile_size);
-	y=round(1.0*posY/tile_size);
+	x=(1.0*posX + 0.5f)/tile_size;
+	y=(1.0*posY + 0.5)/tile_size;
 	if (map->GetFieldAt(x,y)->IsOccupied())
 	{
 		Character * whoishere =

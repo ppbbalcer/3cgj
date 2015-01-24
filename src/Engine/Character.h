@@ -45,6 +45,7 @@ public:
 	int getPosAfterX();
 	int getPosBeforeY();
 	int getPosAfterY();
+	int getDirRight() {return _dirRight;}
 
 private:
 	IMap * map;
@@ -61,4 +62,7 @@ private:
 	int _pos_after_x;
 	int _pos_before_y;
 	int _pos_after_y;
+
+
+	bool _dirRight;
 };
