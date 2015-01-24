@@ -26,14 +26,14 @@ Character::~Character()
 	_texture = NULL;
 }
 
-void Character::setPosTiles(IMap * map, int x, int y)
+void Character::setPosTiles(int x, int y)
 {
-	map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
+	_map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
 	_pos_after_x = x;
 	_pos_before_x = x;
 	_pos_after_y = y;
 	_pos_before_y = y;
-	map->GetFieldAt(_pos_after_x, _pos_before_y)->SteppedOver(this);
+	_map->GetFieldAt(_pos_after_x, _pos_before_y)->SteppedOver(this);
 	setPos(x * EngineInst->getTileSize(), y * EngineInst->getTileSize());
 }
 
@@ -173,36 +173,36 @@ Fireball * Character::Shoot()
 	                    last_dir_x, last_dir_y, GetPowerLevel());
 }
 
-void Character::updateDirection(IMap *map, DIRECT directMove)
+void Character::updateDirection(DIRECT directMove)
 {
 	if (_state != ALIVE)
 		return;
 
 	switch (directMove) {
 	case DIRECT_DOWN:
-		if ((!map->GetFieldAt(_pos_before_x, _pos_before_y + 1)->IsObstacle()) &&
-		                (!map->GetFieldAt(_pos_after_x, _pos_before_y + 1)->IsObstacle())) {
+		if ((!_map->GetFieldAt(_pos_before_x, _pos_before_y + 1)->IsObstacle()) &&
+		                (!_map->GetFieldAt(_pos_after_x, _pos_before_y + 1)->IsObstacle())) {
 			_pos_after_y = _pos_before_y + 1;
 		}
 		break;
 
 	case DIRECT_UP:
-		if ((!map->GetFieldAt(_pos_before_x, _pos_before_y - 1)->IsObstacle()) &&
-		                (!map->GetFieldAt(_pos_after_x, _pos_before_y - 1)->IsObstacle())) {
+		if ((!_map->GetFieldAt(_pos_before_x, _pos_before_y - 1)->IsObstacle()) &&
+		                (!_map->GetFieldAt(_pos_after_x, _pos_before_y - 1)->IsObstacle())) {
 			_pos_after_y = _pos_before_y - 1;
 		}
 		break;
 
 	case DIRECT_RIGHT:
-		if ((!map->GetFieldAt(_pos_before_x + 1, _pos_before_y)->IsObstacle()) &&
-		                (!map->GetFieldAt(_pos_before_x + 1, _pos_after_y)->IsObstacle())) {
+		if ((!_map->GetFieldAt(_pos_before_x + 1, _pos_before_y)->IsObstacle()) &&
+		                (!_map->GetFieldAt(_pos_before_x + 1, _pos_after_y)->IsObstacle())) {
 			_pos_after_x = _pos_before_x + 1;
 		}
 		break;
 
 	case DIRECT_LEFT:
-		if ((!map->GetFieldAt(_pos_before_x - 1, _pos_before_y)->IsObstacle()) &&
-		                (!map->GetFieldAt(_pos_before_x - 1, _pos_after_y)->IsObstacle())) {
+		if ((!_map->GetFieldAt(_pos_before_x - 1, _pos_before_y)->IsObstacle()) &&
+		                (!_map->GetFieldAt(_pos_before_x - 1, _pos_after_y)->IsObstacle())) {
 			_pos_after_x = _pos_before_x - 1;
 		}
 		break;
@@ -213,7 +213,7 @@ void Character::updateDirection(IMap *map, DIRECT directMove)
 	}
 }
 
-void Character::updatePosition(IMap * map, int time_ms)
+void Character::OnUpdate(int time_ms)
 {
 	int tile_size = EngineInst->getTileSize();
 	int target_y = _pos_after_y * tile_size;
@@ -249,26 +249,26 @@ void Character::updatePosition(IMap * map, int time_ms)
 
 	if (pos_x == target_x) {
 		if (_pos_before_x != _pos_after_x) {
-			map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
-			map->GetFieldAt(_pos_after_x, _pos_before_y)->SteppedOver(this);
+			_map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
+			_map->GetFieldAt(_pos_after_x, _pos_before_y)->SteppedOver(this);
 			_pos_before_x = _pos_after_x;
 		}
 	}
 
 	if (pos_y == target_y) {
 		if (_pos_before_y != _pos_after_y) {
-			map->GetFieldAt(_pos_before_x, _pos_before_y)
+			_map->GetFieldAt(_pos_before_x, _pos_before_y)
 			->LeftField();
-			map->GetFieldAt(_pos_before_x, _pos_after_y)
+			_map->GetFieldAt(_pos_before_x, _pos_after_y)
 			->SteppedOver(this);
 			_pos_before_y = _pos_after_y;
 		}
 	}
 
-	if (_pos_before_y == 0 || _pos_before_y == map->GetHeight() - 1 ||
-	                _pos_before_x == 0 || _pos_before_x == map->GetWidth() - 1) {
+	if (_pos_before_y == 0 || _pos_before_y == _map->GetHeight() - 1 ||
+	                _pos_before_x == 0 || _pos_before_x == _map->GetWidth() - 1) {
 		_state = WON;
-		map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
+		_map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
 	}
 	setPos(pos_x, pos_y);
 }
