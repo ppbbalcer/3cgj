@@ -17,6 +17,9 @@ class SceneGame: public Scene {
 	std::vector<Character*> _enemys;
 	RTexture *_tiles;
 	IMap *map;
+
+	int calc_enemy_timer;
+	int calc_enemy_last;
 public:
 	SceneGame();
 	virtual void OnLoad();

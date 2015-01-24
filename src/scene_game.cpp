@@ -31,6 +31,9 @@ void SceneGame::OnLoad()
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
 	int tile_size = EngineInst->screen_width()/map->GetWidth();
 	EngineInst->setTileSize(tile_size);
+	
+	calc_enemy_timer = 0;
+	calc_enemy_last = 0;
 
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
 	/*RTexture *player1Texture = new RTexture(texturesScene_game[2]); 
@@ -174,39 +177,61 @@ void SceneGame::OnUpdate(int timems)
 				it=next;
 			}
 		}
+
+		//int enemys = _enemys.size();
+		//calc_enemy_timer += timems;
+		//calc_enemy_last = 0;
+		//int tipePerOne = /*period to update all enemys*/1000 /enemys;
+		//int enemysToUpdate = calc_enemy_timer/tipePerOne + 3;
+		//calc_enemy_timer = calc_enemy_timer%tipePerOne;
+
+		//int enemy_start = -1;
+		//int enemy_stop = -1;
+		//if(enemysToUpdate > 0) {
+		//	enemy_start = calc_enemy_last + 1;
+		//	enemy_stop = (enemy_start + enemysToUpdate -1)%enemys;
+		//	enemy_start %= enemys;
+		//	calc_enemy_last = enemy_stop;
+		//}
+
+		//int index = 0;
 		for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
-			int startX = (*enemy)->getPosBeforeX(); 
-			int startY = (*enemy)->getPosBeforeY();
-			AStarWay_t way1;
-			AStarWay_t way2;
 
-			DIRECT destBest = DIRECT_NO_WAY;
-			DIRECT direct1 = findAstar(way1, startX, startY,_player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-			DIRECT direct2 = findAstar(way2, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+			/*if((index >= enemy_start && index <= enemy_stop) || (index <= enemy_start && index >= enemy_stop)) {*/
+				int startX = (*enemy)->getPosBeforeX(); 
+				int startY = (*enemy)->getPosBeforeY();
+				AStarWay_t way1;
+				AStarWay_t way2;
 
-			if(direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
-				destBest = direct1;
-			} else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
-					destBest = direct2;
-			} else if (direct1 != DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
-				if(way1.size() > way2.size()) {
-					destBest = direct2;
-				} else {
+				DIRECT destBest = DIRECT_NO_WAY;
+				DIRECT direct1 = findAstar(way1, 5, startX, startY,_player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+				DIRECT direct2 = findAstar(way2, 5, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+
+				if(direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
 					destBest = direct1;
-				}
-			}
-			
-			if (destBest != DIRECT_NO_WAY) {
-				if (destBest == DIRECT_DOWN) {
-						(*enemy)->updateDirection(map, Character::ACTION_MOVE_DOWN);
-					} else if (destBest == DIRECT_UP) {
-						(*enemy)->updateDirection(map, Character::ACTION_MOVE_UP);
-					} else if (destBest == DIRECT_LEFT) {
-						(*enemy)->updateDirection(map, Character::ACTION_MOVE_LEFT);
-					} else if (destBest == DIRECT_RIGHT) {
-						(*enemy)->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+				} else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
+						destBest = direct2;
+				} else if (direct1 != DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
+					if(way1.size() > way2.size()) {
+						destBest = direct2;
+					} else {
+						destBest = direct1;
 					}
-			}
+				}
+			
+				if (destBest != DIRECT_NO_WAY) {
+					if (destBest == DIRECT_DOWN) {
+							(*enemy)->updateDirection(map, Character::ACTION_MOVE_DOWN);
+						} else if (destBest == DIRECT_UP) {
+							(*enemy)->updateDirection(map, Character::ACTION_MOVE_UP);
+						} else if (destBest == DIRECT_LEFT) {
+							(*enemy)->updateDirection(map, Character::ACTION_MOVE_LEFT);
+						} else if (destBest == DIRECT_RIGHT) {
+							(*enemy)->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+						}
+				}
+			/*}
+			index++;*/
 
 			(*enemy)->updatePosition(map, timems/3,_tiles->getTileSizeDst());
 		}
@@ -268,6 +293,11 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 	for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ( (*enemy)->GetState()==Character::ALIVE)
+			(*enemy)->OnRenderCircle(renderer, 4, 7);
+	}
+
+	for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+		if ( (*enemy)->GetState()==Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}
 	for(std::list<Fireball*>::iterator it = fireballs.begin();
@@ -289,8 +319,10 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 					     map->GetHeight()*sizeDst, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
 		
 	}
-	
+
+	_player1->OnRenderCircle(renderer, 4, 7);
 	_player1->OnRender(renderer);
+
 	_player2->OnRender(renderer);
 
 }

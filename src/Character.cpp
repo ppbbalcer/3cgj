@@ -62,6 +62,43 @@ void Character::heal(int howMuchHeal)
 	_health = min<int>(_health + howMuchHeal, MAX_HEALTH);
 }
 
+void Character::OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx)
+{
+	int title_size = 23;
+
+	if(radius == 4) {
+		int cx = getPosX();
+		int cy = getPosY();
+
+	//	if(_pos_before_x == _pos_after_x && _pos_before_y == _pos_after_y) {
+
+			int alfa;
+			for(int x=-radius; x<=radius; ++x) {
+				for(int y=-radius; y<=radius; ++y) {
+					alfa = calcCircleAlfaRadius4[x+radius][y+radius];
+					if(alfa > 0) {
+						_texture->setAlpha( alfa );
+						_texture->renderTile(renderer, cx + x*title_size, cy + y*title_size, tileIdx, SDL_FLIP_NONE);	
+					}
+				}
+			}
+	/*	} else {
+
+
+
+		}
+*/
+
+
+	}else {
+		printf("No calculated Radius\n");
+		PAUSE();
+	}
+	_texture->setAlpha( 255 );
+
+
+}
+
 void Character::OnRender(SDL_Renderer *renderer)
 {
 	//_texture->render(renderer);

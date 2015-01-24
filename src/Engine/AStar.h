@@ -21,6 +21,6 @@ enum DIRECT {
 /* 
  *	Can return direction DIRECT_LEFT & DIRECT_UP etc. 
  */
-enum DIRECT findAstar(AStarWay_t &way, int xStart, int yStart, int xEnd, int yEnd, int width, int height, funcIsObstacle func, void *data);
+enum DIRECT findAstar(AStarWay_t &way, int maxSteps, int xStart, int yStart, int xEnd, int yEnd, int width, int height, funcIsObstacle func, void *data);
 
 #endif /* __ASTAR_H__ */

@@ -4,6 +4,8 @@
 #include "Engine/StructsGlobal.h"
 
 
+extern int calcCircleAlfaRadius4[9][9];
+
 extern const char GlobalFontPath[];
 
 extern ResourceItem globalTextures[];

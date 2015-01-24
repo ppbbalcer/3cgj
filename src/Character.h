@@ -33,6 +33,8 @@ public:
 	int crucio(int howMuchCrucio);
 	void heal(int howMuchHeal);
 
+	
+	void OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx);
 	void OnRender(SDL_Renderer *renderer);
 	void setPosTiles(IMap *map, int x, int y);
 	int getPosX();

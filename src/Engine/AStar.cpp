@@ -6,7 +6,7 @@
 static int statit_touchX[4] = {-1,1,0,0};
 static int statit_touchY[4] = {0,0,-1,1};
 
-enum DIRECT findAstar(AStarWay_t &way, int xStart, int yStart, int xEnd, int yEnd, int width, int height, funcIsObstacle func, void *data)
+enum DIRECT findAstar(AStarWay_t &way, int maxSteps, int xStart, int yStart, int xEnd, int yEnd, int width, int height, funcIsObstacle func, void *data)
 {
 	DIRECT result = DIRECT_NO_WAY;
 	way.clear();
@@ -49,13 +49,19 @@ enum DIRECT findAstar(AStarWay_t &way, int xStart, int yStart, int xEnd, int yEn
 					//Step5
 					map[id] = vValUp;
 					query.push_back(id);
-
 					if(x == xEnd && y == yEnd) {
+
+						if(maxSteps > 0 && vValUp > maxSteps) {
+							goto END;
+						}
+
 						goto STEP_FIND;
 					}
+
 				}
 			}
 		}
+
 	}
 
 	goto END;
