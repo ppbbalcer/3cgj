@@ -127,6 +127,8 @@ void SceneGame::OnLoad()
 	globalAudios[HEARTBEAT].res.sound->play(-1, 0, HEARTBEAT_BASE_INTERVAL);
 }
 
+extern int doskey_active;
+
 void SceneGame::OnFree()
 {
 	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
@@ -137,6 +139,7 @@ void SceneGame::OnFree()
 	_arrayShadow = NULL;
 
 	//Destroy textures???
+	doskey_active = 0;
 
 	globalAudios[HEARTBEAT].res.sound->stop();
 
