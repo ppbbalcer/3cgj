@@ -6,6 +6,7 @@ using namespace std;
 
 Player::Player(RTexture * texture, IMap * map) : Character(texture, map)
 {
+	_type = TYPE_PLAYER;
 	_mana = MAX_MANA;
 	_last_shot_time = clock() - FIREBALL_MIN_DIFF_MS * (CLOCKS_PER_SEC / 1000);
 };
@@ -46,4 +47,15 @@ Fireball * Player::Shoot()
 	return new Fireball(getPosBeforeX() + last_dir_x,
 	                    getPosBeforeY() + last_dir_y,
 	                    last_dir_x, last_dir_y, GetPowerLevel());
+}
+
+int Player::crucio(int howMuchCrucio)
+{
+	int hpRem = Character::crucio(howMuchCrucio);
+	if (hpRem <= 0) {
+		globalAudios[PLAYER_DEATH].res.sound->play();
+	} else {
+		globalAudios[PLAYER_PAIN].res.sound->play();
+	}
+	return hpRem;
 }

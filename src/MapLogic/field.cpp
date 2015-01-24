@@ -1,6 +1,7 @@
 #include "field.h"
 #include <cassert>
 #include "field_impl.h"
+#include "../Player.h"
 #include "../GlobalData.h"
 
 int Field::assigned_field[NUM_FIELD_TYPES];
@@ -70,14 +71,20 @@ void Field::SteppedOver(Character * who)
 		type = FLOOR;
 		who->SetPowerLevel(who->GetPowerLevel() + POWERUP_VAL);
 	}
-	if (type == LARGE_HEALTH_FLASK) {
+	if (type == LARGE_HEALTH_FLASK && who->getType() == TYPE_PLAYER) {
 		type = EMPTY_FLASK;
 		who->heal(LARGE_POTION_HEAL_VAL);
 		globalAudios[SLURP].res.sound->play();
 	}
-	if (type == SMALL_HEALTH_FLASK) {
+	if (type == SMALL_HEALTH_FLASK && who->getType() == TYPE_PLAYER) {
 		type = EMPTY_FLASK;
 		who->heal(SMALL_POTION_HEAL_VAL);
+		globalAudios[SLURP].res.sound->play();
+	}
+	if (type == SMALL_MANA_FLASK && who->getType() == TYPE_PLAYER) {
+		type = EMPTY_FLASK;
+		Player *player = (Player *)who;
+		player->restoreMana(SMALL_POTION_MANA_VAL);
 		globalAudios[SLURP].res.sound->play();
 	}
 	if (type == MEDKIT) {
