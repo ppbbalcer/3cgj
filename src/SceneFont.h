@@ -7,6 +7,8 @@
 #include "Engine/Scene.h"
 #include "Engine/Engine.h"
 
+class SceneFont3D;
+
 class SceneFont2D: public Scene {
 public:
 	virtual void OnLoad() {
@@ -19,6 +21,7 @@ public:
 			PAUSE();
 		}
 		nextScene = 2;
+
 		strcpy(sceneName, "SceneFont2D");
 	};
 
@@ -26,7 +29,28 @@ public:
 		EngineInst->unLoadResources(texturesScene, texturesSceneSize);
 	};
 
-	virtual void OnUpdate(int timems) {
+	virtual void OnUpdate(int timems);
+
+protected:
+	int nextScene;
+	char sceneName[1024];
+};
+
+class SceneFont3D: public SceneFont2D {
+public:
+	virtual void OnLoad() {
+		SceneFont2D::OnLoad();
+		nextScene = 3;
+		strcpy(sceneName, "SceneFont3D");
+		_drawType = DrawType_Render;
+	};
+
+	virtual void OnFree(){
+		SceneFont2D::OnFree();
+	};
+};
+
+void SceneFont2D::OnUpdate(int timems) {
 		//Event handler
 		SDL_Event e;
 		//Handle events on queue
@@ -40,6 +64,8 @@ public:
 			{
 				//Change scene
 				//EngineInst->setNextScene(gScenes[nextScene]);
+					Scene* scene = new SceneFont3D;
+			EngineInst->setNextScene(scene);
 			}
 		}
 
@@ -66,25 +92,6 @@ public:
 		EngineInst->font()->printf(width, height,		textColor, borderColor, border, ALIGN_RIGHT | ALIGN_BOTTOM,	scale, "Text RIGHT BOTTOM");
 
 	};
-
-protected:
-	int nextScene;
-	char sceneName[1024];
-};
-
-class SceneFont3D: public SceneFont2D {
-public:
-	virtual void OnLoad() {
-		SceneFont2D::OnLoad();
-		nextScene = 3;
-		strcpy(sceneName, "SceneFont3D");
-		_drawType = DrawType_Render;
-	};
-
-	virtual void OnFree(){
-		SceneFont2D::OnFree();
-	};
-};
 
 
 #endif /* __SCENE_FONT_H__ */
