@@ -112,6 +112,10 @@ LoadedMap::LoadedMap(const char * path) {
 			default:
 				new_field= new Field(IField::EMPTY);
 			}
+			if (c != 'w' && c != ' ') {
+				printf("Object: %c at %u %u\n", c, j, i);
+			}
+			
 			PlaceField(j,i,new_field);
 
 		}

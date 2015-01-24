@@ -65,7 +65,7 @@ bool loadMedia() {
 
 int main( int argc, char* args[] )
 {
-	Level *level = new Level(0);
+	Level *level = new Level(1);
 	if( !Engine::Create() )
 	{
 		printf( "Failed to initialize!\n" );
