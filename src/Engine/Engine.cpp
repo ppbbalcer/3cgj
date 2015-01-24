@@ -12,8 +12,8 @@ void PAUSE() {
 	assert(false);
 }
 
-#define DEF_SCREEN_WIDTH 800
-#define DEF_SCREEN_HEIGHT 600
+#define DEF_SCREEN_WIDTH 1200
+#define DEF_SCREEN_HEIGHT 900
 
 float Q_rsqrt( float number )
 {

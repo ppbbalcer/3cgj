@@ -4,6 +4,7 @@
 #include "Engine/StructsGlobal.h"
 
 extern int calcCircleAlfaRadius4[9][9];
+extern int calcCircleAlfaRadius6[13][13];
 
 extern const char GlobalFontPath[];
 
