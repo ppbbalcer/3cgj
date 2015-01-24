@@ -36,6 +36,7 @@ private:
 	RTexture *_tiles;
 	std::vector<BaseRoom*> rooms;
 	int current_room;
+	void setCurrentRoom(int room_id);
 public:
 	BaseLevel(int id, int rooms_count);
 	virtual void OnLoad();

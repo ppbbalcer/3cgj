@@ -31,7 +31,6 @@ void BaseRoom::render(RTexture *_tiles, SDL_Renderer* renderer) {
 
 	int sizeDst = _tiles->getTileSizeDst();
 	int tilesNums = _tiles->getTilesNums();
-	//for (int i =  0 ; i<tilesNums; ++i) {
 	srand(1);
 	for (int i = 0 ; i != map->GetHeight() - 1; i++) {
 		for (int j = 0 ; j != map->GetWidth() - 1; ++j) {
@@ -69,11 +68,15 @@ BaseLevel::~BaseLevel() {
 	}
 }
 
+void BaseLevel::setCurrentRoom(int room_id) {
+	this->current_room = room_id;
+}
+
 void BaseLevel::OnLoad() {
 	EngineInst->setTileSize(TILE_SIZE);
 	_tiles = new RTexture(globalTextures[1]);
 	_tiles->setTileSizeDst(TILE_SIZE);
-	_tiles->setTileSizeSrc(TILE_SIZE);
+	_tiles->setTileSizeSrc(64);
 	current_room = 0;
 }
 
