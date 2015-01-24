@@ -1,11 +1,20 @@
 #ifndef __MAP_H
 #define __MAP_H
 #include "field.h"
-
 #include <utility>
 #include <list>
+
+struct enemy_definition {
+	int x;
+	int y;
+	int hp;
+	int ai;
+};
+
 typedef std::pair<int,int> starting_pos;
 typedef std::list<starting_pos> start_list;
+typedef std::list<enemy_definition*> enemies_list;
+
 class IMap {
   
 public:
@@ -23,7 +32,7 @@ public:
 
 	virtual const starting_pos & GetPlayer1Start() =0;
 	virtual const starting_pos & GetPlayer2Start() =0;
-	virtual const start_list & GetEnemiesStart() =0;
+	virtual const enemies_list & GetEnemies() = 0;
 	/**
 	 * @return in fields
 	 */

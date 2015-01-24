@@ -12,12 +12,11 @@ private:
 protected:
 	starting_pos p1_start;
 	starting_pos p2_start;
-	start_list enemies_start;
+	enemies_list enemies;
 protected:
-
 	virtual const starting_pos & GetPlayer1Start();
 	virtual const starting_pos & GetPlayer2Start();
-	virtual const start_list & GetEnemiesStart();
+	virtual const enemies_list & GetEnemies();
 
 	/*following methods are used by implementation of specialized
 	 * constructors of GeneratedMap and LoadedMap

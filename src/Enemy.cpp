@@ -1,10 +1,12 @@
 #include "Enemy.h"
 #include "GlobalData.h"
 
-Enemy::Enemy(RTexture *texture, IMap *map) : Character(texture, map)
+Enemy::Enemy(RTexture *texture, IMap *map, int hp, int ai) : Character(texture, map)
 {
 	_type = TYPE_ENEMY;
 	_last_rand_direction = 0;
+	_health = hp;
+	_ai = (enemy_ai)ai;
 }
 
 Enemy::~Enemy(void) {};

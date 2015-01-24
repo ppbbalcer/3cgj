@@ -164,7 +164,6 @@ void Character::updateDirection(DIRECT directMove)
 			_pos_after_y = _pos_before_y + 1;
 		}
 		break;
-
 	case DIRECT_UP:
 		if ((!_map->GetFieldAt(_pos_before_x, _pos_before_y - 1)->IsObstacle()) &&
 		                (!_map->GetFieldAt(_pos_after_x, _pos_before_y - 1)->IsObstacle())) {
