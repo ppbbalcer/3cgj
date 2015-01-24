@@ -63,6 +63,43 @@ void Character::heal(int howMuchHeal)
 	_health = min<int>(_health + howMuchHeal, MAX_HEALTH);
 }
 
+void Character::OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx)
+{
+	int title_size = 23;
+
+	if(radius == 4) {
+		int cx = getPosX();
+		int cy = getPosY();
+
+	//	if(_pos_before_x == _pos_after_x && _pos_before_y == _pos_after_y) {
+
+			int alfa;
+			for(int x=-radius; x<=radius; ++x) {
+				for(int y=-radius; y<=radius; ++y) {
+					alfa = calcCircleAlfaRadius4[x+radius][y+radius];
+					if(alfa > 0) {
+						_texture->setAlpha( alfa );
+						_texture->renderTile(renderer, cx + x*title_size, cy + y*title_size, tileIdx, SDL_FLIP_NONE);	
+					}
+				}
+			}
+	/*	} else {
+
+
+
+		}
+*/
+
+
+	}else {
+		printf("No calculated Radius\n");
+		PAUSE();
+	}
+	_texture->setAlpha( 255 );
+
+
+}
+
 void Character::OnRender(SDL_Renderer *renderer)
 {
 	//_texture->render(renderer);
@@ -153,10 +190,9 @@ void Character::updateDirection(IMap *map, Action action)
 	}
 }
 
-void Character::updatePosition(IMap * map, int time_ms, int tile_size)
+void Character::updatePosition(IMap * map, int time_ms)
 {
-	//t tile_size = EngineInst->screen_width()/map->GetWidth();
-	//int tile_size = 50;
+	int tile_size = EngineInst->getTileSize();
 	int target_y = _pos_after_y * tile_size;
 	int target_x = _pos_after_x * tile_size;
 	float dist = 0.01 * tile_size * time_ms;

@@ -9,6 +9,7 @@
 class Scene;
 
 void PAUSE();
+float Q_rsqrt( float number );
 
 class Engine {
 public:
