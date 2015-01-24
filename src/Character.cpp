@@ -162,17 +162,6 @@ int Character::getPosAfterY()
 	return _pos_after_y;
 }
 
-Fireball * Character::Shoot()
-{
-	if (GetState()!=ALIVE)
-		return 0;
-	globalAudios[GameSounds::FIREBALL].res.sound->play(-1, 0, 0);
-	
-	return new Fireball(getPosBeforeX() + last_dir_x,
-	                    getPosBeforeY() + last_dir_y,
-	                    last_dir_x, last_dir_y, GetPowerLevel());
-}
-
 void Character::updateDirection(DIRECT directMove)
 {
 	if (_state != ALIVE)
@@ -218,9 +207,10 @@ void Character::OnUpdate(int time_ms)
 	int tile_size = EngineInst->getTileSize();
 	int target_y = _pos_after_y * tile_size;
 	int target_x = _pos_after_x * tile_size;
-	float dist = 0.01 * tile_size * time_ms;
-	float pos_x = getPosX();
-	float pos_y = getPosY();
+	int dist = tile_size * time_ms / 100;
+	int pos_x = getPosX();
+	int pos_y = getPosY();
+
 	if (_state != ALIVE)
 		return;
 

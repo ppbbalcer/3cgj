@@ -23,13 +23,14 @@ public:
 	virtual void SteppedOver(Character * who);
 	virtual void LeftField();
 	virtual bool IsOccupied() {
-		return someone_is_here;
+		return someone_is_here != NULL;
 	}
 	virtual Character* WhoIsHere();
 
 	virtual void Activate() {}
 	virtual void Deactivate() {}
 };
+
 class EvilComputer: public Field {
 	bool running;
 	bool time_to_next_fb;
