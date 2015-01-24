@@ -17,7 +17,7 @@ float Q_rsqrt( float number )
 	long i;
 	float x2, y;
 	const float threehalfs = 1.5F;
- 
+	
 	if(number < 1.0f) {
 		return 1.0f;
 	}
@@ -76,6 +76,7 @@ int Engine::screen_height()
 
 
 bool Engine::init() {
+	_tile_size=0;
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) { 
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError()); 
 		return false; 
