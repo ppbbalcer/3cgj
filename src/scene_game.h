@@ -14,10 +14,6 @@ class SceneGame: public Scene {
 	Character *_player1, *_player2;
 	RTexture *_tiles;
 	IMap *map;
-	int pcpos_before_x;
-	int pcpos_after_x;
-	int pcpos_before_y;
-	int pcpos_after_y;
 public:
 	SceneGame();
 	virtual void OnLoad();

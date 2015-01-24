@@ -19,6 +19,7 @@
     <ClCompile Include="src\GlobalData.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainScene.cpp" />
+    <ClCompile Include="src\MapLogic\field.cpp" />
     <ClCompile Include="src\MapLogic\map.cpp" />
     <ClCompile Include="src\scene_game.cpp" />
   </ItemGroup>

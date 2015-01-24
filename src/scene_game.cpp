@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <stdio.h>
 
-#define TILE_SIZE 32
 using namespace std;
+
 SceneGame::SceneGame()
 {
 	map = IMap::Factory(IMap::LOADED, "Resources/map_example.txt");
@@ -34,7 +34,6 @@ void SceneGame::OnLoad()
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(64);
 	_tiles->setTileSizeDst(TILE_SIZE);
-	pcpos_before_x = pcpos_after_x = pcpos_before_y = pcpos_after_y = 1;
 	//Load media
 	if( !success )
 	{
@@ -55,10 +54,10 @@ void SceneGame::OnUpdate(int timems)
 		//Event handler
 		SDL_Event e;
 		printf("X: %d->%d; XY %d->%d %d\n",
-			pcpos_before_x,
-			pcpos_after_x,
-			pcpos_before_y,
-			pcpos_after_y,
+			_player1->getPosBeforeX(),
+			_player1->getPosAfterX(),
+			_player1->getPosBeforeY(),
+			_player1->getPosAfterY(),
 			timems
 			);
 		//Handle events on queue
@@ -75,76 +74,42 @@ void SceneGame::OnUpdate(int timems)
 			}
 		}
 
-		float dist = 0.3*timems;
+		const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-		float p1PosX = _player1->getPosX();
-		float p1PosY = _player1->getPosY();
-		float p2PosX = _player2->getPosX();
-		float p2PosY = _player2->getPosY();
-
-		const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
-
-		if( currentKeyStates[ SDL_SCANCODE_DOWN ] ) {
-			if ( (!map->GetFieldAt(pcpos_before_x,pcpos_before_y+1)
-			      ->IsObstacle()) &&
-			     (!map->GetFieldAt(pcpos_after_x,pcpos_before_y+1)
-			      ->IsObstacle()) )
-			{
-				pcpos_after_y=pcpos_before_y+1;
-			}
-		}
-		if( currentKeyStates[ SDL_SCANCODE_UP ] ) {
-			if ( (!map->GetFieldAt(pcpos_before_x,pcpos_before_y-1)
-			      ->IsObstacle()) &&
-			     (!map->GetFieldAt(pcpos_after_x,pcpos_before_y-1)
-			      ->IsObstacle()) ) {
-				pcpos_after_y=pcpos_before_y-1;
-			}
-		}
-		if( currentKeyStates[ SDL_SCANCODE_RIGHT ] ) {
-			if ( (!map->GetFieldAt(pcpos_before_x+1,pcpos_before_y)
-			      ->IsObstacle()) &&
-			     (!map->GetFieldAt(pcpos_before_x+1,pcpos_after_y)
-			      ->IsObstacle()) ) {
-				pcpos_after_x=pcpos_before_x +1;
-			}
-		}
-		if( currentKeyStates[ SDL_SCANCODE_LEFT ] ) {
-			if ( (!map->GetFieldAt(pcpos_before_x-1,pcpos_before_y)
-			      ->IsObstacle()) &&
-			     (!map->GetFieldAt(pcpos_before_x-1,pcpos_after_y)
-			      ->IsObstacle()) ) {
-				pcpos_after_x=pcpos_before_x -1;
-			}
-		}
-		
-		int target_y = pcpos_after_y*TILE_SIZE;
-		int target_x = pcpos_after_x*TILE_SIZE;
-
-		/* character should be moving moving down*/
-		if (p1PosY>target_y) {
-			p1PosY = max<int>(target_y,p1PosY-dist);
-		}
-		if (p1PosY<target_y) {
-			p1PosY = min<int>(target_y,p1PosY+dist);
-		}
-		if (p1PosX>target_x) {
-			p1PosX = max<int>(target_x,p1PosX-dist);
-		}
-		if (p1PosX<target_x) {
-			p1PosX = min<int>(target_x,p1PosX+dist);
+		if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+			_player1->updateDirection(map, Character::ACTION_MOVE_DOWN);
 		}
 
-		if (p1PosX==target_x)
-			pcpos_before_x=pcpos_after_x;
-		if (p1PosY==target_y)
-			pcpos_before_y=pcpos_after_y;
+		if (currentKeyStates[SDL_SCANCODE_UP]) {
+			_player1->updateDirection(map, Character::ACTION_MOVE_UP);
+		}
 
-		_player1->setPos(p1PosX, p1PosY);
-		_player2->setPos(p2PosX, p2PosY);
+		if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+			_player1->updateDirection(map, Character::ACTION_MOVE_LEFT);
+		}
 
+		if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+			_player1->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+		}
 
-		//EngineInst->font()->printTextLT(20, 20, "MSCN");
+		if (currentKeyStates[SDL_SCANCODE_D]) {
+			_player2->updateDirection(map, Character::ACTION_MOVE_DOWN);
+		}
+
+		if (currentKeyStates[SDL_SCANCODE_W]) {
+			_player2->updateDirection(map, Character::ACTION_MOVE_UP);
+		}
+
+		if (currentKeyStates[SDL_SCANCODE_A]) {
+			_player2->updateDirection(map, Character::ACTION_MOVE_LEFT);
+		}
+
+		if (currentKeyStates[SDL_SCANCODE_D]) {
+			_player2->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+		}
+
+		_player1->updatePosition(timems);
+		_player2->updatePosition(timems);
 }
 
 void SceneGame::OnRender(SDL_Renderer* renderer)
