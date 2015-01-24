@@ -19,6 +19,7 @@ AudioResource globalAudios[] = {
 	{"Resources/audio/high.wav", AUDIO_TYPE_SOUND, NULL},
 	{"Resources/audio/low.wav", AUDIO_TYPE_SOUND, NULL},
 	{"Resources/audio/fireball.wav", AUDIO_TYPE_SOUND, NULL},
+	{"Resources/audio/hb.wav", AUDIO_TYPE_SOUND, NULL},
 };
 size_t globalAudiosSize = sizeof(globalAudios) / sizeof(globalAudios[0]);
 

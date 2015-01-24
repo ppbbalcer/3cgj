@@ -12,6 +12,8 @@
 using namespace std;
 
 #define MAX_ROOM_PATH 255
+#define HEARTBEAT_BASE_INTERVAL 2000
+#define HEARTBEAT_MIN_INTERVAL 500
 
 /* looking for obstacles*/
 bool IMap_isObstacle(int x, int y, void* objMap)
@@ -25,6 +27,7 @@ SceneGame::SceneGame(Level *level, int room_id)
 {
 	this->room_id = room_id;
 	this->level = level;
+	this->heartbeat_tempo = 0;
 	char buff[MAX_ROOM_PATH];
 	sprintf(buff, "Resources/levels/%u/%u.txt", level->getId(), room_id);
 	map = IMap::Factory(IMap::LOADED, buff);
@@ -86,6 +89,8 @@ void SceneGame::OnLoad()
 		printf("Failed to load media Scene02Renderer !\n");
 		PAUSE();
 	}
+	globalAudios[HEARTBEAT].res.sound->setVolume(0.2f);
+	globalAudios[HEARTBEAT].res.sound->play(-1, 0, HEARTBEAT_BASE_INTERVAL);
 }
 
 void SceneGame::OnFree()
@@ -96,6 +101,8 @@ void SceneGame::OnFree()
 	_enemys.clear();
 
 	//Destroy textures???
+
+	globalAudios[HEARTBEAT].res.sound->stop();
 
 	EngineInst->unLoadResources(texturesScene, texturesSceneSize);
 
@@ -247,6 +254,15 @@ void SceneGame::updateEnemies(int timems)
 		DIRECT direct1 = findAstar(way1, maxSteps, startX, startY, _player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 		DIRECT direct2 = findAstar(way2, maxSteps,  startX, startY, _player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 
+		if (heartbeat_tempo == 0 && ((way1.size() != 0 && way1.size() < 10 ) || (way2.size() != 0 && way2.size() < 10))) {
+			heartbeat_tempo = 50;
+			globalAudios[HEARTBEAT].res.sound->setDelay(HEARTBEAT_MIN_INTERVAL);
+		} else if (heartbeat_tempo != 0) {
+			heartbeat_tempo--;
+			if (heartbeat_tempo == 0)
+				globalAudios[HEARTBEAT].res.sound->setDelay(HEARTBEAT_BASE_INTERVAL);
+		}
+
 		if (direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
 			destBest = direct1;
 		} else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
@@ -288,7 +304,7 @@ void SceneGame::OnUpdate(int timems)
 			return;
 		}
 	}
-
+	globalAudios[HEARTBEAT].res.sound->update(timems);
 	updatePlayers(timems);
 	updateFireballs(timems);
 	updateEnemies(timems);
