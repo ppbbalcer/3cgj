@@ -371,8 +371,9 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 	// Render top bar
 	SDL_Rect veryTopBar;
-	int hpBarXPadding = 20;
-	int hpBarHeight = 20;
+	int playerBarXPadding = 20;
+	int playerBarHeight = 20;
+	int paddingBetweenBars = 5;
 
 	veryTopBar.x = 0;
 	veryTopBar.y = 20;
@@ -381,11 +382,19 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 	SDL_RenderSetViewport(renderer, &veryTopBar);
 
-	SDL_Rect p1_hp_rect = { hpBarXPadding, 0, _player1->getHealth() * 2, hpBarHeight};
+	SDL_Rect p1_hp_rect = { playerBarXPadding, 0, _player1->getHealth() * 2, playerBarHeight};
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, &p1_hp_rect);
 
-	SDL_Rect p2_hp_rect = { EngineInst->screen_width() - hpBarXPadding - _player2->getHealth() * 2, 0, _player2->getHealth() * 2, hpBarHeight};
+	SDL_Rect p1_mana_rect = { playerBarXPadding, playerBarHeight + paddingBetweenBars, _player1->getMana() * 2, playerBarHeight};
+	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+	SDL_RenderFillRect(renderer, &p1_mana_rect);
+
+	SDL_Rect p2_hp_rect = { EngineInst->screen_width() - playerBarXPadding - _player2->getHealth() * 2, 0, _player2->getHealth() * 2, playerBarHeight};
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, &p2_hp_rect);
+
+	SDL_Rect p2_mana_rect = { EngineInst->screen_width() - playerBarXPadding - _player2->getMana() * 2, playerBarHeight + paddingBetweenBars, _player2->getMana() * 2, playerBarHeight};;
+	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+	SDL_RenderFillRect(renderer, &p2_mana_rect);
 }

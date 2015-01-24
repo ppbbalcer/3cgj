@@ -11,11 +11,10 @@ private:
 	clock_t _last_shot_time;
 
 public:
-	Player(RTexture* texture, IMap * map) : Character(texture, map) { _last_shot_time = clock() - FIREBALL_MIN_DIFF_MS * (CLOCKS_PER_SEC / 1000); };
+	Player(RTexture* texture, IMap * map);
 	~Player(void);
 
 	int getMana();
-	void useMana(int howMuchMana);
 	void restoreMana(int howMuchMana);
 
 	Fireball * Shoot();
