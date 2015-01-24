@@ -32,8 +32,13 @@ public:
 		MEDKIT,
 		DOSKEY, /* dos computer that opens doors */
 		POWERUP,
+		SMALL_MANA_FLASK,
+		LARGE_MANA_FLASK,
+		SMALL_HEALTH_FLASK,
+		LARGE_HEALTH_FLASK,
+		EMPTY_FLASK,
+
 		NUM_FIELD_TYPES
-  
   
 	};
 // as per enum FieldType

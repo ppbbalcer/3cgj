@@ -30,6 +30,11 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[MEDKIT] = 25;
 	assigned_field[DOSKEY] = 26;
 	assigned_field[POWERUP] = 31;
+	assigned_field[SMALL_MANA_FLASK] = 36;
+	assigned_field[LARGE_MANA_FLASK] = 35;
+	assigned_field[SMALL_HEALTH_FLASK] = 34;
+	assigned_field[LARGE_HEALTH_FLASK] = 33;
+	assigned_field[EMPTY_FLASK] = 32;
 	initialized = true;
 }
 int Field::GetTileId()
@@ -61,6 +66,18 @@ void Field::SteppedOver(Character * who)
 	if (type==POWERUP) {
 		type=FLOOR;
 		who->SetPowerLevel(who->GetPowerLevel()+20);
+	}
+	if (type==LARGE_HEALTH_FLASK) {
+		type=EMPTY_FLASK;
+		who->heal(50);
+	}
+	if (type==SMALL_HEALTH_FLASK) {
+		type=EMPTY_FLASK;
+		who->heal(25);
+	}
+	if (type==MEDKIT) {
+		type=FLOOR;
+		who->heal(100);
 	}
 	if (type==DOSKEY)
 		doskey_active++;
