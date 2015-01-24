@@ -7,6 +7,7 @@
 #include "fireball.h"
 
 #define MAX_HEALTH 100
+#define MAX_MANA 100
 #define DEFAULT_POWER_LEVEL 25;
 
 #define SMALL_POTION_HEAL_VAL 25
@@ -63,8 +64,6 @@ public:
 	DIRECT getActualDirect();
 	float getMoveProgress(); /*0.0f to 1.0f*/
 
-
-	Fireball * Shoot();
 	void updateDirection(DIRECT directMove);
 	void OnUpdate(int time_ms);
 
@@ -77,14 +76,16 @@ private:
 	int _health;
 	int _speed;
 	int _state;
-	int last_dir_x;
-	int last_dir_y;
-	float _posX;
-	float _posY;
+	int _posX;
+	int _posY;
 	int _pos_before_x;
 	int _pos_after_x;
 	int _pos_before_y;
 	int _pos_after_y;
+
+protected:
+	int last_dir_x;
+	int last_dir_y;
 };
 
 #endif
