@@ -5,6 +5,8 @@
 #include "field.h"
 #include "map.h"
 #include "generic_map.h"
+#include "switch.h"
+#include "door.h"
 /* following constants define width and height of map in tiles */
 using namespace std;
 
@@ -64,7 +66,7 @@ LoadedMap::LoadedMap(const char * path) {
 				new_field= new Field(IField::FLOOR);
 				break;
 			case '|':
-				new_field= new Field(IField::DOOR);
+				new_field= new Door;
 				break;
 			case 'd':
 				new_field= new Field(IField::DESK);
@@ -91,10 +93,10 @@ LoadedMap::LoadedMap(const char * path) {
 				new_field= new Field(IField::SMALL_HEALTH_FLASK);
 				break;
 			case '^':
-				new_field= new Field(IField::SWITCH_UP);
+				new_field= new Switch(1);
 				break;
 			case 'v':
-				new_field= new Field(IField::SWITCH_DOWN);
+				new_field= new Switch(0);
 				break;
 			case 'H':
 				new_field= new Field(IField::LARGE_HEALTH_FLASK);
