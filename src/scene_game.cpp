@@ -289,7 +289,7 @@ void SceneGame::OnUpdate(int timems)
 
 void SceneGame::OnRender(SDL_Renderer* renderer)
 {
-	_background->render(renderer);
+	// _background->render(renderer);
 
 	SDL_Rect topLeftViewport;
 	topLeftViewport.x = 5;
@@ -394,18 +394,18 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	_player2->OnRender(renderer);
 
 	SDL_Rect bottomViewport;
-	bottomViewport.x = 5;
-	bottomViewport.y = 100;
+	bottomViewport.x = map->GetHeight();
+	bottomViewport.y = 0;
 	bottomViewport.w = EngineInst->screen_width();
 	bottomViewport.h = EngineInst->screen_height();
 
 	SDL_RenderSetViewport(renderer, &bottomViewport);
 
-	SDL_Rect p1_hp_rect = {10, 20, _player1->getHealth(), 20};
+	SDL_Rect p1_hp_rect = {10, 0, _player1->getHealth(), 20};
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderDrawRect(renderer, &p1_hp_rect);
 
-	SDL_Rect p2_hp_rect = { EngineInst->screen_width() - 10 - MAX_HEALTH, 20, _player2->getHealth(), 20};
+	SDL_Rect p2_hp_rect = { EngineInst->screen_width() - 10 - MAX_HEALTH, 0, _player2->getHealth(), 20};
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderDrawRect(renderer, &p2_hp_rect);
 }
