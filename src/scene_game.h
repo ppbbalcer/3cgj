@@ -5,6 +5,8 @@
 #include "Engine/Engine.h"
 #include "Engine/RTexture.h"
 #include "Character.h"
+#include "Enemy.h"
+#include "Player.h"
 #include <SDL.h>
 #include "MapLogic/map.h"
 class Fireball;
@@ -19,8 +21,8 @@ private:
 
 	std::list<Fireball *> fireballs;
 	RTexture *_background;
-	Character *_player1, *_player2;
-	std::vector<Character*> _enemys;
+	Player *_player1, *_player2;
+	std::vector<Enemy*> _enemys;
 	RTexture *_tiles;
 	IMap *map;
 	Level *level;

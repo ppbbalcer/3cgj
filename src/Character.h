@@ -4,6 +4,7 @@
 #include "Engine/RTexture.h"
 #include <unordered_map>
 #include "MapLogic/map.h"
+#include "fireball.h"
 
 #define MAX_HEALTH 100
 #define DEFAULT_POWER_LEVEL 25;
@@ -13,7 +14,6 @@
 #define MEDKIT_HEAL_VAL MAX_HEALTH
 #define POWERUP_VAL 20
 
-class Fireball;
 class Character
 {
 public:
@@ -23,11 +23,13 @@ public:
 		ACTION_SHOT,
 		ACTION_END
 	};
+
 	enum State {
 		ALIVE = 1,
 		DEAD,
 		WON /* not playing now, because player has left the labyrinth */
 	};
+
 	Character(RTexture* texture, IMap * map);
 	~Character();
 
@@ -39,7 +41,6 @@ public:
 	int crucio(int howMuchCrucio);
 	void heal(int howMuchHeal);
 
-	
 	void OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx);
 	void OnRender(SDL_Renderer *renderer);
 	void setPosTiles(int x, int y);
