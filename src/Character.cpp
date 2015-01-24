@@ -157,6 +157,9 @@ void Character::updateDirection(DIRECT directMove)
 	if (_state != ALIVE)
 		return;
 
+	int prev_target_x = _pos_after_x;
+	int prev_target_y = _pos_after_y;
+
 	switch (directMove) {
 	case DIRECT_DOWN:
 		if ((!_map->GetFieldAt(_pos_before_x, _pos_before_y + 1)->IsObstacle()) &&
@@ -189,6 +192,14 @@ void Character::updateDirection(DIRECT directMove)
 		printf("Unrecognized direction %d given\n", directMove);
 		break;
 	}
+	if (prev_target_y!=_pos_after_y ||
+	    prev_target_x!=_pos_after_x) {
+		_map->GetFieldAt(prev_target_x, prev_target_y)
+			->LeftField();
+		_map->GetFieldAt(_pos_after_x, _pos_after_y)
+			->SteppedOver(this);
+	}
+
 }
 
 void Character::OnUpdate(int time_ms)
@@ -228,18 +239,18 @@ void Character::OnUpdate(int time_ms)
 
 	if (pos_x == target_x) {
 		if (_pos_before_x != _pos_after_x) {
-			_map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
-			_map->GetFieldAt(_pos_after_x, _pos_before_y)->SteppedOver(this);
+			// _map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
+			// _map->GetFieldAt(_pos_after_x, _pos_before_y)->SteppedOver(this);
 			_pos_before_x = _pos_after_x;
 		}
 	}
 
 	if (pos_y == target_y) {
 		if (_pos_before_y != _pos_after_y) {
-			_map->GetFieldAt(_pos_before_x, _pos_before_y)
-			->LeftField();
-			_map->GetFieldAt(_pos_before_x, _pos_after_y)
-			->SteppedOver(this);
+			// _map->GetFieldAt(_pos_before_x, _pos_before_y)
+			// ->LeftField();
+			// _map->GetFieldAt(_pos_before_x, _pos_after_y)
+			// ->SteppedOver(this);
 			_pos_before_y = _pos_after_y;
 		}
 	}
