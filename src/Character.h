@@ -36,7 +36,7 @@ public:
 	
 	void OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx);
 	void OnRender(SDL_Renderer *renderer);
-	void setPosTiles(IMap *map, int x, int y);
+	void setPosTiles(int x, int y);
 
 	int getPosX();
 	int getPosY();
@@ -56,8 +56,8 @@ public:
 
 
 	Fireball * Shoot();
-	void updateDirection(IMap *map, DIRECT directMove);
-	void updatePosition(IMap *map, int time_ms);
+	void updateDirection(DIRECT directMove);
+	void OnUpdate(int time_ms);
 
 private:
 	RTexture *_texture;

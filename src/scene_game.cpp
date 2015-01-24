@@ -45,7 +45,7 @@ void SceneGame::OnLoad()
 	RTexture *tmpTexture;
 
 	_background = new RTexture(texturesScene_game[1]);
-	_background ->setScaleSize(1.0 * EngineInst->screen_width() / _background->getWidth());
+	_background ->setScaleSize(1.0f * EngineInst->screen_width() / _background->getWidth());
 
 	tmpTexture = new RTexture(texturesScene_game[3]);
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
@@ -59,8 +59,8 @@ void SceneGame::OnLoad()
 	tmpTexture->setTileIdx(27);
 	_player2 = new Character(tmpTexture, map);
 
-	_player1->setPosTiles(map, 3, 3);
-	_player2->setPosTiles(map, 4, 3);
+	_player1->setPosTiles(3, 3);
+	_player2->setPosTiles(4, 3);
 
 	for (int i = 0; i < 5; ++i) {
 		tmpTexture = new RTexture(texturesScene_game[3]);
@@ -68,7 +68,7 @@ void SceneGame::OnLoad()
 		tmpTexture->setTileSizeDst(tile_size);
 		tmpTexture->setTileIdx(23);
 		Character* enemy = new Character(tmpTexture, map);
-		enemy->setPosTiles(map, map->GetWidth() - 2, map->GetHeight() - 2 - i);
+		enemy->setPosTiles(map->GetWidth() - 2, map->GetHeight() - 2 - i);
 		_enemys.push_back(enemy);
 	}
 
@@ -114,19 +114,19 @@ void SceneGame::updatePlayers(int timems)
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
 	if (currentKeyStates[PLAYER_1_MOVE_DOWN]) {
-		_player1->updateDirection(map, DIRECT_DOWN);
+		_player1->updateDirection(DIRECT_DOWN);
 	}
 
 	if (currentKeyStates[PLAYER_1_MOVE_UP]) {
-		_player1->updateDirection(map, DIRECT_UP);
+		_player1->updateDirection(DIRECT_UP);
 	}
 
 	if (currentKeyStates[PLAYER_1_MOVE_LEFT]) {
-		_player1->updateDirection(map, DIRECT_LEFT);
+		_player1->updateDirection(DIRECT_LEFT);
 	}
 
 	if (currentKeyStates[PLAYER_1_MOVE_RIGHT]) {
-		_player1->updateDirection(map, DIRECT_RIGHT);
+		_player1->updateDirection(DIRECT_RIGHT);
 	}
 
 	if (currentKeyStates[PLAYER_1_SHOOT]) {
@@ -136,19 +136,19 @@ void SceneGame::updatePlayers(int timems)
 	}
 
 	if (currentKeyStates[PLAYER_2_MOVE_DOWN]) {
-		_player2->updateDirection(map, DIRECT_DOWN);
+		_player2->updateDirection(DIRECT_DOWN);
 	}
 
 	if (currentKeyStates[PLAYER_2_MOVE_UP]) {
-		_player2->updateDirection(map, DIRECT_UP);
+		_player2->updateDirection(DIRECT_UP);
 	}
 
 	if (currentKeyStates[PLAYER_2_MOVE_LEFT]) {
-		_player2->updateDirection(map, DIRECT_LEFT);
+		_player2->updateDirection(DIRECT_LEFT);
 	}
 
 	if (currentKeyStates[PLAYER_2_MOVE_RIGHT]) {
-		_player2->updateDirection(map, DIRECT_RIGHT);
+		_player2->updateDirection(DIRECT_RIGHT);
 	}
 
 // <<<<<<< HEAD
@@ -226,8 +226,8 @@ void SceneGame::updatePlayers(int timems)
 			fireballs.push_back(fb);
 	}
 
-	_player1->updatePosition(map, timems);
-	_player2->updatePosition(map, timems);
+	_player1->OnUpdate(timems);
+	_player2->OnUpdate(timems);
 }
 
 void SceneGame::updateEnemies(int timems)
@@ -257,17 +257,17 @@ void SceneGame::updateEnemies(int timems)
 
 		if (destBest != DIRECT_NO_WAY) {
 			if (destBest == DIRECT_DOWN) {
-				(*enemy)->updateDirection(map, DIRECT_DOWN);
+				(*enemy)->updateDirection(DIRECT_DOWN);
 			} else if (destBest == DIRECT_UP) {
-				(*enemy)->updateDirection(map, DIRECT_UP);
+				(*enemy)->updateDirection(DIRECT_UP);
 			} else if (destBest == DIRECT_LEFT) {
-				(*enemy)->updateDirection(map, DIRECT_LEFT);
+				(*enemy)->updateDirection(DIRECT_LEFT);
 			} else if (destBest == DIRECT_RIGHT) {
-				(*enemy)->updateDirection(map, DIRECT_RIGHT);
+				(*enemy)->updateDirection(DIRECT_RIGHT);
 			}
 		}
 
-		(*enemy)->updatePosition(map, timems / 3);
+		(*enemy)->OnUpdate(timems / 3);
 	}
 }
 
