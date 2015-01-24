@@ -1,3 +1,4 @@
+#include "MainScene.h"
 #include "GlobalData.h"
 #include "Engine/Scene.h"
 #include "Engine/Engine.h"
