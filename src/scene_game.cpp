@@ -85,16 +85,23 @@ void SceneGame::OnLoad()
 	tmpTexture->setTileIdx(27);
 	_player2 = new Player(tmpTexture, map);
 
-	_player1->setPosTiles(3, 3);
-	_player2->setPosTiles(4, 3);
+	_player1->setPosTiles(map->GetPlayer1Start().first,
+			      map->GetPlayer1Start().second);
+	_player2->setPosTiles(map->GetPlayer2Start().first,
+			      map->GetPlayer2Start().second);
 
-	for (int i = 0; i < 5; ++i) {
+	const start_list &ens = map->GetEnemiesStart();
+
+	//int i=0;
+	for (start_list::const_iterator it=ens.begin() ; it!=ens.end();
+	     ++it)
+	{
 		tmpTexture = new RTexture(texturesScene_game[3]);
 		tmpTexture->setTileSizeSrc(tileSizeSrc);
 		tmpTexture->setTileSizeDst(tile_size);
 		tmpTexture->setTileIdx(23);
 		Enemy* enemy = new Enemy(tmpTexture, map);
-		enemy->setPosTiles(map->GetWidth() - 2, map->GetHeight() - 2 - i);
+		enemy->setPosTiles(it->first, it->second);
 		_enemys.push_back(enemy);
 	}
 
