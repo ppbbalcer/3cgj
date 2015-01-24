@@ -8,6 +8,8 @@ class Enemy : public Character
 public:
 	Enemy(RTexture* texture, IMap * map) : Character(texture, map) {};
 	~Enemy(void);
+
+	virtual int crucio(int howMuchCrucio);
 };
 
 #endif

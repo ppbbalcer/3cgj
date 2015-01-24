@@ -8,7 +8,7 @@ using namespace std;
 Character::Character(RTexture* texture, IMap * map)
 {
 	_texture = texture;
-	power_level=DEFAULT_POWER_LEVEL;
+	power_level = DEFAULT_POWER_LEVEL;
 	_map = map;
 	_health = MAX_HEALTH;
 	_state = ALIVE;
@@ -69,64 +69,54 @@ int Character::GetPowerLevel()
 }
 int Character::SetPowerLevel(int x)
 {
-	return (power_level=x);
+	return (power_level = x);
 }
 
 void Character::OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx)
 {
 	int title_size = 23;
 
-	if(radius == 4) {
+	if (radius == 4) {
 		int cx = getPosX();
 		int cy = getPosY();
 
-	//	if(_pos_before_x == _pos_after_x && _pos_before_y == _pos_after_y) {
-			int alfa;
-			for(int x=-radius; x<=radius; ++x) {
-				for(int y=-radius; y<=radius; ++y) {
-					
-					int tx = (cx/title_size)+x;
-					int ty = (cy/title_size)+y;
-					if (tx < 0 || tx >= (_map)->GetWidth()) continue;
-					if (ty < 0 || ty >= (_map)->GetHeight()) continue;
+		int alfa;
+		for (int x = -radius; x <= radius; ++x) {
+			for (int y = -radius; y <= radius; ++y) {
 
-					if( (_map)->GetFieldAt(tx, ty)->IsObstacle()) {
-						continue;
-					}
-					alfa = calcCircleAlfaRadius4[x+radius][y+radius];
-					if(alfa > 0) {
-						_texture->setAlpha( alfa );
+				int tx = (cx / title_size) + x;
+				int ty = (cy / title_size) + y;
+				if (tx < 0 || tx >= (_map)->GetWidth()) continue;
+				if (ty < 0 || ty >= (_map)->GetHeight()) continue;
 
-						_texture->renderTile(renderer, cx + x*title_size, cy + y*title_size, tileIdx, SDL_FLIP_NONE);	
-					}
+				if ((_map)->GetFieldAt(tx, ty)->IsObstacle()) {
+					continue;
+				}
+				alfa = calcCircleAlfaRadius4[x + radius][y + radius];
+				if (alfa > 0) {
+					_texture->setAlpha(alfa);
+
+					_texture->renderTile(renderer, cx + x * title_size, cy + y * title_size, tileIdx, SDL_FLIP_NONE);
 				}
 			}
-	/*	} else {
-
-
-
 		}
-*/
 
-
-	}else {
+	} else {
 		printf("No calculated Radius\n");
 		PAUSE();
 	}
-	_texture->setAlpha( 255 );
-
-
+	_texture->setAlpha(255);
 }
 
 void Character::OnRender(SDL_Renderer *renderer)
 {
-	if (GetState()==DEAD) {
+	if (GetState() == DEAD) {
 		_texture->renderTile(renderer, getPosX(), getPosY(), 30, SDL_FLIP_NONE);
 	} else {
 		_texture->renderTile(renderer, getPosX(), getPosY());
 	}
 }
-       
+
 void Character::setPos(int x, int y)
 {
 	_posX = x;

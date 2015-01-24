@@ -47,3 +47,14 @@ Fireball * Player::Shoot()
 	                    getPosBeforeY() + last_dir_y,
 	                    last_dir_x, last_dir_y, GetPowerLevel());
 }
+
+int Player::crucio(int howMuchCrucio)
+{
+	int hpRem = Character::crucio(howMuchCrucio);
+	if (hpRem <= 0) {
+		globalAudios[PLAYER_DEATH].res.sound->play();
+	} else {
+		globalAudios[PLAYER_PAIN].res.sound->play();
+	}
+	return hpRem;
+}
