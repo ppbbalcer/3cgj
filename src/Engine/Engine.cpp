@@ -86,8 +86,9 @@ bool Engine::init() {
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError()); 
 		return false; 
 	}
+#ifdef FULLSCREEN
 	SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN);
-		
+#endif		
 	
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 	if (_renderer == NULL) { 

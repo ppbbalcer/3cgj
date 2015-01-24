@@ -149,34 +149,34 @@ Fireball * Character::Shoot()
 	                    last_dir_x, last_dir_y);
 }
 
-void Character::updateDirection(IMap *map, Action action)
+void Character::updateDirection(IMap *map, DIRECT directMove)
 {
 	if (_state != ALIVE)
 		return;
 
-	switch (action) {
-	case ACTION_MOVE_DOWN:
+	switch (directMove) {
+	case DIRECT_DOWN:
 		if ((!map->GetFieldAt(_pos_before_x, _pos_before_y + 1)->IsObstacle()) &&
 		                (!map->GetFieldAt(_pos_after_x, _pos_before_y + 1)->IsObstacle())) {
 			_pos_after_y = _pos_before_y + 1;
 		}
 		break;
 
-	case ACTION_MOVE_UP:
+	case DIRECT_UP:
 		if ((!map->GetFieldAt(_pos_before_x, _pos_before_y - 1)->IsObstacle()) &&
 		                (!map->GetFieldAt(_pos_after_x, _pos_before_y - 1)->IsObstacle())) {
 			_pos_after_y = _pos_before_y - 1;
 		}
 		break;
 
-	case ACTION_MOVE_RIGHT:
+	case DIRECT_RIGHT:
 		if ((!map->GetFieldAt(_pos_before_x + 1, _pos_before_y)->IsObstacle()) &&
 		                (!map->GetFieldAt(_pos_before_x + 1, _pos_after_y)->IsObstacle())) {
 			_pos_after_x = _pos_before_x + 1;
 		}
 		break;
 
-	case ACTION_MOVE_LEFT:
+	case DIRECT_LEFT:
 		if ((!map->GetFieldAt(_pos_before_x - 1, _pos_before_y)->IsObstacle()) &&
 		                (!map->GetFieldAt(_pos_before_x - 1, _pos_after_y)->IsObstacle())) {
 			_pos_after_x = _pos_before_x - 1;
@@ -184,7 +184,7 @@ void Character::updateDirection(IMap *map, Action action)
 		break;
 
 	default:
-		printf("Unrecognized direction %d given\n", action);
+		printf("Unrecognized direction %d given\n", directMove);
 		break;
 	}
 }
