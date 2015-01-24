@@ -3,6 +3,7 @@
 
 #include "Character.h"
 #include <time.h>
+#include "Engine/AStar.h"
 
 #define RANDOM_DIRECTION_CHANGE_TIME_MS 500
 
@@ -19,10 +20,12 @@ class Enemy : public Character
 public:
 	Enemy(RTexture* texture, IMap * map, int hp, int ai);
 	~Enemy(void);
+	virtual void OnRender(SDL_Renderer *renderer);
 
 	enemy_ai getAI() { return _ai; }
 	virtual int crucio(int howMuchCrucio);
 	DIRECT getRandomDirection();
+	AStarWay_t way;
 };
 
 #endif

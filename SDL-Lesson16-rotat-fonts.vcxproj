@@ -21,7 +21,6 @@
     <ClCompile Include="src\GlobalData.cpp" />
     <ClCompile Include="src\level.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\MainScene.cpp" />
     <ClCompile Include="src\MapLogic\door.cpp" />
     <ClCompile Include="src\MapLogic\field.cpp" />
     <ClCompile Include="src\MapLogic\map.cpp" />
@@ -44,7 +43,6 @@
     <ClInclude Include="src\GlobalData.h" />
     <ClInclude Include="src\KeyMap.h" />
     <ClInclude Include="src\level.h" />
-    <ClInclude Include="src\MainScene.h" />
     <ClInclude Include="src\MapLogic\door.h" />
     <ClInclude Include="src\MapLogic\field.h" />
     <ClInclude Include="src\MapLogic\field_impl.h" />
