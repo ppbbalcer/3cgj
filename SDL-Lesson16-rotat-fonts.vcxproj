@@ -19,10 +19,13 @@
     <ClCompile Include="src\Engine\RTexture.cpp" />
     <ClCompile Include="src\fireball.cpp" />
     <ClCompile Include="src\GlobalData.cpp" />
+    <ClCompile Include="src\levels\base_level.cpp" />
+    <ClCompile Include="src\levels\level0.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainScene.cpp" />
     <ClCompile Include="src\MapLogic\field.cpp" />
     <ClCompile Include="src\MapLogic\map.cpp" />
+    <ClCompile Include="src\object.cpp" />
     <ClCompile Include="src\scene_game.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -37,11 +40,14 @@
     <ClInclude Include="src\fireball.h" />
     <ClInclude Include="src\GlobalData.h" />
     <ClInclude Include="src\KeyMap.h" />
+    <ClInclude Include="src\levels\base_level.h" />
+    <ClInclude Include="src\levels\level0.h" />
     <ClInclude Include="src\MainScene.h" />
     <ClInclude Include="src\MapLogic\field.h" />
     <ClInclude Include="src\MapLogic\field_impl.h" />
     <ClInclude Include="src\MapLogic\generic_map.h" />
     <ClInclude Include="src\MapLogic\map.h" />
+    <ClInclude Include="src\object.h" />
     <ClInclude Include="src\SceneExamples.h" />
     <ClInclude Include="src\SceneFont.h" />
     <ClInclude Include="src\scene_game.h" />

@@ -33,7 +33,7 @@ void SceneGame::OnLoad()
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
 	int tile_size = EngineInst->screen_width() / map->GetWidth();
 	EngineInst->setTileSize(tile_size);
-
+	
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
 	/*RTexture *player1Texture = new RTexture(texturesScene_game[2]);
 	RTexture *player2Texture = new RTexture(texturesScene_game[2]);*/
@@ -151,14 +151,83 @@ void SceneGame::updatePlayers(int timems)
 		_player2->updateDirection(map, Character::ACTION_MOVE_RIGHT);
 	}
 
+// <<<<<<< HEAD
+		// _player1->updatePosition(map, timems,_tiles->getTileSizeDst());
+		// _player2->updatePosition(map, timems,_tiles->getTileSizeDst());
+		// for(std::list<Fireball*>::iterator it = fireballs.begin();
+		    // it != fireballs.end(); ++it) {
+			// if ( (*it)->updatePosition(map,timems) ) {
+				// std::list<Fireball*>::iterator next=it;
+				// next++;
+				// delete *it;
+				// fireballs.erase(it);
+				// it=next;
+			// }
+		// }
+
+		// //int enemys = _enemys.size();
+		// //calc_enemy_timer += timems;
+		// //calc_enemy_last = 0;
+		// //int tipePerOne = /*period to update all enemys*/1000 /enemys;
+		// //int enemysToUpdate = calc_enemy_timer/tipePerOne + 3;
+		// //calc_enemy_timer = calc_enemy_timer%tipePerOne;
+
+		// //int enemy_start = -1;
+		// //int enemy_stop = -1;
+		// //if(enemysToUpdate > 0) {
+		// //	enemy_start = calc_enemy_last + 1;
+		// //	enemy_stop = (enemy_start + enemysToUpdate -1)%enemys;
+		// //	enemy_start %= enemys;
+		// //	calc_enemy_last = enemy_stop;
+		// //}
+
+		// //int index = 0;
+		// for(std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+
+			// /*if((index >= enemy_start && index <= enemy_stop) || (index <= enemy_start && index >= enemy_stop)) {*/
+				// int startX = (*enemy)->getPosBeforeX(); 
+				// int startY = (*enemy)->getPosBeforeY();
+				// AStarWay_t way1;
+				// AStarWay_t way2;
+
+				// DIRECT destBest = DIRECT_NO_WAY;
+				// DIRECT direct1 = findAstar(way1, 5, startX, startY,_player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+				// DIRECT direct2 = findAstar(way2, 5, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+
+				// if(direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
+					// destBest = direct1;
+				// } else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
+						// destBest = direct2;
+				// } else if (direct1 != DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
+					// if(way1.size() > way2.size()) {
+						// destBest = direct2;
+					// } else {
+						// destBest = direct1;
+					// }
+				// }
+			
+				// if (destBest != DIRECT_NO_WAY) {
+					// if (destBest == DIRECT_DOWN) {
+							// (*enemy)->updateDirection(map, Character::ACTION_MOVE_DOWN);
+						// } else if (destBest == DIRECT_UP) {
+							// (*enemy)->updateDirection(map, Character::ACTION_MOVE_UP);
+						// } else if (destBest == DIRECT_LEFT) {
+							// (*enemy)->updateDirection(map, Character::ACTION_MOVE_LEFT);
+						// } else if (destBest == DIRECT_RIGHT) {
+							// (*enemy)->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+						// }
+				// }
+			// /*}
+			// index++;*/
+
 	if (currentKeyStates[PLAYER_2_SHOOT]) {
 		Fireball * fb = _player2->Shoot();
 		if (fb)
 			fireballs.push_back(fb);
 	}
 
-	_player1->updatePosition(map, timems, _tiles->getTileSizeDst());
-	_player2->updatePosition(map, timems, _tiles->getTileSizeDst());
+	_player1->updatePosition(map, timems);
+	_player2->updatePosition(map, timems);
 }
 
 void SceneGame::updateEnemies(int timems)
@@ -169,9 +238,10 @@ void SceneGame::updateEnemies(int timems)
 		AStarWay_t way1;
 		AStarWay_t way2;
 
+		int maxSteps = 5;
 		DIRECT destBest = DIRECT_NO_WAY;
-		DIRECT direct1 = findAstar(way1, startX, startY, _player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-		DIRECT direct2 = findAstar(way2, startX, startY, _player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+		DIRECT direct1 = findAstar(way1, maxSteps, startX, startY, _player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+		DIRECT direct2 = findAstar(way2,maxSteps,  startX, startY, _player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 
 		if (direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
 			destBest = direct1;
@@ -197,7 +267,7 @@ void SceneGame::updateEnemies(int timems)
 			}
 		}
 
-		(*enemy)->updatePosition(map, timems / 3, _tiles->getTileSizeDst());
+		(*enemy)->updatePosition(map, timems / 3);
 	}
 }
 
@@ -277,6 +347,11 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	/*render enemies */
 	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		if ((*enemy)->GetState() == Character::ALIVE)
+			(*enemy)->OnRenderCircle(renderer, 4, 7);
+	}
+
+	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}
 	/* render fireballs */
@@ -307,7 +382,10 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 	}
 
+	_player1->OnRenderCircle(renderer, 4, 7);
+
 	_player1->OnRender(renderer);
+
 	_player2->OnRender(renderer);
 
 }
