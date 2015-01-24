@@ -3,6 +3,7 @@
 #include "scene_game.h"
 #include "GlobalData.h"
 #include <algorithm>
+#include "Engine/AStar.h"
 #include <stdio.h>
 
 using namespace std;
@@ -130,6 +131,40 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 			}
 		}
+
+		
+		
+		
+		{ //Astar Example
+			int startX = 18; 
+			int startY = 13;
+
+			_tiles->renderTile(renderer, startX * sizeDst, startY * sizeDst, 8);
+
+			while(startX != pcpos_after_x || startY != pcpos_after_y) {
+				int direct = findAstar(startX, startY,pcpos_after_x, pcpos_after_y, map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+				if (direct == DIRECT_NO_WAY) {
+					break;
+				}
+
+				if(direct & DIRECT_LEFT) {
+					--startX;
+				} else if(direct & DIRECT_RIGHT) {
+					++startX;
+				}
+
+				if(direct & DIRECT_UP) {
+					--startY;
+				} else if(direct & DIRECT_DOWN) {
+					++startY;
+				}
+				_tiles->renderTile(renderer, startX * sizeDst, startY * sizeDst, 8);
+
+			}
+		}
+
+		_tiles->renderTile(renderer, _player->getPosX(), _player->getPosY(), 24);
+
 
 		_tiles->renderTile(renderer, _player1->getPosX(), _player1->getPosY(), 24);
 		_tiles->renderTile(renderer, _player2->getPosX(), _player2->getPosY(), 24);

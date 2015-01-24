@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\AStar.cpp" />
     <ClCompile Include="src\Engine\Audio.cpp" />
     <ClCompile Include="src\Engine\Engine.cpp" />
     <ClCompile Include="src\Engine\Character.cpp" />
@@ -24,6 +25,7 @@
     <ClCompile Include="src\scene_game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\AStar.h" />
     <ClInclude Include="src\Engine\Audio.h" />
     <ClInclude Include="src\Engine\Engine.h" />
     <ClInclude Include="src\Engine\Character.h" />
@@ -32,6 +34,7 @@
     <ClInclude Include="src\Engine\Scene.h" />
     <ClInclude Include="src\Engine\StructsGlobal.h" />
     <ClInclude Include="src\GlobalData.h" />
+    <ClInclude Include="src\MainScene.h" />
     <ClInclude Include="src\MapLogic\field.h" />
     <ClInclude Include="src\MapLogic\field_impl.h" />
     <ClInclude Include="src\MapLogic\generic_map.h" />
