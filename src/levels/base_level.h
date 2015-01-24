@@ -28,8 +28,7 @@ private:
 	int level_id;
 	int width;
 	int height;
-	enum map_field map[MAX_WIDTH][MAX_HEIGHT];
-	void load(const char *file);
+	IMap *map;
 };
 
 class BaseLevel : public Scene {
