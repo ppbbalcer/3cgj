@@ -30,5 +30,15 @@ public:
 	virtual void Activate() {}
 	virtual void Deactivate() {}
 };
-
+class EvilComputer: public Field {
+	bool running;
+	bool time_to_next_fb;
+public:
+	EvilComputer() : Field(EVIL_COMPUTER)
+		{
+			time_to_next_fb;
+			running=false;
+		}
+	
+};
 #endif

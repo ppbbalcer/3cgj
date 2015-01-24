@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <string>
 #include "field.h"
 #include "map.h"
 #include "generic_map.h"
@@ -104,6 +105,9 @@ LoadedMap::LoadedMap(const char * path) {
 			case 'e':
 				new_field= new Field(IField::EMPTY_FLASK);
 				break;
+			case 'E':
+				new_field= new EvilComputer;
+				break;
 				
 			default:
 				new_field= new Field(IField::EMPTY);
@@ -153,6 +157,32 @@ LoadedMap::LoadedMap(const char * path) {
 	}
 	mapfile.close();
 	SerializeOntoConsole();
+	string config_path(path);
+	config_path+=".conf";
+	mapfile.open(config_path);
+	if (!mapfile.good())
+		return;
+	while (!mapfile.eof()) {
+		/**
+		 * achtung! kein error checking! you may CTD through
+		 * bugged conf file.
+		 */
+		string command;
+		mapfile >> command;
+		if (command == "switch") {
+			int sw_x;
+			int sw_y;
+			string direction;
+			int tar_x;
+			int tar_y;
+			mapfile >> sw_x >> sw_y >> direction >> tar_x >> tar_y;
+			Switch * sw = dynamic_cast <Switch*>(GetFieldAt(sw_x, sw_y));
+			if (!sw) {assert(0);}
+			Field * tar = dynamic_cast <Field*>(GetFieldAt(tar_x, tar_y));
+			sw->AssociateField(tar,direction=="up");
+		}
+	}
+	mapfile.close();
 }
 
 void LoadedMap::SerializeOntoConsole()

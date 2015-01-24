@@ -39,6 +39,7 @@ public:
 		EMPTY_FLASK,
 		SWITCH_UP,
 		SWITCH_DOWN,
+		EVIL_COMPUTER, /*spawns fireballs everywhere*/
 		NUM_FIELD_TYPES
   
 	};

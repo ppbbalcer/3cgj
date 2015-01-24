@@ -15,11 +15,18 @@ bool Switch::Up() {
 }
 
 void Switch::SteppedOver(Character * who) {
-		if (GetType()==SWITCH_UP) {
-			SetType(SWITCH_DOWN);
-		} else if (GetType()==SWITCH_DOWN) {
-			SetType(SWITCH_UP);
-		} else {
-			assert(0);
-		}
+	if (GetType()==SWITCH_UP) {
+		SetType(SWITCH_DOWN);	
+	} else if (GetType()==SWITCH_DOWN) {
+		SetType(SWITCH_UP);
+	} else {
+		assert(0);
+	}
+
+	if (associated_field) {
+		if (on_up ^ Up() )
+			associated_field->Deactivate();
+		else
+			associated_field->Activate();
+	}
 }

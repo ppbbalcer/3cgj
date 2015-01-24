@@ -24,6 +24,7 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[T_TOP] =  12;
 	assigned_field[T_BOTTOM] =  10;
 	assigned_field[FLOOR] = 7;
+	assigned_field[DESK] = 7;
 	assigned_field[DOOR] = 7;
 	assigned_field[DOOR_VERTICAL_CLOSED] = 17;
 	assigned_field[DOOR_VERTICAL_OPEN] = 16;
@@ -39,6 +40,7 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[EMPTY_FLASK] = 32;
 	assigned_field[SWITCH_DOWN] = 38;
 	assigned_field[SWITCH_UP] = 37;
+	assigned_field[EVIL_COMPUTER] = 39;
 	initialized = true;
 }
 int Field::GetTileId()
