@@ -35,16 +35,17 @@ public:
 
 	void OnRender(SDL_Renderer *renderer);
 	void setPosTiles(IMap *map, int x, int y);
+
 	int getPosX();
 	int getPosY();
-
-	Fireball * Shoot();
-	void updateDirection(IMap *map, Action action);
-	void updatePosition(IMap *map, int time_ms, int tile_size);
 	int getPosBeforeX();
 	int getPosAfterX();
 	int getPosBeforeY();
 	int getPosAfterY();
+
+	Fireball * Shoot();
+	void updateDirection(IMap *map, Action action);
+	void updatePosition(IMap *map, int time_ms, int tile_size);
 
 private:
 	RTexture *_texture;

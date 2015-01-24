@@ -10,7 +10,8 @@ class Fireball;
 /**
  * scene that contains map and character
  */
-class SceneGame: public Scene {
+class SceneGame: public Scene
+{
 private:
 	std::list<Fireball *> fireballs;
 	RTexture *_background;
@@ -31,7 +32,6 @@ public:
 	virtual void OnRender(SDL_Renderer* renderer);
 	virtual ~SceneGame();
 };
-
 
 bool IMap_isObstacle(int x, int y, void* objMap);
 

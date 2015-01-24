@@ -6,15 +6,16 @@
 #include "Engine/AStar.h"
 #include <stdio.h>
 #include "fireball.h"
+
 using namespace std;
 
 /* looking for obstacles*/
 bool IMap_isObstacle(int x, int y, void* objMap)
 {
 
-	if (((IMap*)objMap)->GetFieldAt(x,y)->IsOccupied())
+	if (((IMap*)objMap)->GetFieldAt(x, y)->IsOccupied())
 		return false;
-	return ((IMap*)objMap)->GetFieldAt(x,y)->IsObstacle();
+	return ((IMap*)objMap)->GetFieldAt(x, y)->IsObstacle();
 }
 
 SceneGame::SceneGame()
@@ -29,7 +30,7 @@ SceneGame::~SceneGame()
 void SceneGame::OnLoad()
 {
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
-	int tile_size = EngineInst->screen_width()/map->GetWidth();
+	int tile_size = EngineInst->screen_width() / map->GetWidth();
 	EngineInst->setTileSize(tile_size);
 
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
@@ -42,9 +43,8 @@ void SceneGame::OnLoad()
 
 	RTexture *tmpTexture;
 
-
 	_background = new RTexture(texturesScene_game[1]);
-	_background ->setScaleSize(1.0*EngineInst->screen_width()/_background->getWidth());
+	_background ->setScaleSize(1.0 * EngineInst->screen_width() / _background->getWidth());
 
 	tmpTexture = new RTexture(texturesScene_game[3]);
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
@@ -58,25 +58,22 @@ void SceneGame::OnLoad()
 	tmpTexture->setTileIdx(27);
 	_player2 = new Character(tmpTexture, map);
 
-	_player1->setPosTiles(map,3,3);
-	_player2->setPosTiles(map,4,3);
+	_player1->setPosTiles(map, 3, 3);
+	_player2->setPosTiles(map, 4, 3);
 
-	for (int i = 0; i<5; ++i) {
+	for (int i = 0; i < 5; ++i) {
 		tmpTexture = new RTexture(texturesScene_game[3]);
 		tmpTexture->setTileSizeSrc(tileSizeSrc);
 		tmpTexture->setTileSizeDst(tile_size);
 		tmpTexture->setTileIdx(23);
 		Character* enemy = new Character(tmpTexture, map);
-		enemy->setPosTiles(map,map->GetWidth()-2, map->GetHeight()-2-i);
+		enemy->setPosTiles(map, map->GetWidth() - 2, map->GetHeight() - 2 - i);
 		_enemys.push_back(enemy);
 	}
 
-
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(tileSizeSrc);
-
 	_tiles->setTileSizeDst(tile_size);
-
 
 	//Load media
 	if (!success) {
@@ -127,14 +124,14 @@ void SceneGame::updatePlayers(int timems)
 		_player1->updateDirection(map, Character::ACTION_MOVE_LEFT);
 	}
 
+	if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+		_player1->updateDirection(map, Character::ACTION_MOVE_RIGHT);
+	}
+
 	if (currentKeyStates[SDL_SCANCODE_RETURN]) {
 		Fireball * fb = _player1->Shoot();
 		if (fb)
 			fireballs.push_back(fb);
-	}
-
-	if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
-		_player1->updateDirection(map, Character::ACTION_MOVE_RIGHT);
 	}
 
 	if (currentKeyStates[SDL_SCANCODE_S]) {
@@ -152,14 +149,15 @@ void SceneGame::updatePlayers(int timems)
 	if (currentKeyStates[SDL_SCANCODE_D]) {
 		_player2->updateDirection(map, Character::ACTION_MOVE_RIGHT);
 	}
-	if (currentKeyStates[SDL_SCANCODE_Q]) {
+
+	if (currentKeyStates[SDL_SCANCODE_F]) {
 		Fireball * fb = _player2->Shoot();
 		if (fb)
 			fireballs.push_back(fb);
 	}
 
-	_player1->updatePosition(map, timems,_tiles->getTileSizeDst());
-	_player2->updatePosition(map, timems,_tiles->getTileSizeDst());
+	_player1->updatePosition(map, timems, _tiles->getTileSizeDst());
+	_player2->updatePosition(map, timems, _tiles->getTileSizeDst());
 }
 
 void SceneGame::updateEnemies(int timems)
@@ -171,8 +169,8 @@ void SceneGame::updateEnemies(int timems)
 		AStarWay_t way2;
 
 		DIRECT destBest = DIRECT_NO_WAY;
-		DIRECT direct1 = findAstar(way1, startX, startY,_player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-		DIRECT direct2 = findAstar(way2, startX, startY,_player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+		DIRECT direct1 = findAstar(way1, startX, startY, _player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
+		DIRECT direct2 = findAstar(way2, startX, startY, _player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 
 		if (direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
 			destBest = direct1;
@@ -198,20 +196,15 @@ void SceneGame::updateEnemies(int timems)
 			}
 		}
 
-		(*enemy)->updatePosition(map, timems/3,_tiles->getTileSizeDst());
+		(*enemy)->updatePosition(map, timems / 3, _tiles->getTileSizeDst());
 	}
 }
 
 void SceneGame::OnUpdate(int timems)
 {
-	//Event handler
 	SDL_Event e;
-	//Handle events on queue
 	while (SDL_PollEvent(&e) != 0) {
-		//Engine::eventDebug(&e);
-		//User requests quit, Press Esc
 		if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN  && e.key.keysym.sym == SDLK_ESCAPE)) {
-			//Quit the game
 			EngineInst->breakMainLoop();
 			return;
 		}
@@ -237,23 +230,23 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	int tilesNums = _tiles->getTilesNums();
 	//for (int i =  0 ; i<tilesNums; ++i) {
 	srand(1);
-	for (int i = 0 ; i!=map->GetHeight()-1; i++) {
-		for (int j = 0 ; j!=map->GetWidth()-1; ++j) {
-			int px_left = j * sizeDst+sizeDst/2;
-			int px_top  = i * sizeDst+0.5*sizeDst;
+	for (int i = 0 ; i != map->GetHeight() - 1; i++) {
+		for (int j = 0 ; j != map->GetWidth() - 1; ++j) {
+			int px_left = j * sizeDst + sizeDst / 2;
+			int px_top  = i * sizeDst + 0.5 * sizeDst;
 			_tiles->renderTile(renderer,
 			                   px_left,
 			                   px_top,
-			                   18+rand()%5, SDL_FLIP_NONE);
+			                   18 + rand() % 5, SDL_FLIP_NONE);
 		}
 	}
-	for (int i = 0 ; i!=map->GetHeight(); i++) {
-		for (int j = 0 ; j!=map->GetWidth(); ++j) {
-			int field= map->GetFieldAt(j,i)->GetType();
-			int tile=  map->GetFieldAt(j,i)->GetTileId();
-			if (field==IField::FLOOR)
+	for (int i = 0 ; i != map->GetHeight(); i++) {
+		for (int j = 0 ; j != map->GetWidth(); ++j) {
+			int field = map->GetFieldAt(j, i)->GetType();
+			int tile =  map->GetFieldAt(j, i)->GetTileId();
+			if (field == IField::FLOOR)
 				continue;
-			int col = j* sizeDst;
+			int col = j * sizeDst;
 			int row = i * sizeDst;
 			_tiles->renderTile(renderer, col , row, tile, SDL_FLIP_NONE);
 
@@ -277,7 +270,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	//}
 
 	for (std::vector<Character*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
-		if ((*enemy)->GetState()==Character::ALIVE)
+		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}
 	for (std::list<Fireball*>::iterator it = fireballs.begin();
