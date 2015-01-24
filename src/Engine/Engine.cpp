@@ -33,19 +33,36 @@ void Engine::Destroy() {
 	delete _engine;
 	_engine = NULL;
 }
+int Engine::screen_width()
+{
+	int display_count = 0, display_index = 0, mode_index = 0;
+	SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+	SDL_GetDisplayMode(display_index, mode_index, &mode);
+	return mode.w;
+}
+int Engine::screen_height()
+{
+	int display_count = 0, display_index = 0, mode_index = 0;
+	SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+	SDL_GetDisplayMode(display_index, mode_index, &mode);
+	return mode.h;
+}
+
 
 bool Engine::init() {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) { 
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) { 
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError()); 
 		return false; 
 	}
 
-	_window = SDL_CreateWindow(GAME_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, EngineInst->screen_width(), EngineInst->screen_height(), SDL_WINDOW_SHOWN); 
+	_window = SDL_CreateWindow(GAME_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, EngineInst->screen_width(), EngineInst->screen_height(), SDL_WINDOW_SHOWN);
 	if (_window == NULL) { 
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError()); 
 		return false; 
 	}
-
+	SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN);
+		
+	
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 	if (_renderer == NULL) { 
 		printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError()); 
@@ -60,7 +77,7 @@ bool Engine::init() {
 	}
 
 	_screenSurface = SDL_GetWindowSurface( _window ); 
-
+	
 	if (TTF_Init() == -1) { 
 		printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError()); 
 		return false; 

@@ -11,6 +11,7 @@ Character::Character(RTexture *texture)
 	_pos_before_x = 1;
 	_pos_after_y = 1;
 	_pos_before_y = 1;
+	_state = ALIVE;
 }
 
 int Character::getHealth()
@@ -21,9 +22,14 @@ int Character::getHealth()
 int Character::crucio(int howMuchCrucio)
 {
 	_health = max<int>(_health - howMuchCrucio, 0);
+	if (_health=0) {
+		_state=DEAD;
+	}
 	return _health;
 }
-
+int Character::GetState() {
+	return _state;
+}
 void Character::heal(int howMuchHeal)
 {
 	_health = min<int>(_health + howMuchHeal, MAX_HEALTH);
@@ -70,6 +76,8 @@ int Character::getPosAfterY()
 
 void Character::updateDirection(IMap *map, Action action)
 {
+	if (_state != ALIVE)
+		return;
 	if (action == ACTION_MOVE_DOWN) {
 		if ((!map->GetFieldAt(_pos_before_x,_pos_before_y+1)
 			->IsObstacle()) &&
@@ -118,6 +126,8 @@ void Character::updatePosition(IMap *map, int time_ms)
 	float dist = 0.3 * time_ms;
 	float pos_x = getPosX();
 	float pos_y = getPosY();
+	if (_state != ALIVE)
+		return;
 
 	if (pos_y > target_y) {
 		pos_y = max<int>(target_y, pos_y - dist);
@@ -151,5 +161,9 @@ void Character::updatePosition(IMap *map, int time_ms)
 		}
 	}
 
+	if (_pos_before_y == 0 || _pos_before_y == map->GetHeight()-1 ||
+	    _pos_before_x == 0 || _pos_before_x == map->GetWidth()-1) {
+		_state = WON;
+	}
 	setPos(pos_x, pos_y);
 }

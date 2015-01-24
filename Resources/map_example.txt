@@ -12,4 +12,4 @@ w       w      |   w    w    w   w
 w       w      w   w    w    |   w
 w       |      w   |    w    w   w
 w       w      w   w    w    w   w
-wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww|w
