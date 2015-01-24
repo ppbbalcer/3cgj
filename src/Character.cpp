@@ -106,7 +106,7 @@ int Character::getPosAfterY()
 
 Fireball * Character::Shoot()
 {
-	globalAudios[2].res.sound->play(-1, 0, 0);
+	globalAudios[GameSounds::FIREBALL].res.sound->play(-1, 0, 0);
 
 	return new Fireball(getPosBeforeX() + last_dir_x,
 	                    getPosBeforeY() + last_dir_y,
