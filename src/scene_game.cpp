@@ -163,7 +163,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		
 		
 		
-		{ //Astar test
+		{ //Astar Example
 			int startX = 18; 
 			int startY = 13;
 
@@ -174,8 +174,6 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 				if (direct == DIRECT_NO_WAY) {
 					break;
 				}
-
-				
 
 				if(direct & DIRECT_LEFT) {
 					--startX;
@@ -192,7 +190,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 			}
 		}
-//}
+
 		_tiles->renderTile(renderer, _player->getPosX(), _player->getPosY(), 24);
 
 
