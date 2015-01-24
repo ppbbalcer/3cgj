@@ -3,7 +3,7 @@ w                  w         w   w
 w         kww|wwwwwww    m   w   w
 w          wm     kww        w   w
 wwwwwwwwwwwwwwwww|wwww|wwwwwww   w
-w       wdd    |   w         w   w
+|       wdd    |   w         w   w
 w       wdd    w   wwwww|wwwww   w
 w       w      w   w         w   w
 w   m   wwwwwwww   w d       w   w
@@ -12,4 +12,4 @@ w       w      |   w    w    w   w
 w       w      w   w    w    |   w
 w       |      w   |    w    w   w
 w       w      wk  w   kw    w   w
-wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww|w
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww

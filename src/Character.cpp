@@ -2,6 +2,7 @@
 #include "GlobalData.h"
 #include "Engine/Engine.h"
 #include "fireball.h"
+
 using namespace std;
 
 Character::Character(RTexture* texture, IMap * map)
@@ -27,14 +28,12 @@ Character::~Character()
 
 void Character::setPosTiles(IMap * map, int x, int y)
 {
-	map->GetFieldAt(_pos_before_x, _pos_before_y)
-	->LeftField();
+	map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
 	_pos_after_x = x;
 	_pos_before_x = x;
 	_pos_after_y = y;
 	_pos_before_y = y;
-	map->GetFieldAt(_pos_after_x, _pos_before_y)
-	->SteppedOver(this);
+	map->GetFieldAt(_pos_after_x, _pos_before_y)->SteppedOver(this);
 	setPos(x * EngineInst->getTileSize(), y * EngineInst->getTileSize());
 }
 
@@ -49,15 +48,16 @@ int Character::crucio(int howMuchCrucio)
 	printf("crucio! %d\n", _health);
 	if (_health == 0) {
 		_state = DEAD;
-		_map->GetFieldAt(_pos_before_x, _pos_before_y)
-		->LeftField();
+		_map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
 	}
 	return _health;
 }
+
 int Character::GetState()
 {
 	return _state;
 }
+
 void Character::heal(int howMuchHeal)
 {
 	_health = min<int>(_health + howMuchHeal, MAX_HEALTH);
@@ -102,7 +102,6 @@ void Character::OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx)
 
 void Character::OnRender(SDL_Renderer *renderer)
 {
-	//_texture->render(renderer);
 	_texture->renderTile(renderer, getPosX(), getPosY());
 }
 
@@ -226,13 +225,12 @@ void Character::updatePosition(IMap * map, int time_ms)
 
 	if (pos_x == target_x) {
 		if (_pos_before_x != _pos_after_x) {
-			map->GetFieldAt(_pos_before_x, _pos_before_y)
-			->LeftField();
-			map->GetFieldAt(_pos_after_x, _pos_before_y)
-			->SteppedOver(this);
+			map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
+			map->GetFieldAt(_pos_after_x, _pos_before_y)->SteppedOver(this);
 			_pos_before_x = _pos_after_x;
 		}
 	}
+
 	if (pos_y == target_y) {
 		if (_pos_before_y != _pos_after_y) {
 			map->GetFieldAt(_pos_before_x, _pos_before_y)
@@ -246,8 +244,7 @@ void Character::updatePosition(IMap * map, int time_ms)
 	if (_pos_before_y == 0 || _pos_before_y == map->GetHeight() - 1 ||
 	                _pos_before_x == 0 || _pos_before_x == map->GetWidth() - 1) {
 		_state = WON;
-		map->GetFieldAt(_pos_before_x, _pos_before_y)
-		->LeftField();
+		map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
 	}
 	setPos(pos_x, pos_y);
 }
