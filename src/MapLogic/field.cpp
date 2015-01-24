@@ -37,6 +37,8 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[SMALL_HEALTH_FLASK] = 34;
 	assigned_field[LARGE_HEALTH_FLASK] = 33;
 	assigned_field[EMPTY_FLASK] = 32;
+	assigned_field[SWITCH_DOWN] = 38;
+	assigned_field[SWITCH_UP] = 37;
 	initialized = true;
 }
 int Field::GetTileId()
