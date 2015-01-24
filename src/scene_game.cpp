@@ -132,6 +132,8 @@ void SceneGame::OnUpdate(int timems)
 			pcpos_before_y=pcpos_after_y;
 
 		_player1->setPos(p1PosX, p1PosY);
+		_player2->setPos(p2PosX, p2PosY);
+
 
 		//EngineInst->font()->printTextLT(20, 20, "MSCN");
 }
@@ -156,6 +158,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 			}
 		}
+
 		_tiles->renderTile(renderer, _player1->getPosX(), _player1->getPosY(), 24);
-		_tiles->renderTile(renderer, _player2->getPosX(), _player2->getPosX(), 24);
+		_tiles->renderTile(renderer, _player2->getPosX(), _player2->getPosY(), 24);
 }
