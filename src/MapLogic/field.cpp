@@ -87,6 +87,12 @@ void Field::SteppedOver(Character * who)
 		player->restoreMana(SMALL_POTION_MANA_VAL);
 		globalAudios[SLURP].res.sound->play();
 	}
+	if (type == LARGE_MANA_FLASK && who->getType() == TYPE_PLAYER) {
+		type = EMPTY_FLASK;
+		Player *player = (Player *)who;
+		player->restoreMana(LARGE_POTION_MANA_VAL);
+		globalAudios[SLURP].res.sound->play();
+	}
 	if (type == MEDKIT) {
 		type = FLOOR;
 		who->heal(MEDKIT_HEAL_VAL);

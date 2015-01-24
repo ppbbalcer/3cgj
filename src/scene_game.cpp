@@ -125,6 +125,8 @@ void SceneGame::OnLoad()
 	globalAudios[HEARTBEAT].res.sound->play(-1, 0, HEARTBEAT_BASE_INTERVAL);
 }
 
+extern int doskey_active;
+
 void SceneGame::OnFree()
 {
 	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
@@ -135,6 +137,7 @@ void SceneGame::OnFree()
 	_arrayShadow = NULL;
 
 	//Destroy textures???
+	doskey_active = 0;
 
 	globalAudios[HEARTBEAT].res.sound->stop();
 
@@ -398,10 +401,10 @@ void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 	_srand(1);
 
 	/*Render background*/
-	for (int i = 0 ; i != map->GetHeight() - 1; i++) {
-		for (int j = 0 ; j != map->GetWidth() - 1; ++j) {
-			int px_left = j * tileSize + tileSize / 2;
-			int px_top  = i * tileSize + tileSize / 2;
+	for (int i = 0 ; i != map->GetHeight(); i++) {
+		for (int j = 0 ; j != map->GetWidth(); ++j) {
+			int px_left = j * tileSize;
+			int px_top  = i * tileSize;
 			_tiles->renderTile(renderer,
 			                   px_left,
 			                   px_top,
@@ -420,6 +423,25 @@ void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 			_tiles->renderTile(renderer, col , row, tile, SDL_FLIP_NONE);
 
 		}
+	}
+	#define MARGIN_TOP 41
+	#define MARGIN_CORNER 42
+	#define MARGIN_LEFT 43
+	for (int i = 0 ; i != map->GetHeight(); i++) {
+		//left and right column
+		int col = 0 * tileSize;
+		int row = i * tileSize;
+		_tiles->renderTile(renderer, col , row, MARGIN_LEFT, SDL_FLIP_NONE);
+		col = (map->GetWidth()-1)*tileSize;
+		_tiles->renderTile(renderer, col , row, MARGIN_LEFT, SDL_FLIP_HORIZONTAL);	
+	}
+	for (int j = 0 ; j != map->GetWidth(); ++j) {
+		// top and bottom line0
+		int col = j * tileSize;
+		int row = 0;
+		_tiles->renderTile(renderer, col , row, MARGIN_TOP, SDL_FLIP_NONE);
+		row = (map->GetHeight()-1)*tileSize;
+		_tiles->renderTile(renderer, col , row, MARGIN_TOP, SDL_FLIP_VERTICAL);	
 	}
 }
 
@@ -501,14 +523,11 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		level->setCurrentScene(room_id + 1);
 	} else if (_player1->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*tileSize, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
+			map->GetHeight()*tileSize, "Player 1 has left the screen. Player 2 must join him so you can win the level together.");
 	} else if (_player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*tileSize, "Player 2 has left the labyrinth. Player 2 must join him so you can together win the level.");
-
+			map->GetHeight()*tileSize, "Player 2 has left the screen. Player 2 must join him so you can win the level together.");
 	}
-
-	
 
 	_player1->OnRender(renderer);
 	_player2->OnRender(renderer);
