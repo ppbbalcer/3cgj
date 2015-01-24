@@ -418,6 +418,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 	int tileSize = EngineInst->getTileSize();
 
+	OnRenderMap(renderer);
 	SDL_Rect topLeftViewport=GetDefaultViewport();
 	int map_width=map->GetWidth()*EngineInst->getTileSize();
 	if (topLeftViewport.w>map_width) {
@@ -429,13 +430,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 
 
-	OnRenderMap(renderer);
 
-	topLeftViewport.x = 10;
-	topLeftViewport.y = 105;
-	topLeftViewport.w = map->GetWidth() * tileSize -10;
-	topLeftViewport.h =  map->GetHeight() * tileSize -10;
-	SDL_RenderSetViewport(renderer, &topLeftViewport);
 	
 	//{ //Astar Example
 	//	int startX = _player1->getPosBeforeX();
