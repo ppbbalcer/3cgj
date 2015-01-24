@@ -195,6 +195,12 @@ LoadedMap::LoadedMap(const char * path) {
 			int x; int y;
 			mapfile >> x >> y;
 			enemies_start.push_back(make_pair(x,y));
+		} else if (command == "exit") {
+			int x; int y, target;
+			mapfile >> x >> y >> target;
+			Door * dor = dynamic_cast <Door*>(
+				GetFieldAt(x, y));
+			dor->SetTargetBoard(target);
 		}
 	}
 	mapfile.close();

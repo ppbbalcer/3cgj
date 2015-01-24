@@ -8,7 +8,7 @@
 #include "fireball.h"
 #include "KeyMap.h"
 #include "level.h"
-
+#include "MapLogic/door.h"
 using namespace std;
 
 #define MAX_ROOM_PATH 255
@@ -505,7 +505,11 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	                _player2->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
 		                             map->GetHeight()*tileSize, "Both players won");
-		level->setCurrentScene(room_id + 1);
+		Door * dor = dynamic_cast <Door*>(
+			map->GetFieldAt(_player1->getPosAfterX(),
+					_player1->getPosAfterY()));
+		//room_id + 1
+		level->setCurrentScene(dor->GetTargetBoard());
 	} else if (_player1->GetState() == Character::WON) {
 		EngineInst->font()->printfLT(100,
 		                             map->GetHeight()*tileSize, "Player 1 has left the labyrinth. Player 2 must join him so you can together win the level.");
