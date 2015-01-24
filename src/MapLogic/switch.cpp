@@ -29,4 +29,6 @@ void Switch::SteppedOver(Character * who) {
 		else
 			associated_field->Activate();
 	}
+	/* update the state machine */
+	Field::SteppedOver(who);
 }

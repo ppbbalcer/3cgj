@@ -157,30 +157,38 @@ void Character::updateDirection(DIRECT directMove)
 	if (_state != ALIVE)
 		return;
 
+	int prev_target_x = _pos_after_x;
+	int prev_target_y = _pos_after_y;
+
 	switch (directMove) {
 	case DIRECT_DOWN:
 		if ((!_map->GetFieldAt(_pos_before_x, _pos_before_y + 1)->IsObstacle()) &&
-		                (!_map->GetFieldAt(_pos_after_x, _pos_before_y + 1)->IsObstacle())) {
+		                (!_map->GetFieldAt(_pos_before_x, _pos_before_y + 1)->IsObstacle())) {
+			_pos_after_x = _pos_before_x;
 			_pos_after_y = _pos_before_y + 1;
 		}
 		break;
 	case DIRECT_UP:
 		if ((!_map->GetFieldAt(_pos_before_x, _pos_before_y - 1)->IsObstacle()) &&
-		                (!_map->GetFieldAt(_pos_after_x, _pos_before_y - 1)->IsObstacle())) {
+		                (!_map->GetFieldAt(_pos_before_x, _pos_before_y - 1)->IsObstacle())) {
+			
+			_pos_after_x = _pos_before_x;
 			_pos_after_y = _pos_before_y - 1;
 		}
 		break;
 
 	case DIRECT_RIGHT:
 		if ((!_map->GetFieldAt(_pos_before_x + 1, _pos_before_y)->IsObstacle()) &&
-		                (!_map->GetFieldAt(_pos_before_x + 1, _pos_after_y)->IsObstacle())) {
+		                (!_map->GetFieldAt(_pos_before_x + 1, _pos_before_y)->IsObstacle())) {
+			_pos_after_y = _pos_before_y;
 			_pos_after_x = _pos_before_x + 1;
 		}
 		break;
 
 	case DIRECT_LEFT:
 		if ((!_map->GetFieldAt(_pos_before_x - 1, _pos_before_y)->IsObstacle()) &&
-		                (!_map->GetFieldAt(_pos_before_x - 1, _pos_after_y)->IsObstacle())) {
+		                (!_map->GetFieldAt(_pos_before_x - 1, _pos_before_y)->IsObstacle())) {
+			_pos_after_y = _pos_before_y;
 			_pos_after_x = _pos_before_x - 1;
 		}
 		break;
@@ -189,6 +197,22 @@ void Character::updateDirection(DIRECT directMove)
 		printf("Unrecognized direction %d given\n", directMove);
 		break;
 	}
+	if  ( (prev_target_y!=_pos_after_y ||
+	       prev_target_x!=_pos_after_x) ) {
+		//! if leaving old movement target
+
+		// if original target was NOT a origin
+		if (!(prev_target_y==_pos_before_y &&
+		      prev_target_x==_pos_before_x))
+			_map->GetFieldAt(prev_target_x, prev_target_y)
+				->LeftField();
+		if (!_map->GetFieldAt(_pos_after_x, _pos_after_y)
+		    ->IsOccupied())
+			
+			_map->GetFieldAt(_pos_after_x, _pos_after_y)
+				->SteppedOver(this);
+	}
+
 }
 
 void Character::OnUpdate(int time_ms)
@@ -197,6 +221,11 @@ void Character::OnUpdate(int time_ms)
 	int target_y = _pos_after_y * tile_size;
 	int target_x = _pos_after_x * tile_size;
 	int dist = tile_size * time_ms / 100;
+	//if (getType() == TYPE_ENEMY) {
+	//	dist /= 3;
+	//	if (dist < 1) dist = 1;
+	//}
+
 	int pos_x = getPosX();
 	int pos_y = getPosY();
 
@@ -228,18 +257,24 @@ void Character::OnUpdate(int time_ms)
 
 	if (pos_x == target_x) {
 		if (_pos_before_x != _pos_after_x) {
+			
 			_map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
-			_map->GetFieldAt(_pos_after_x, _pos_before_y)->SteppedOver(this);
+			if (!_map->GetFieldAt(_pos_after_x, _pos_before_y)
+			    ->IsOccupied())
+				_map->GetFieldAt(_pos_after_x, _pos_before_y)->SteppedOver(this);
 			_pos_before_x = _pos_after_x;
 		}
 	}
 
 	if (pos_y == target_y) {
 		if (_pos_before_y != _pos_after_y) {
+			
 			_map->GetFieldAt(_pos_before_x, _pos_before_y)
 			->LeftField();
-			_map->GetFieldAt(_pos_before_x, _pos_after_y)
-			->SteppedOver(this);
+			if (!_map->GetFieldAt(_pos_before_x, _pos_after_y)
+			    ->IsOccupied())
+				_map->GetFieldAt(_pos_before_x, _pos_after_y)
+					->SteppedOver(this);
 			_pos_before_y = _pos_after_y;
 		}
 	}
