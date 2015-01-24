@@ -6,7 +6,7 @@
 #include "SceneExamples.h"
 #include "SceneFont.h"
 #include "scene_game.h"
-#include "MapLogic/map.h"
+#include "levels/base_level.h"
 #include <stdio.h>
 #include <string>
 
@@ -20,8 +20,8 @@ bool loadMedia() {
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
 //	gScene = new MainScene();
 	// uncomment this to instead get scene with first preview of map
-	gScene = new SceneGame();
-
+//	gScene = new SceneGame();
+	gScene = new BaseLevel(0, 4);
 	if (!EngineInst->loadAudioResources(globalAudios, globalAudiosSize))
 		success = false;
 

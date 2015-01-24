@@ -1,3 +1,6 @@
+#ifndef __CHARACTER_H__
+#define __CHARACTER_H__
+
 #include "Engine/RTexture.h"
 #include <unordered_map>
 #include "MapLogic/map.h"
@@ -63,3 +66,5 @@ private:
 	int _pos_before_y;
 	int _pos_after_y;
 };
+
+#endif
