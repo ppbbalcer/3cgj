@@ -19,6 +19,7 @@
     <ClCompile Include="src\Engine\RTexture.cpp" />
     <ClCompile Include="src\fireball.cpp" />
     <ClCompile Include="src\GlobalData.cpp" />
+    <ClCompile Include="src\level.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainScene.cpp" />
     <ClCompile Include="src\MapLogic\field.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="src\fireball.h" />
     <ClInclude Include="src\GlobalData.h" />
     <ClInclude Include="src\KeyMap.h" />
+    <ClInclude Include="src\level.h" />
     <ClInclude Include="src\MainScene.h" />
     <ClInclude Include="src\MapLogic\field.h" />
     <ClInclude Include="src\MapLogic\field_impl.h" />

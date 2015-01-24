@@ -7,6 +7,7 @@
 #include "Character.h"
 #include "MapLogic/map.h"
 class Fireball;
+class Level;
 /**
  * scene that contains map and character
  */
@@ -24,7 +25,7 @@ private:
 	void updateFireballs(int timems);
 	void updatePlayers(int timems);
 public:
-	SceneGame(int level_id, int room_id);
+	SceneGame(Level *level, int room_id);
 	virtual void OnLoad();
 	virtual void OnFree();
 	virtual void OnUpdate(int timems);

@@ -5,7 +5,7 @@
 #include "Engine/RTexture.h"
 #include "SceneExamples.h"
 #include "SceneFont.h"
-#include "scene_game.h"
+#include "level.h"
 #include <stdio.h>
 #include <string>
 
@@ -42,11 +42,10 @@ bool loadMedia() {
 
 	EngineInst->loadGlobalFont(GlobalFontPath, 18);
 	EngineInst->showFPS(true);
-
+	
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
 //	gScene = new MainScene();
 	// uncomment this to instead get scene with first preview of map
-	gScene = new SceneGame(0, 0);
 	if (!EngineInst->loadAudioResources(globalAudios, globalAudiosSize))
 		success = false;
 
@@ -55,7 +54,7 @@ bool loadMedia() {
 
 int main( int argc, char* args[] )
 {
-	
+	Level *level = new Level(0);
 	//Start up SDL and create window
 	if( !Engine::Create() )
 	{
@@ -72,7 +71,7 @@ int main( int argc, char* args[] )
 		}
 		else
 		{	
-			EngineInst->setNextScene(gScene);
+			EngineInst->setNextScene(level->getCurrentScene());
 			EngineInst->mainLoop();
 		}
 	}
@@ -82,6 +81,6 @@ int main( int argc, char* args[] )
 	Engine::Destroy();
 
 
-	delete gScene;
+	delete level;
 	return 0;
 }

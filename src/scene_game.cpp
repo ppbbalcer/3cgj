@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "fireball.h"
 #include "KeyMap.h"
+#include "level.h"
 
 using namespace std;
 
@@ -20,10 +21,10 @@ bool IMap_isObstacle(int x, int y, void* objMap)
 	return ((IMap*)objMap)->GetFieldAt(x, y)->IsObstacle();
 }
 
-SceneGame::SceneGame(int level_id, int room_id)
+SceneGame::SceneGame(Level *level, int room_id)
 {
 	char buff[MAX_ROOM_PATH];
-	sprintf(buff, "Resources/levels/%u/%u.txt", level_id, room_id);
+	sprintf(buff, "Resources/levels/%u/%u.txt", level->getId(), room_id);
 	map = IMap::Factory(IMap::LOADED, buff);
 }
 
