@@ -86,7 +86,6 @@ private:
 
 	IMap * _map;
 	void setPos(int x, int y);
-	int _health;
 	int _speed;
 	int _state;
 	int _posX;
@@ -95,12 +94,12 @@ private:
 	int _pos_after_x;
 	int _pos_before_y;
 	int _pos_after_y;
-	
 
 protected:
 	int last_dir_x;
 	int last_dir_y;
 	CharacterType _type;
+	int _health;
 
 };
 

@@ -192,9 +192,9 @@ LoadedMap::LoadedMap(const char * path) {
 			mapfile >> x >> y;
 			p2_start = make_pair(x,y);
 		} else if (command == "enemy_start") {
-			int x; int y;
-			mapfile >> x >> y;
-			enemies_start.push_back(make_pair(x,y));
+			enemy_definition *enemy = new enemy_definition();
+			mapfile >> enemy->x >> enemy->y >> enemy->hp >> enemy->ai;
+			enemies.push_back(enemy);
 		} else if (command == "exit") {
 			int x; int y, target;
 			mapfile >> x >> y >> target;
@@ -215,9 +215,9 @@ const starting_pos & GenericMap::GetPlayer2Start()
 	return p1_start;
 }
 
-const start_list & GenericMap::GetEnemiesStart()
+const enemies_list & GenericMap::GetEnemies()
 {
-	return enemies_start;
+	return enemies;
 }
 	
 void LoadedMap::SerializeOntoConsole()

@@ -6,6 +6,7 @@
 #include "Engine/AStar.h"
 #include <stdio.h>
 #include "fireball.h"
+#include "Enemy.h"
 #include "KeyMap.h"
 #include "level.h"
 #include "MapLogic/door.h"
@@ -90,18 +91,18 @@ void SceneGame::OnLoad()
 	_player2->setPosTiles(map->GetPlayer2Start().first,
 			      map->GetPlayer2Start().second);
 
-	const start_list &ens = map->GetEnemiesStart();
+	const enemies_list &ens = map->GetEnemies();
 
 	//int i=0;
-	for (start_list::const_iterator it=ens.begin() ; it!=ens.end();
+	for (enemies_list::const_iterator it=ens.begin() ; it!=ens.end();
 	     ++it)
 	{
 		tmpTexture = new RTexture(texturesScene_game[3]);
 		tmpTexture->setTileSizeSrc(tileSizeSrc);
 		tmpTexture->setTileSizeDst(tile_size);
 		tmpTexture->setTileIdx(23);
-		Enemy* enemy = new Enemy(tmpTexture, map);
-		enemy->setPosTiles(it->first, it->second);
+		Enemy* enemy = new Enemy(tmpTexture, map, (*it)->hp, (*it)->ai);
+		enemy->setPosTiles((*it)->x, (*it)->y);
 		_enemys.push_back(enemy);
 	}
 
@@ -112,11 +113,6 @@ void SceneGame::OnLoad()
 	_arrayShadowW = map->GetWidth();
 	_arrayShadowH = map->GetHeight();
 	_arrayShadow = new int[_arrayShadowW*_arrayShadowH*sizeof(_arrayShadowH)];
-	
-	
-
-
-	
 
 	//Load media
 	if (!success) {
@@ -214,6 +210,9 @@ void SceneGame::updatePlayers(int timems)
 void SceneGame::updateEnemies(int timems)
 {
 	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
+		(*enemy)->OnUpdate(timems / 3);
+		if ((*enemy)->getAI() == ENEMY_AI_OFF)
+			continue;
 		int startX = (*enemy)->getPosBeforeX();
 		int startY = (*enemy)->getPosBeforeY();
 		AStarWay_t way1;
@@ -273,7 +272,6 @@ void SceneGame::updateEnemies(int timems)
 			}
 		}
 
-		(*enemy)->OnUpdate(timems / 3);
 	}
 }
 
