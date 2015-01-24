@@ -93,6 +93,9 @@ LoadedMap::LoadedMap(const char * path) {
 			case 'h':
 				new_field= new Field(IField::SMALL_HEALTH_FLASK);
 				break;
+			case 't':
+				new_field= new Field(IField::TRAP);
+				break;
 			case '^':
 				new_field= new Switch(1);
 				break;
