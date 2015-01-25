@@ -5,9 +5,11 @@
 
 void ControllerField::ActivateRemotes()
 {
-	associated_field->Activate();		
+	if (associated_field)
+		associated_field->Activate();		
 }
 void ControllerField::DeactivateRemotes()
 {
-	associated_field->Deactivate();
+	if (associated_field)
+		associated_field->Deactivate();
 }
