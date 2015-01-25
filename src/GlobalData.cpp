@@ -26,6 +26,7 @@ AudioResource globalAudios[] = {
 	{"Resources/audio/enemy_death.wav", AUDIO_TYPE_SOUND, NULL},
 	{"Resources/audio/player_pain.wav", AUDIO_TYPE_SOUND, NULL},
 	{"Resources/audio/toggle.wav", AUDIO_TYPE_SOUND, NULL},
+	{"Resources/audio/music.mp3", AUDIO_TYPE_MUSIC, NULL},
 };
 size_t globalAudiosSize = sizeof(globalAudios) / sizeof(globalAudios[0]);
 

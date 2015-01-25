@@ -23,7 +23,8 @@ enum GameSounds {
 	PLAYER_DEATH,
 	ENEMY_DEATH,
 	PLAYER_PAIN,
-	TOGGLE
+	TOGGLE,
+	BG_MUSIC
 };
 
 extern AudioResource globalAudios[];
