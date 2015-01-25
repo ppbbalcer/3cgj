@@ -32,6 +32,7 @@ SceneGame::SceneGame(Level *level, int room_id)
 	char buff[MAX_ROOM_PATH];
 	sprintf(buff, "Resources/levels/%u/%u.txt", level->getId(), room_id);
 	map = IMap::Factory(IMap::LOADED, buff);
+	is_loaded = false;
 }
 
 SceneGame::~SceneGame()
@@ -93,18 +94,21 @@ void SceneGame::OnLoad()
 
 	const enemies_list &ens = map->GetEnemies();
 
-	//int i=0;
-	for (enemies_list::const_iterator it=ens.begin() ; it!=ens.end();
-	     ++it)
-	{
-		tmpTexture = new RTexture(texturesScene_game[3]);
-		tmpTexture->setTileSizeSrc(tileSizeSrc);
-		tmpTexture->setTileSizeDst(tile_size);
-		tmpTexture->setTileIdx(23);
-		Enemy* enemy = new Enemy(tmpTexture, map, (*it)->hp, (*it)->ai);
-		enemy->setPosTiles((*it)->x, (*it)->y);
-		_enemys.push_back(enemy);
+	if (!is_loaded) {
+		//int i=0;
+		for (enemies_list::const_iterator it=ens.begin() ; it!=ens.end();
+			 ++it)
+		{
+			tmpTexture = new RTexture(texturesScene_game[3]);
+			tmpTexture->setTileSizeSrc(tileSizeSrc);
+			tmpTexture->setTileSizeDst(tile_size);
+			tmpTexture->setTileIdx(23);
+			Enemy* enemy = new Enemy(tmpTexture, map, (*it)->hp, (*it)->ai);
+			enemy->setPosTiles((*it)->x, (*it)->y);
+			_enemys.push_back(enemy);
+		}
 	}
+
 
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(tileSizeSrc);
@@ -121,6 +125,7 @@ void SceneGame::OnLoad()
 	}
 	globalAudios[HEARTBEAT].res.sound->setVolume(0.2f);
 	globalAudios[HEARTBEAT].res.sound->play(-1, 0, HEARTBEAT_BASE_INTERVAL);
+	is_loaded = true;
 }
 
 extern int doskey_active;
@@ -227,15 +232,15 @@ void SceneGame::updateEnemies(int timems)
 		int distX = _player1->getPosX() - (*enemy)->getPosX();
 		int distY = _player1->getPosY() - (*enemy)->getPosY();
 
-		//if(distX*distX + distY*distY <= distQuad ) {
+		if ((*enemy)->getAI() != ENEMY_AI_DISTANCE || distX*distX + distY*distY <= distQuad ) {
 			direct1 = findAstar(way1, maxSteps, startX, startY, _player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-		//}
+		}
 
 		distX = _player2->getPosX() - (*enemy)->getPosX();
 		distY = _player2->getPosY() - (*enemy)->getPosY();
-		//if(distX*distX + distY*distY <= distQuad ) {
+		if ((*enemy)->getAI() != ENEMY_AI_DISTANCE || distX*distX + distY*distY <= distQuad ) {
 			direct2 = findAstar(way2, maxSteps,  startX, startY, _player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-		//}
+		}
 
 		if (heartbeat_tempo == 0 && ((way1.size() != 0 && way1.size() < 10 ) || (way2.size() != 0 && way2.size() < 10))) {
 			heartbeat_tempo = 50;
@@ -472,7 +477,6 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}
-
 
 	/* render fireballs */
 	for (std::list<Fireball*>::iterator it = fireballs.begin();

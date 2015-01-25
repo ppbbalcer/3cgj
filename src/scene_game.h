@@ -28,6 +28,7 @@ private:
 	int _arrayShadowH;
 	int *_arrayShadow;
 	IMap *map;
+	bool is_loaded;
 	Level *level;
 	int room_id;
 	int heartbeat_tempo;
