@@ -122,7 +122,7 @@ void Character::renderAvatar(SDL_Renderer *renderer, int x, int y, SDL_RendererF
 {
 	if (GetState() == DEAD) {
 		_texture->renderTile(renderer, x, y, 30, SDL_FLIP_NONE);
-	} else if (GetState() == ALIVE) {
+	} else {
 		_texture->renderTile(renderer, x, y, _texture->getTileIdx(), flip);
 	}
 }
