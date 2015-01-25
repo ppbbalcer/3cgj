@@ -16,8 +16,8 @@ enum enemy_ai {
 
 class Enemy : public Character
 {
-	clock_t _last_attack_around;
-	clock_t _last_rand_direction;
+	clock_t _time_to_attack;
+	clock_t _time_to_random_direction;
 	enemy_ai _ai;
 public:
 	Enemy(RTexture* texture, IMap * map, int hp, int ai);

@@ -12,7 +12,7 @@ bool Skull::IsGolden()
 
 int Skull::GetType()
 {
-	if (!enabled)
+	if (enabled<=0)
 		return INACTIVE_SKULL;
 	else
 	{

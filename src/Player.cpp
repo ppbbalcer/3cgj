@@ -10,7 +10,7 @@ Player::Player(RTexture * texture, IMap * map, int hp, int mana) : Character(tex
 	_mana = mana;
 	_health = hp;
 	printf("PLAYER: %u %u\n", _health, _mana);
-	_last_shot_time = clock() - FIREBALL_MIN_DIFF_MS * (CLOCKS_PER_SEC / 1000);
+	_time_to_shot=0;
 };
 
 Player::~Player(void) {};
@@ -27,6 +27,12 @@ void Player::restoreMana(int howMuchMana)
 		_mana = MAX_MANA;
 	}
 }
+void Player::OnUpdate(int time_ms)
+{
+	_time_to_shot=max<int>(_time_to_shot-time_ms,
+			       0);
+	Character::OnUpdate(time_ms);
+}
 
 Fireball * Player::Shoot()
 {
@@ -37,12 +43,12 @@ Fireball * Player::Shoot()
 
 	if (_mana - FIREBALL_MANA_COST < 0)
 		return NULL;
-	clock_t ms_since_last_shot = ((1.0 * now - _last_shot_time) / (CLOCKS_PER_SEC / 1000));
-	if (ms_since_last_shot <= FIREBALL_MIN_DIFF_MS)
+	
+	if (_time_to_shot)
 		return NULL;
 
 	_mana -= FIREBALL_MANA_COST;
-	_last_shot_time = now;
+	_time_to_shot=FIREBALL_MIN_DIFF_MS;
 
 	globalAudios[GameSounds::FIREBALL].res.sound->play();
 

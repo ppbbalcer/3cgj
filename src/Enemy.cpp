@@ -2,12 +2,13 @@
 #include "GlobalData.h"
 #include "Player.h"
 #include "Engine/Engine.h"
-
+#include <algorithm>
+using namespace std;
 Enemy::Enemy(RTexture *texture, IMap *map, int hp, int ai) : Character(texture, map)
 {
 	_type = TYPE_ENEMY;
-	_last_attack_around = 0;
-	_last_rand_direction = 0;
+	_time_to_attack = 0;
+	_time_to_random_direction = 0;
 	_health = hp;
 	_ai = (enemy_ai)ai;
 }
@@ -29,10 +30,16 @@ void Enemy::OnUpdate(int time_ms)
 	// Don't attack PC if I am dead
 	if (GetState()!=ALIVE)
 		return;
-	clock_t now = clock();
-	if (((1.0 * now - _last_attack_around) / (CLOCKS_PER_SEC / 1000)) >= 600)
-	{
-		for (int i = getPosBeforeX()-1; i!= getPosBeforeX()+2; ++i) 
+	_time_to_attack=max<int>(_time_to_attack-time_ms,
+			       0);
+	_time_to_random_direction=max<int>(_time_to_random_direction-time_ms,
+					   0);
+
+	if (_time_to_attack)
+		return;
+	
+
+	for (int i = getPosBeforeX()-1; i!= getPosBeforeX()+2; ++i) 
 			for (int j = getPosBeforeY()-1; j!= getPosBeforeY()+2; ++j)
 			{
 				if (i>=_map->GetWidth()) continue;
@@ -47,19 +54,18 @@ void Enemy::OnUpdate(int time_ms)
 				}
 					
 			}
-	_last_attack_around = now;
-	}
-
+	_time_to_attack=500;
 }
 
 DIRECT Enemy::getRandomDirection()
 {
 	clock_t now = clock();
-	if (((1.0 * now - _last_rand_direction) / (CLOCKS_PER_SEC / 1000)) <= RANDOM_DIRECTION_CHANGE_TIME_MS) {
+	if (_time_to_random_direction) {
 		return DIRECT_NO_WAY;
+		;
 	}
 
-	_last_rand_direction = now;
+	_time_to_random_direction= RANDOM_DIRECTION_CHANGE_TIME_MS;
 	return (static_cast<DIRECT>((rand() % (DIRECT_END - 1)) + 1));
 }
 

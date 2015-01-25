@@ -4,6 +4,7 @@
 
 void ControllerField::AssociateField(Field * associated, bool on_up)
 {
+	/* one to many association */
 	association tmp;
 	tmp.associated_field=associated;
 	tmp.on_up=on_up;
