@@ -161,7 +161,7 @@ void Engine::resetViewport() {
 bool Engine::loadResources(ResourceItem resources[], unsigned int size) {
 	bool result = true;
 	for (unsigned i=0; i<size && result; ++i) {
-		if (resources[i].texture == NULL)
+		if (resources[i].texture == NULL && resources[i].path != NULL)
 			result &= loadTexture(resources[i]);
 	}
 	return result;
