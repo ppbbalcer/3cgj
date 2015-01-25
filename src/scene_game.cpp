@@ -32,6 +32,7 @@ SceneGame::SceneGame(Level *level, int room_id)
 	char buff[MAX_ROOM_PATH];
 	sprintf(buff, "Resources/levels/%u/%u.txt", level->getId(), room_id);
 	map = IMap::Factory(IMap::LOADED, buff);
+	is_loaded = false;
 }
 
 SceneGame::~SceneGame()
@@ -54,6 +55,8 @@ SDL_Rect SceneGame::GetDefaultViewport()
 }
 void SceneGame::OnLoad()
 {
+	if (is_loaded)
+		return;
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
 	SDL_Rect dvp=GetDefaultViewport();
 
@@ -472,7 +475,6 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}
-
 
 	/* render fireballs */
 	for (std::list<Fireball*>::iterator it = fireballs.begin();
