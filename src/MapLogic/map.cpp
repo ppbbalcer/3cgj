@@ -91,6 +91,12 @@ LoadedMap::LoadedMap(const char * path) {
 			case 'K':
 				new_field= new Skull(false,true);
 				break;
+			case 's':
+				new_field= new Skull(true, false);
+				break;
+			case 'S':
+				new_field= new Skull(false, false);
+				break;
 			case '+':
 				new_field= new Field(IField::MEDKIT);
 				break;

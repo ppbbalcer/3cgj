@@ -3,7 +3,7 @@
 #include "skull.h"
 #include "../Player.h"
 #include "../GlobalData.h"
-
+#include <cassert>
 
 bool Skull::IsGolden()
 {
@@ -15,7 +15,11 @@ int Skull::GetType()
 	if (!enabled)
 		return INACTIVE_SKULL;
 	else
-		return Field::GetType();
+	{
+		int result=Field::GetType();
+		assert(result==GOLDEN_SKULL || result==SILVER_SKULL);
+		return result;
+	}
 }
 void Skull::Activate()
 {
@@ -35,30 +39,24 @@ extern int doskey_active;
 void Skull::SteppedOver(Character * who)
 {
 	Field::SteppedOver(who);
-	if (!enabled)
+	if ( enabled<=0)
 		return;
 	if (IsGolden()) {
 		doskey_active++;
 	} else {
-		if (on_up)
-			ActivateRemotes();
-		else
-			DeactivateRemotes();
+		ActivateRemotes();
 	}
 	globalAudios[BUTTON_ON].res.sound->play();
 }
 void Skull::LeftField()
 {
 	Field::LeftField();
-	if (!enabled)
+	if (enabled<=0)
 		return;
 	globalAudios[BUTTON_OFF].res.sound->play();
 	if (IsGolden()) {
 		doskey_active--;
 	} else {
-		if (on_up)
-			DeactivateRemotes();
-		else
-			ActivateRemotes();
+		DeactivateRemotes();
 	}
 }
