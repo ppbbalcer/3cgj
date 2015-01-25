@@ -13,7 +13,6 @@
 #include "spikes.h"
 using namespace std;
 
-
 /*
  * a map loaded from file
  */
