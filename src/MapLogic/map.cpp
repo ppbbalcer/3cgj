@@ -212,7 +212,6 @@ LoadedMap::LoadedMap(const char * path) {
 		mapfile >> command;
 		if (command == "start") {
 			mapfile >> params->alpha >> params->start_hp >> params->start_mana;
-			printf("HIER\n");
 		} else if (command == "title_string") {
 			std::string title;
 			while (mapfile.get()!='"') ;

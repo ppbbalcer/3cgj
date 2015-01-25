@@ -8,11 +8,13 @@
 #include "Scene.h"
 #include <assert.h>
 
+
+
 void PAUSE() {
 	assert(false);
 }
 
-//#define FULLSCREEN
+#define FULLSCREEN
 
 #define DEF_SCREEN_WIDTH 1200
 #define DEF_SCREEN_HEIGHT 900

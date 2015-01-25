@@ -60,6 +60,8 @@ bool loadMedia() {
 	if (!EngineInst->loadAudioResources(globalAudios, globalAudiosSize))
 		success = false;
 
+	globalAudios[BG_MUSIC].res.music->setVolume(0.2f);
+	globalAudios[BG_MUSIC].res.music->play();
 	return success;
 }
 
@@ -70,7 +72,7 @@ int main( int argc, char* args[] )
 	if (argc == 3) {
 		level = new Level(atoi(args[1]), atoi(args[2]));
 	} else {
-		level = new Level(1);
+		level = new Level(1, 0);
 	}
 	if( !Engine::Create() )
 	{
