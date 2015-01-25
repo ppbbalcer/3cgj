@@ -5,14 +5,14 @@
 #include "../GlobalData.h"
 
 bool Switch::Up() {
-		if (GetType()==SWITCH_UP) {
-			return true;
-		} else if (GetType()==SWITCH_DOWN) {
-			return false;
-		} else {
-			assert(0);
-			return true;
-		}
+	if (GetType()==SWITCH_UP) {
+		return true;
+	} else if (GetType()==SWITCH_DOWN) {
+		return false;
+	} else {
+		assert(0);
+		return true;
+	}
 }
 
 void Switch::SteppedOver(Character * who) {
@@ -28,9 +28,9 @@ void Switch::SteppedOver(Character * who) {
 
 	if (associated_field) {
 		if (on_up ^ Up() )
-			associated_field->Deactivate();
+			ActivateRemotes();
 		else
-			associated_field->Activate();
+			DeactivateRemotes();
 	}
 	/* update the state machine */
 	Field::SteppedOver(who);

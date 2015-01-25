@@ -30,7 +30,9 @@ public:
 		DOOR_HORIZONTAL_OPEN,
 		DOOR_VERTICAL_OPEN,
 		MEDKIT,
-		DOSKEY, /* dos computer that opens doors */
+		GOLDEN_SKULL, /* dos computer that opens doors */
+		SILVER_SKULL,
+		INACTIVE_SKULL,
 		POWERUP,
 		SMALL_MANA_FLASK,
 		LARGE_MANA_FLASK,
