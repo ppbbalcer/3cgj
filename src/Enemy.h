@@ -10,7 +10,8 @@
 enum enemy_ai {
 	ENEMY_AI_UNKNOWN,
 	ENEMY_AI_DEFAULT,
-	ENEMY_AI_OFF
+	ENEMY_AI_OFF,
+	ENEMY_AI_DISTANCE
 };
 
 class Enemy : public Character

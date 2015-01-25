@@ -227,15 +227,15 @@ void SceneGame::updateEnemies(int timems)
 		int distX = _player1->getPosX() - (*enemy)->getPosX();
 		int distY = _player1->getPosY() - (*enemy)->getPosY();
 
-		//if(distX*distX + distY*distY <= distQuad ) {
+		if ((*enemy)->getAI() != ENEMY_AI_DISTANCE || distX*distX + distY*distY <= distQuad ) {
 			direct1 = findAstar(way1, maxSteps, startX, startY, _player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-		//}
+		}
 
 		distX = _player2->getPosX() - (*enemy)->getPosX();
 		distY = _player2->getPosY() - (*enemy)->getPosY();
-		//if(distX*distX + distY*distY <= distQuad ) {
+		if ((*enemy)->getAI() != ENEMY_AI_DISTANCE || distX*distX + distY*distY <= distQuad ) {
 			direct2 = findAstar(way2, maxSteps,  startX, startY, _player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
-		//}
+		}
 
 		if (heartbeat_tempo == 0 && ((way1.size() != 0 && way1.size() < 10 ) || (way2.size() != 0 && way2.size() < 10))) {
 			heartbeat_tempo = 50;
