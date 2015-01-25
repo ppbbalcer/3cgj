@@ -75,8 +75,8 @@ void SceneGame::OnLoad()
 	EngineInst->setStatusLine("mission hint");
 	
 	RTexture *tmpTexture;
-	_background = new RTexture(texturesScene_game[1]);
-	_background ->setScaleSize(1.0f * EngineInst->screen_width() / _background->getWidth());
+	/*_background = new RTexture(texturesScene_game[1]);
+	_background ->setScaleSize(1.0f * EngineInst->screen_width() / _background->getWidth());*/
 
 	/*Texture section for player 1*/
 	tmpTexture = new RTexture(texturesScene_game[3]);

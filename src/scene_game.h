@@ -20,7 +20,7 @@ private:
 	SDL_Rect GetDefaultViewport();
 
 	std::list<Fireball *> fireballs;
-	RTexture *_background;
+//	RTexture *_background;
 	Player *_player1, *_player2;
 	std::vector<Enemy*> _enemys;
 	RTexture *_tiles;
