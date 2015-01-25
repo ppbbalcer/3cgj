@@ -56,7 +56,7 @@ public:
 	 */
 	virtual int crucio(int howMuchCrucio);
 	void heal(int howMuchHeal);
-
+	virtual void Win();
 	void OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx);
 	virtual void OnRender(SDL_Renderer *renderer);
 	void renderAvatar(SDL_Renderer *renderer, int x, int y, SDL_RendererFlip flip);
@@ -86,6 +86,10 @@ protected:
 	int power_level;
 
 	IMap * _map;
+	void SetState(int state)
+	{
+		_state=state;
+	}
 private:
 	void setPos(int x, int y);
 	int _speed;

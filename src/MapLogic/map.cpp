@@ -9,7 +9,7 @@
 #include "switch.h"
 #include "door.h"
 #include "skull.h"
-/* following constants define width and height of map in tiles */
+#include "stairs.h"
 using namespace std;
 
 
@@ -96,6 +96,9 @@ LoadedMap::LoadedMap(const char * path) {
 				break;
 			case 'S':
 				new_field= new Skull(false, false);
+				break;
+			case 'U':
+				new_field= new Stairs;
 				break;
 			case '+':
 				new_field= new Field(IField::MEDKIT);

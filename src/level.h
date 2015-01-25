@@ -20,6 +20,7 @@ public:
 	void resetCurrent();
 	SceneGame* getCurrentScene(); 
 	int getId() { return id; }
+	void setId(int i);
 };
 
 #endif

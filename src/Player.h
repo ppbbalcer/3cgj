@@ -15,6 +15,7 @@ public:
 	~Player(void);
 	virtual void OnUpdate(int time_ms);
 
+	virtual void Win();
 	int getMana();
 	void restoreMana(int howMuchMana);
 	virtual int crucio(int howMuchCrucio);

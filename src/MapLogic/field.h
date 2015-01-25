@@ -40,6 +40,7 @@ public:
 		LARGE_HEALTH_FLASK,
 		EMPTY_FLASK,
 		SWITCH_UP,
+		STAIRS,
 		TRAP,
 		SWITCH_DOWN,
 		EVIL_COMPUTER, /*spawns fireballs everywhere*/

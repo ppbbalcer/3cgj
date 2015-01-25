@@ -493,20 +493,34 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	/*Check victory condition*/
 	else if (_player1->GetState() == Character::WON &&
 	                _player2->GetState() == Character::WON) {
+
+
+		int target_level1=level->getId()+1;
+		int target_map1=0;
+		int target_level2=level->getId()+1;
+		int target_map2=0;
+
 		Door * dor = dynamic_cast <Door*>(
 			map->GetFieldAt(_player1->getPosAfterX(),
 					_player1->getPosAfterY()));
-		int target_level1=dor->GetTargetBoard();
-
+		if (dor) {
+			target_level1=level->getId();
+			target_map1=dor->GetTargetBoard();
+		}
 		dor = dynamic_cast <Door*>(
 			map->GetFieldAt(_player2->getPosAfterX(),
 					_player2->getPosAfterY()));
-		int target_level2=dor->GetTargetBoard();
+		if (dor) {
+			target_level2=level->getId();
+			target_map2=dor->GetTargetBoard();
+		}
 		
-		if (target_level2==target_level1) {
+		if (target_level2==target_level1 &&
+			target_map2==target_map1) {
 			EngineInst->font()->printfLT(100,
 						     map->GetHeight()*tileSize, "Both players won");
-			level->setCurrentScene(target_level2);
+			level->setId(target_level1);
+			level->setCurrentScene(target_map1);
 		} else {
 			/* did we really win? */
 			EngineInst->

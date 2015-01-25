@@ -19,7 +19,13 @@ int Player::getMana()
 {
 	return _mana;
 }
+void Player::Win()
+{
+	printf("WIN");
+	SetState(WON);
+	_map->GetFieldAt(getPosBeforeX(), getPosBeforeY())->LeftField();
 
+}
 void Player::restoreMana(int howMuchMana)
 {
 	_mana += howMuchMana;

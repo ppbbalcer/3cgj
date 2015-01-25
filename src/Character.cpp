@@ -78,7 +78,7 @@ void Character::OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx)
 	int title_size = 23;
 
 	if (radius == 4) {
-		int cx = getPosX();
+ 		int cx = getPosX();
 		int cy = getPosY();
 
 		int alfa;
@@ -115,15 +115,6 @@ void Character::OnRender(SDL_Renderer *renderer)
 		_texture->renderTile(renderer, getPosX(), getPosY(), 30, SDL_FLIP_NONE);
 	} else if (GetState() == ALIVE) {
 		_texture->renderTile(renderer, getPosX(), getPosY());
-	}
-}
-
-void Character::renderAvatar(SDL_Renderer *renderer, int x, int y, SDL_RendererFlip flip)
-{
-	if (GetState() == DEAD) {
-		_texture->renderTile(renderer, x, y, 30, SDL_FLIP_NONE);
-	} else {
-		_texture->renderTile(renderer, x, y, _texture->getTileIdx(), flip);
 	}
 }
 
@@ -193,7 +184,6 @@ void Character::updateDirection(DIRECT directMove)
 			_pos_after_y = _pos_before_y;
 			_pos_after_x = _pos_before_x + 1;
 		}
-		_texture->setFlip(SDL_FLIP_NONE);
 		break;
 
 	case DIRECT_LEFT:
@@ -202,7 +192,6 @@ void Character::updateDirection(DIRECT directMove)
 			_pos_after_y = _pos_before_y;
 			_pos_after_x = _pos_before_x - 1;
 		}
-		_texture->setFlip(SDL_FLIP_HORIZONTAL);
 		break;
 
 	default:
@@ -255,17 +244,16 @@ void Character::OnUpdate(int time_ms)
 		pos_y = min<int>(target_y, pos_y + dist);
 	}
 	if (pos_x > target_x) {
+		_texture->setFlip(SDL_FLIP_HORIZONTAL);
 		last_dir_y = 0;
 		last_dir_x = -1;
 		pos_x = max<int>(target_x, pos_x - dist);
-		_texture->setFlip(SDL_FLIP_HORIZONTAL);
 	}
 	if (pos_x < target_x) {
-
+		_texture->setFlip(SDL_FLIP_NONE);
 		last_dir_y = 0;
 		last_dir_x = +1;
 		pos_x = min<int>(target_x, pos_x + dist);
-		_texture->setFlip(SDL_FLIP_NONE);
 	}
 
 	if (pos_x == target_x) {
@@ -294,8 +282,21 @@ void Character::OnUpdate(int time_ms)
 
 	if (_pos_before_y == 0 || _pos_before_y == _map->GetHeight() - 1 ||
 	                _pos_before_x == 0 || _pos_before_x == _map->GetWidth() - 1) {
-		_state = WON;
-		_map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
+		Win();
 	}
 	setPos(pos_x, pos_y);
 }
+void Character::Win() {
+		
+}
+
+void Character::renderAvatar(SDL_Renderer *renderer, int x, int y, SDL_RendererFlip flip)
+{
+	if (GetState() == DEAD) {
+		_texture->renderTile(renderer, x, y, 30, SDL_FLIP_NONE);
+	} else {
+		_texture->renderTile(renderer, x, y, _texture->getTileIdx(), flip);
+	}
+}
+
+

@@ -45,6 +45,7 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[SWITCH_DOWN] = 38;
 	assigned_field[SWITCH_UP] = 37;
 	assigned_field[TRAP] = 30;
+	assigned_field[STAIRS] = 46;
 	assigned_field[EVIL_COMPUTER] = 39;
 	initialized = true;
 }
