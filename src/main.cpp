@@ -70,7 +70,7 @@ int main( int argc, char* args[] )
 	if (argc == 3) {
 		level = new Level(atoi(args[1]), atoi(args[2]));
 	} else {
-		level = new Level(2, 3);
+		level = new Level(1);
 	}
 	if( !Engine::Create() )
 	{
