@@ -27,6 +27,7 @@ public:
 	void play();
 	void pause();
 	void stop();
+	void setVolume(float v);
 private:
 	Mix_Music *m;
 };

@@ -11,6 +11,7 @@ enum ALIGN {
 	ALIGN_RIGHT = 2,
 	ALIGN_TOP = 4,
 	ALIGN_BOTTOM = 8,
+	ALIGN_BOTTOM_WITH_PADDING = 16
 };
 
 class RFont {

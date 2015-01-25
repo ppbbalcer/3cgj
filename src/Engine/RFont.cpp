@@ -1,5 +1,8 @@
 #include "Engine.h"
+#include "../MapLogic/map.h"
 #include <string>
+
+extern IMap *gCurrentMap;
 
 RFont::RFont(TTF_Font *font): _font(font)/*, _frameSurface(NULL), _width(0), _height(0)*/ /*, _x(0), _y(0)*/
 {
@@ -138,6 +141,8 @@ void RFont::printTextRAW(TTF_Font *font, SDL_Surface* surface, int x, int y, SDL
 			SDL_assert((alignment & ALIGN_BOTTOM) == 0);
 		} else if (alignment & ALIGN_BOTTOM) {
 			stretchRect.y -= textSurface->h;
+		} else if (alignment & ALIGN_BOTTOM_WITH_PADDING) {
+			stretchRect.y -= textSurface->h + ((EngineInst->screen_height() - 100 /* margin top */ - gCurrentMap->GetHeight() * EngineInst->getTileSize()) / 2 - 5 /* font size / 2 */);
 		} else {
 			stretchRect.y -= textSurface->h / 2;
 		}

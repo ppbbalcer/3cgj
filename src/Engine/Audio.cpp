@@ -71,6 +71,10 @@ void AudioMusic::stop() {
 	Mix_HaltMusic();
 }
 
+void AudioMusic::setVolume(float v) {
+	Mix_VolumeMusic((int)(v*MIX_MAX_VOLUME));
+}
+
 AudioEngine::AudioEngine() {
 	init = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == 0;
 }

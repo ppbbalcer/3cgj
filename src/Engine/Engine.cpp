@@ -8,11 +8,13 @@
 #include "Scene.h"
 #include <assert.h>
 
+
+
 void PAUSE() {
 	assert(false);
 }
 
-//#define FULLSCREEN
+#define FULLSCREEN
 
 #define DEF_SCREEN_WIDTH 1200
 #define DEF_SCREEN_HEIGHT 900
@@ -347,7 +349,7 @@ void Engine::mainLoop() {
 			_font->printf(screen_width(), 0, ALIGN_RIGHT | ALIGN_TOP, "FPS: %.2f", 1000.0f/delta);
 		}
 		if (_font && !status_line.empty()) {
-			_font->printf(screen_width()/2,screen_height(),ALIGN_BOTTOM, status_line.c_str());
+			_font->printf(screen_width()/2,screen_height(),ALIGN_BOTTOM_WITH_PADDING, status_line.c_str());
 
 		}
 		if (_scene->getDrawType() == Scene::DrawType_Paint) {
