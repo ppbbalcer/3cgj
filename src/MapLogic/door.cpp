@@ -11,15 +11,16 @@ void Door::Activate()
 		SetType(DOOR_HORIZONTAL_OPEN);
 
 }
+
 void Door::Deactivate()
 {
-	keep_open--;	
-	if (Field::GetType()==DOOR_VERTICAL_OPEN)
-		SetType(DOOR_VERTICAL_CLOSED);
-	if (Field::GetType()==DOOR_HORIZONTAL_OPEN)
-		SetType(DOOR_HORIZONTAL_CLOSED);
-
-
+	keep_open--;
+	if (!keep_open) {
+		if (Field::GetType()==DOOR_VERTICAL_OPEN)
+			SetType(DOOR_VERTICAL_CLOSED);
+		if (Field::GetType()==DOOR_HORIZONTAL_OPEN)
+			SetType(DOOR_HORIZONTAL_CLOSED);
+	}
 }
 
 void Door::SteppedOver(Character * who)

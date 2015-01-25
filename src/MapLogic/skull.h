@@ -4,9 +4,12 @@
 
 class Skull: public ControllerField {
 	bool IsGolden();
-	bool enabled;
+	int enabled;
 public:
 	Skull(bool golden, bool enabled);
+	virtual void Activate();
+	virtual void Deactivate();
+	virtual int GetType();
 	virtual void SteppedOver(Character * who);
 	virtual void LeftField();
 };
