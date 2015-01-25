@@ -13,7 +13,7 @@ int Spikes::GetType()
 void Spikes::SteppedOver(Character * who)
 {
 	if (is_on>0)
-		who->crucio(10);
+		who->crucio(20);
 	Field::SteppedOver(who);
 }
 
