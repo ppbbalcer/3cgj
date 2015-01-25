@@ -300,7 +300,7 @@ void Character::OnUpdate(int time_ms)
 	}
 
 
-	if (pos_x == target_x || finishX) {
+	if ( target_x == pos_x || finishX) {
 		if (_pos_before_x != _pos_after_x) {
 			
 			_map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
@@ -311,7 +311,7 @@ void Character::OnUpdate(int time_ms)
 		}
 	}
 
-	if ( pos_y == target_y || finishY) {
+	if ( target_y == pos_y || finishY) {
 		if (_pos_before_y != _pos_after_y) {
 			
 			_map->GetFieldAt(_pos_before_x, _pos_before_y)
