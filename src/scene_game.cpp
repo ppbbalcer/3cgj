@@ -32,6 +32,7 @@ SceneGame::SceneGame(Level *level, int room_id)
 	char buff[MAX_ROOM_PATH];
 	sprintf(buff, "Resources/levels/%u/%u.txt", level->getId(), room_id);
 	map = IMap::Factory(IMap::LOADED, buff);
+	is_loaded = false;
 }
 
 SceneGame::~SceneGame()
@@ -93,18 +94,21 @@ void SceneGame::OnLoad()
 
 	const enemies_list &ens = map->GetEnemies();
 
-	//int i=0;
-	for (enemies_list::const_iterator it=ens.begin() ; it!=ens.end();
-	     ++it)
-	{
-		tmpTexture = new RTexture(texturesScene_game[3]);
-		tmpTexture->setTileSizeSrc(tileSizeSrc);
-		tmpTexture->setTileSizeDst(tile_size);
-		tmpTexture->setTileIdx(23);
-		Enemy* enemy = new Enemy(tmpTexture, map, (*it)->hp, (*it)->ai);
-		enemy->setPosTiles((*it)->x, (*it)->y);
-		_enemys.push_back(enemy);
+	if (!is_loaded) {
+		//int i=0;
+		for (enemies_list::const_iterator it=ens.begin() ; it!=ens.end();
+			 ++it)
+		{
+			tmpTexture = new RTexture(texturesScene_game[3]);
+			tmpTexture->setTileSizeSrc(tileSizeSrc);
+			tmpTexture->setTileSizeDst(tile_size);
+			tmpTexture->setTileIdx(23);
+			Enemy* enemy = new Enemy(tmpTexture, map, (*it)->hp, (*it)->ai);
+			enemy->setPosTiles((*it)->x, (*it)->y);
+			_enemys.push_back(enemy);
+		}
 	}
+
 
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(tileSizeSrc);
@@ -121,6 +125,7 @@ void SceneGame::OnLoad()
 	}
 	globalAudios[HEARTBEAT].res.sound->setVolume(0.2f);
 	globalAudios[HEARTBEAT].res.sound->play(-1, 0, HEARTBEAT_BASE_INTERVAL);
+	is_loaded = true;
 }
 
 extern int doskey_active;
@@ -472,7 +477,6 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		if ((*enemy)->GetState() == Character::ALIVE)
 			(*enemy)->OnRender(renderer);
 	}
-
 
 	/* render fireballs */
 	for (std::list<Fireball*>::iterator it = fireballs.begin();
