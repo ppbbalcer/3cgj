@@ -434,25 +434,9 @@ void SceneGame::OnRenderMap(SDL_Renderer* renderer) {
 
 		}
 	}
-	#define MARGIN_TOP 41
-	#define MARGIN_CORNER 42
-	#define MARGIN_LEFT 43
-	for (int i = 0 ; i != map->GetHeight(); i++) {
-		//left and right column
-		int col = 0 * tileSize;
-		int row = i * tileSize;
-		_tiles->renderTile(renderer, col , row, MARGIN_LEFT, SDL_FLIP_NONE);
-		col = (map->GetWidth()-1)*tileSize;
-		_tiles->renderTile(renderer, col , row, MARGIN_LEFT, SDL_FLIP_HORIZONTAL);	
-	}
-	for (int j = 0 ; j != map->GetWidth(); ++j) {
-		// top and bottom line0
-		int col = j * tileSize;
-		int row = 0;
-		_tiles->renderTile(renderer, col , row, MARGIN_TOP, SDL_FLIP_NONE);
-		row = (map->GetHeight()-1)*tileSize;
-		_tiles->renderTile(renderer, col , row, MARGIN_TOP, SDL_FLIP_VERTICAL);	
-	}
+	// #define MARGIN_TOP 41
+	// #define MARGIN_CORNER 42
+	// #define MARGIN_LEFT 43
 }
 
 
