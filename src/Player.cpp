@@ -46,9 +46,10 @@ Fireball * Player::Shoot()
 
 	globalAudios[GameSounds::FIREBALL].res.sound->play();
 
-	return new Fireball(getPosBeforeX() + last_dir_x,
-	                    getPosBeforeY() + last_dir_y,
-	                    last_dir_x, last_dir_y, GetPowerLevel());
+	return new Fireball(getPosBeforeX(),
+	                    getPosBeforeY(),
+	                    last_dir_x, last_dir_y,
+			    GetPowerLevel(),this);
 }
 
 int Player::crucio(int howMuchCrucio)

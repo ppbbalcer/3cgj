@@ -17,7 +17,7 @@
 #define POWERUP_VAL 20
 
 #define FIREBALL_MANA_COST 10
-#define FIREBALL_MIN_DIFF_MS 500
+#define FIREBALL_MIN_DIFF_MS 300
 
 enum CharacterType {
 	TYPE_UNKNOWN,

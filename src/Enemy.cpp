@@ -32,8 +32,8 @@ void Enemy::OnUpdate(int time_ms)
 	clock_t now = clock();
 	if (((1.0 * now - _last_attack_around) / (CLOCKS_PER_SEC / 1000)) >= 600)
 	{
-		for (int i = getPosBeforeX()-1; i!= getPosBeforeX()+1; ++i) 
-			for (int j = getPosBeforeY()-1; j!= getPosBeforeY()+1; ++j)
+		for (int i = getPosBeforeX()-1; i!= getPosBeforeX()+2; ++i) 
+			for (int j = getPosBeforeY()-1; j!= getPosBeforeY()+2; ++j)
 			{
 				if (i>=_map->GetWidth()) continue;
 				if (i<0) continue;
