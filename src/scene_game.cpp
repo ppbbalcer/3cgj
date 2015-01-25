@@ -55,26 +55,27 @@ SDL_Rect SceneGame::GetDefaultViewport()
 }
 void SceneGame::OnLoad()
 {
-	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
+	/* command generating set of tiles found in Resources/tiles/walls.png
+	 * (to be invoked from Resources/tiles/walls directory)
+	 *  montage *.png -background none ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
+	 */
 	SDL_Rect dvp=GetDefaultViewport();
-
+	/* scale entire board
+	 */
 	int tile_size = std::min<int>(dvp.w / map->GetWidth(),
 				 dvp.h/map->GetHeight());
 
 	EngineInst->setTileSize(tile_size);
 
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
-	/*RTexture *player1Texture = new RTexture(texturesScene_game[2]);
-	RTexture *player2Texture = new RTexture(texturesScene_game[2]);*/
-
-	//player1Texture->setPos(TILE_SIZE, TILE_SIZE);
-	//player2Texture->setPos(TILE_SIZE, TILE_SIZE);
+	/* slightly bigger than usually displayed, for small maps on large resolutions*/
 	int tileSizeSrc = 64;
 
 	RTexture *tmpTexture;
 	_background = new RTexture(texturesScene_game[1]);
 	_background ->setScaleSize(1.0f * EngineInst->screen_width() / _background->getWidth());
 
+	/*Texture section for player 1*/
 	tmpTexture = new RTexture(texturesScene_game[3]);
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
@@ -86,16 +87,16 @@ void SceneGame::OnLoad()
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(27);
 	_player2 = new Player(tmpTexture, map, map->getParams()->start_hp, map->getParams()->start_mana);
-
+	/* starting location is loaded from map configuration file */
 	_player1->setPosTiles(map->GetPlayer1Start().first,
 			      map->GetPlayer1Start().second);
 	_player2->setPosTiles(map->GetPlayer2Start().first,
 			      map->GetPlayer2Start().second);
 
-	const enemies_list &ens = map->GetEnemies();
-
+	/* upon first load of this particular map place all enemies */
 	if (!is_loaded) {
-		//int i=0;
+		const enemies_list &ens = map->GetEnemies();
+
 		for (enemies_list::const_iterator it=ens.begin() ; it!=ens.end();
 			 ++it)
 		{
@@ -109,11 +110,11 @@ void SceneGame::OnLoad()
 		}
 	}
 
-
+	/* tiles for map */
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(tileSizeSrc);
 	_tiles->setTileSizeDst(tile_size);
-
+	/* lighting setup */
 	_arrayShadowW = map->GetWidth();
 	_arrayShadowH = map->GetHeight();
 	_arrayShadow = new int[_arrayShadowW*_arrayShadowH*sizeof(_arrayShadowH)];
@@ -127,11 +128,12 @@ void SceneGame::OnLoad()
 	globalAudios[HEARTBEAT].res.sound->play(-1, 0, HEARTBEAT_BASE_INTERVAL);
 	is_loaded = true;
 }
-
+/* this global variable implements golden skull feature*/
 extern int doskey_active;
 
 void SceneGame::OnFree()
 {
+	/*deallocate assets*/
 	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		delete *enemy;
 	}
@@ -148,6 +150,7 @@ void SceneGame::OnFree()
 
 }
 
+/* update positions; delete if needed*/
 void SceneGame::updateFireballs(int timems)
 {
 	for (std::list<Fireball*>::iterator it = fireballs.begin(); it != fireballs.end();) {
@@ -163,7 +166,7 @@ void SceneGame::updateFireballs(int timems)
 void SceneGame::updatePlayers(int timems)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-
+	/*react on keys for both players*/
 	if (currentKeyStates[PLAYER_1_MOVE_DOWN]) {
 		_player1->updateDirection(DIRECT_DOWN);
 	}
@@ -214,6 +217,7 @@ void SceneGame::updatePlayers(int timems)
 
 void SceneGame::updateEnemies(int timems)
 {
+	/* update behaviors for each of enemies */
 	for (std::vector<Enemy*>::iterator enemy = _enemys.begin(); enemy != _enemys.end(); ++enemy) {
 		(*enemy)->OnUpdate(timems);
 		if ((*enemy)->getAI() == ENEMY_AI_OFF)
@@ -232,13 +236,19 @@ void SceneGame::updateEnemies(int timems)
 		int distX = _player1->getPosX() - (*enemy)->getPosX();
 		int distY = _player1->getPosY() - (*enemy)->getPosY();
 
-		if ((*enemy)->getAI() != ENEMY_AI_DISTANCE || distX*distX + distY*distY <= distQuad ) {
+		
+		if (_player1->GetState()==Character::DEAD) {
+			direct1 = DIRECT_NO_WAY;
+		} else if ((*enemy)->getAI() != ENEMY_AI_DISTANCE || distX*distX + distY*distY <= distQuad ) {
 			direct1 = findAstar(way1, maxSteps, startX, startY, _player1->getPosBeforeX(), _player1->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 		}
 
 		distX = _player2->getPosX() - (*enemy)->getPosX();
 		distY = _player2->getPosY() - (*enemy)->getPosY();
-		if ((*enemy)->getAI() != ENEMY_AI_DISTANCE || distX*distX + distY*distY <= distQuad ) {
+
+		if (_player2->GetState()==Character::DEAD) {
+			direct2 = DIRECT_NO_WAY;
+		} else if ((*enemy)->getAI() != ENEMY_AI_DISTANCE || distX*distX + distY*distY <= distQuad ) {
 			direct2 = findAstar(way2, maxSteps,  startX, startY, _player2->getPosBeforeX(), _player2->getPosBeforeY(), map->GetWidth(), map->GetHeight(), IMap_isObstacle, map);
 		}
 
