@@ -66,8 +66,8 @@ public:
 	int SetPowerLevel(int x);
 
 	/* in pixels */
-	int getPosX();
-	int getPosY();
+	float getPosX();
+	float getPosY();
 	/* following four routines return position in TILES */
 	/* position FROM which character is moving */
 	int getPosBeforeX();
@@ -91,11 +91,11 @@ protected:
 		_state=state;
 	}
 private:
-	void setPos(int x, int y);
+	void setPos(float x, float y);
 	int _speed;
 	int _state;
-	int _posX;
-	int _posY;
+	float _posX;
+	float _posY;
 	int _pos_before_x;
 	int _pos_after_x;
 	int _pos_before_y;

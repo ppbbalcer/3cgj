@@ -11,6 +11,7 @@ Enemy::Enemy(RTexture *texture, IMap *map, int hp, int ai) : Character(texture, 
 	_time_to_random_direction = 0;
 	_health = hp;
 	_ai = (enemy_ai)ai;
+	wayAge = 0.0f;
 }
 
 Enemy::~Enemy(void) {};
@@ -26,7 +27,18 @@ int Enemy::crucio(int howMuchCrucio)
 
 void Enemy::OnUpdate(int time_ms)
 {
-	Character::OnUpdate(time_ms/3);
+//	time_ms = 9;
+
+	Character::OnUpdate(time_ms);
+
+
+	wayAge += (float)(time_ms) * 0.001;
+
+	if(wayAge > 0.5f) {
+		wayAge = 0.0f;
+		way.clear();
+	}
+
 	// Don't attack PC if I am dead
 	if (GetState()!=ALIVE)
 		return;
@@ -70,11 +82,21 @@ DIRECT Enemy::getRandomDirection()
 	clock_t now = clock();
 	if (_time_to_random_direction) {
 		return DIRECT_NO_WAY;
-		;
 	}
 
 	_time_to_random_direction= RANDOM_DIRECTION_CHANGE_TIME_MS;
 	return (static_cast<DIRECT>((rand() % (DIRECT_END - 1)) + 1));
+}
+
+void Enemy::setWay(AStarWay_t& pway)
+{
+	wayAge = 0.0f;
+	way = pway;
+}
+
+const AStarWay_t& Enemy::getWay()
+{
+	return way;
 }
 
 void Enemy::OnRender(SDL_Renderer *renderer)

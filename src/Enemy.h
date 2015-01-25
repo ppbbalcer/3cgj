@@ -24,6 +24,9 @@ class Enemy : public Character
 	clock_t _time_to_random_direction;
 	//! ai instance
 	enemy_ai _ai;
+	AStarWay_t way;
+	float wayAge;
+
 public:
 	Enemy(RTexture* texture, IMap * map, int hp, int ai);
 	~Enemy(void);
@@ -33,7 +36,8 @@ public:
 	enemy_ai getAI() { return _ai; }
 	virtual int crucio(int howMuchCrucio);
 	DIRECT getRandomDirection();
-	AStarWay_t way;
+	void				setWay(AStarWay_t& pway);
+	const AStarWay_t&	getWay();
 };
 
 #endif
