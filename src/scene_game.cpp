@@ -17,6 +17,9 @@ using namespace std;
 #define HEARTBEAT_BASE_INTERVAL 2000
 #define HEARTBEAT_MIN_INTERVAL 500
 
+// Global
+IMap *gCurrentMap = NULL;
+
 /* looking for obstacles*/
 bool IMap_isObstacle(int x, int y, void* objMap)
 {
@@ -33,6 +36,9 @@ SceneGame::SceneGame(Level *level, int room_id)
 	char buff[MAX_ROOM_PATH];
 	sprintf(buff, "Resources/levels/%u/%u.txt", level->getId(), room_id);
 	map = IMap::Factory(IMap::LOADED, buff);
+
+	gCurrentMap = map;
+
 	is_loaded = false;
 }
 
