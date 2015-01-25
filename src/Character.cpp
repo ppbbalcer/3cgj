@@ -193,6 +193,7 @@ void Character::updateDirection(DIRECT directMove)
 			_pos_after_y = _pos_before_y;
 			_pos_after_x = _pos_before_x + 1;
 		}
+		_texture->setFlip(SDL_FLIP_NONE);
 		break;
 
 	case DIRECT_LEFT:
@@ -201,6 +202,7 @@ void Character::updateDirection(DIRECT directMove)
 			_pos_after_y = _pos_before_y;
 			_pos_after_x = _pos_before_x - 1;
 		}
+		_texture->setFlip(SDL_FLIP_HORIZONTAL);
 		break;
 
 	default:
@@ -253,16 +255,17 @@ void Character::OnUpdate(int time_ms)
 		pos_y = min<int>(target_y, pos_y + dist);
 	}
 	if (pos_x > target_x) {
-		_texture->setFlip(SDL_FLIP_HORIZONTAL);
 		last_dir_y = 0;
 		last_dir_x = -1;
 		pos_x = max<int>(target_x, pos_x - dist);
+		_texture->setFlip(SDL_FLIP_HORIZONTAL);
 	}
 	if (pos_x < target_x) {
-		_texture->setFlip(SDL_FLIP_NONE);
+
 		last_dir_y = 0;
 		last_dir_x = +1;
 		pos_x = min<int>(target_x, pos_x + dist);
+		_texture->setFlip(SDL_FLIP_NONE);
 	}
 
 	if (pos_x == target_x) {
