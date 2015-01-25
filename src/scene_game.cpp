@@ -534,7 +534,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	veryTopBar.h = 50;
 
 	SDL_RenderSetViewport(renderer, &veryTopBar);
-	
+
 	/* PLAYER 1 */
 	{
 		_player1->renderAvatar(renderer, EngineInst->screen_width() - tileSize - playerBarXPadding, 0, SDL_FLIP_HORIZONTAL);
@@ -580,7 +580,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		SDL_Rect p2_hp_rect = { playerBarXPadding + tileSize, playerBarYPadding, _player2->getHealth() * 2, playerBarHeight};
 		SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderFillRect(renderer, &p2_hp_rect);
-	
+
 		//Frame
 		SDL_SetRenderDrawColor(renderer, 200, 0, 30, SDL_ALPHA_OPAQUE);
 		p2_hp_rect.w = 200;
