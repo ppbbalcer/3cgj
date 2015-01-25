@@ -52,7 +52,7 @@ bool loadMedia() {
 	bool success = true; 
 
 	EngineInst->loadGlobalFont(GlobalFontPath, 18);
-	EngineInst->showFPS(true);
+	//EngineInst->showFPS(true);
 	
 	success &= EngineInst->loadResources(globalTextures, globalTexturesSize);
 //	gScene = new MainScene();
