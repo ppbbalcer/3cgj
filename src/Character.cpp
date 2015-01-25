@@ -258,12 +258,14 @@ void Character::OnUpdate(int time_ms)
 		last_dir_y = 0;
 		last_dir_x = -1;
 		pos_x = max<int>(target_x, pos_x - dist);
+		_texture->setFlip(SDL_FLIP_HORIZONTAL);
 	}
 	if (pos_x < target_x) {
 
 		last_dir_y = 0;
 		last_dir_x = +1;
 		pos_x = min<int>(target_x, pos_x + dist);
+		_texture->setFlip(SDL_FLIP_NONE);
 	}
 
 	if (pos_x == target_x) {
