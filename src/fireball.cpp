@@ -22,9 +22,13 @@ int Fireball::updatePosition(IMap *map, int time_ms)
 
 	posX = posX + dist * vx;
 	posY = posY + dist * vy;
-
+	
 	x = (1.0 * posX + 0.5f) / tile_size;
 	y = (1.0 * posY + 0.5) / tile_size;
+	if (x<0 | y < 0)
+		return 1;
+	if (x>=map->GetWidth() || y >=map->GetHeight())
+		return 1;
 	if (map->GetFieldAt(x, y)->IsOccupied()) {
 		Character * whoishere =
 		        map->GetFieldAt(x, y)->WhoIsHere();
