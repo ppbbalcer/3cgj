@@ -49,6 +49,7 @@ int Character::crucio(int howMuchCrucio)
 	if (_health == 0) {
 		_state = DEAD;
 		_map->GetFieldAt(_pos_before_x, _pos_before_y)->LeftField();
+		_map->GetFieldAt(_pos_after_x, _pos_after_y)->LeftField();
 	}
 	return _health;
 }

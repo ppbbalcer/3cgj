@@ -11,9 +11,10 @@ class Level {
 private:
 	int id;
 	int current_scene;
+	int initial_scene;
 	scenes_map_t scenes;
 public:
-	Level(int id);
+	Level(int id, int initial_scene = INITIAL_LEVEL_SCENE);
 	~Level();
 	void setCurrentScene(int scene_id);
 	void resetCurrent();

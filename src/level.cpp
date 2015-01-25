@@ -1,7 +1,8 @@
 #include "level.h"
 
-Level::Level(int id) {
+Level::Level(int id, int initial_scene) {
 	this->id = id;
+	this->initial_scene = initial_scene;
 	current_scene = -1;
 }
 
@@ -14,7 +15,7 @@ Level::~Level() {
 
 SceneGame* Level::getCurrentScene() {
 	if (current_scene == -1) //first run
-		setCurrentScene(INITIAL_LEVEL_SCENE);
+		setCurrentScene(initial_scene);
 	return scenes[current_scene];
 }
 

@@ -78,13 +78,13 @@ void SceneGame::OnLoad()
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(24);
-	_player1 = new Player(tmpTexture, map);
+	_player1 = new Player(tmpTexture, map, map->getParams()->start_hp, map->getParams()->start_mana);
 
 	tmpTexture = new RTexture(texturesScene_game[3]);
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(27);
-	_player2 = new Player(tmpTexture, map);
+	_player2 = new Player(tmpTexture, map, map->getParams()->start_hp, map->getParams()->start_mana);
 
 	_player1->setPosTiles(map->GetPlayer1Start().first,
 			      map->GetPlayer1Start().second);
@@ -374,9 +374,9 @@ void SceneGame::OnRenderShadow(SDL_Renderer* renderer) {
 	for (int y = 0 ; y < _arrayShadowH; ++y) {
 		for (int x = 0 ;x< _arrayShadowW; ++x) {
 			alfa = 255 - _arrayShadow[y*_arrayShadowW + x];
-			if (alfa >140)
+			if (alfa > map->getParams()->alpha)
 			{
-				alfa = 140;
+				alfa = map->getParams()->alpha;
 			}
 			_tiles->setAlpha(alfa);
 			_tiles->renderTile(renderer, x*tileSize, y*tileSize, 35, SDL_FLIP_NONE);
