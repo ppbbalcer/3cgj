@@ -176,9 +176,9 @@ LoadedMap::LoadedMap(const char * path) {
 				dynamic_cast <Field*>(field)->SetType(IField::WALL_LB);
 			else if (HasWallAt(j,i-1)  && HasWallAt(j+1,i) ) // L rt
 				dynamic_cast <Field*>(field)->SetType(IField::WALL_RT);
-			else if (HasWallAt(j,i-1) && HasWallAt(j,i+1) ) // horizontal piece
+			else if (HasWallAt(j,i-1) || HasWallAt(j,i+1) ) // horizontal piece
 				dynamic_cast <Field*>(field)->SetType(IField::WALL_VERTICAL);
-			else if (HasWallAt(j-1,i) && HasWallAt(j+1,i) ) // T junction
+			else if (HasWallAt(j-1,i) || HasWallAt(j+1,i) ) // T junction
 				dynamic_cast <Field*>(field)->SetType(IField::WALL_HORIZONTAL);
 		}
 	}
