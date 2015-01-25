@@ -534,7 +534,6 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	veryTopBar.h = 50;
 
 	SDL_RenderSetViewport(renderer, &veryTopBar);
-
 	
 	/* PLAYER 1 */
 	{
@@ -544,7 +543,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		SDL_Rect p1_hp_rect = { EngineInst->screen_width()  - tileSize - playerBarXPadding - _player1->getHealth() * 2, playerBarYPadding, _player1->getHealth() * 2, playerBarHeight};
 		SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderFillRect(renderer, &p1_hp_rect);
-
+		EngineInst->font()->printf(0, 0, ALIGN_LEFT | ALIGN_TOP, "Room %u-%u", level->getId(), room_id);		
 		//Frame
 		SDL_SetRenderDrawColor(renderer, 200, 0, 30, SDL_ALPHA_OPAQUE);
 		p1_hp_rect.x = EngineInst->screen_width() - tileSize - playerBarXPadding - 200;
