@@ -17,14 +17,15 @@ size_t globalTexturesSize = sizeof(globalTextures) / sizeof(globalTextures[0]);
 class Scene* gScene = NULL;
 
 AudioResource globalAudios[] = {
-	{"Resources/audio/high.wav", AUDIO_TYPE_SOUND, NULL},
-	{"Resources/audio/low.wav", AUDIO_TYPE_SOUND, NULL},
+	{"Resources/audio/button_on.wav", AUDIO_TYPE_SOUND, NULL},
+	{"Resources/audio/button_off.wav", AUDIO_TYPE_SOUND, NULL},
 	{"Resources/audio/fireball.wav", AUDIO_TYPE_SOUND, NULL},
 	{"Resources/audio/slurp.wav", AUDIO_TYPE_SOUND, NULL},
 	{"Resources/audio/hb.wav", AUDIO_TYPE_SOUND, NULL},
 	{"Resources/audio/player_death.wav", AUDIO_TYPE_SOUND, NULL},
 	{"Resources/audio/enemy_death.wav", AUDIO_TYPE_SOUND, NULL},
 	{"Resources/audio/player_pain.wav", AUDIO_TYPE_SOUND, NULL},
+	{"Resources/audio/toggle.wav", AUDIO_TYPE_SOUND, NULL},
 };
 size_t globalAudiosSize = sizeof(globalAudios) / sizeof(globalAudios[0]);
 
