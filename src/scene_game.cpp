@@ -356,7 +356,7 @@ void SceneGame::updateShadows()
 		for (int j = 0 ; j != map->GetWidth(); ++j) {
 			int field = map->GetFieldAt(j, i)->GetType();
 			//int tile =  map->GetFieldAt(j, i)->GetTileId();
-			if (field == IField::MEDKIT || field == IField::DOSKEY || field == IField::POWERUP) {
+			if (field == IField::MEDKIT ||  field == IField::POWERUP) {
 				updateShadowsObj4(j, i);
 			}
 

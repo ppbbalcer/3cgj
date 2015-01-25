@@ -8,6 +8,7 @@
 #include "generic_map.h"
 #include "switch.h"
 #include "door.h"
+#include "skull.h"
 /* following constants define width and height of map in tiles */
 using namespace std;
 
@@ -35,7 +36,9 @@ LoadedMap::LoadedMap(const char * path) {
 	ifstream mapfile;
 	mapfile.open(path);
 	// check result
-
+	if (!mapfile.good()) {
+		assert(0);
+	}
 	// before allocating determine actual width and height of the map
 	int w=0;
 	int h=0;
@@ -83,7 +86,10 @@ LoadedMap::LoadedMap(const char * path) {
 				new_field= new Field(IField::WALL);
 				break;
 			case 'k':
-				new_field= new Field(IField::DOSKEY);
+				new_field= new Skull(true,false);
+				break;
+			case 'K':
+				new_field= new Skull(false,false);
 				break;
 			case '+':
 				new_field= new Field(IField::MEDKIT);
@@ -93,6 +99,7 @@ LoadedMap::LoadedMap(const char * path) {
 				break;
 			case 'M':
 				new_field= new Field(IField::LARGE_MANA_FLASK);
+				
 				break;
 			case 'h':
 				new_field= new Field(IField::SMALL_HEALTH_FLASK);

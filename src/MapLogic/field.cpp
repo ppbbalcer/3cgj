@@ -3,6 +3,7 @@
 #include "field_impl.h"
 #include "../Player.h"
 #include "../GlobalData.h"
+#include "skull.h"
 
 int Field::assigned_field[NUM_FIELD_TYPES];
 
@@ -32,7 +33,8 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[DOOR_HORIZONTAL_CLOSED] = 14;
 	assigned_field[DOOR_HORIZONTAL_OPEN] = 15;
 	assigned_field[MEDKIT] = 25;
-	assigned_field[DOSKEY] = 26;
+	assigned_field[SILVER_SKULL] = 26;
+	assigned_field[GOLDEN_SKULL] = 44;
 	assigned_field[POWERUP] = 31;
 	assigned_field[SMALL_MANA_FLASK] = 36;
 	assigned_field[LARGE_MANA_FLASK] = 40;
@@ -98,19 +100,11 @@ void Field::SteppedOver(Character * who)
 		type = FLOOR;
 		who->heal(MEDKIT_HEAL_VAL);
 	}
-	if (type == DOSKEY) {
-		doskey_active++;
-		globalAudios[BUTTON_ON].res.sound->play();
-	}
 	someone_is_here = who;
 }
 
 void Field::LeftField()
 {
-	if (type == DOSKEY) {
-		doskey_active--;
-		globalAudios[BUTTON_OFF].res.sound->play();
-	}
 	someone_is_here = 0;
 }
 

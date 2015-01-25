@@ -22,6 +22,7 @@ int Enemy::crucio(int howMuchCrucio)
 	}
 	return hpRem;
 }
+
 void Enemy::OnUpdate(int time_ms)
 {
 	Character::OnUpdate(time_ms/3);

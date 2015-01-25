@@ -4,7 +4,7 @@
 #include "door.h"
 void Door::Activate()
 {
-	keep_open=true;
+	keep_open++;
 	if (Field::GetType()==DOOR_VERTICAL_CLOSED)
 		SetType(DOOR_VERTICAL_OPEN);
 	if (Field::GetType()==DOOR_HORIZONTAL_CLOSED)
@@ -13,7 +13,7 @@ void Door::Activate()
 }
 void Door::Deactivate()
 {
-	keep_open=false;	
+	keep_open--;	
 	if (Field::GetType()==DOOR_VERTICAL_OPEN)
 		SetType(DOOR_VERTICAL_CLOSED);
 	if (Field::GetType()==DOOR_HORIZONTAL_OPEN)
