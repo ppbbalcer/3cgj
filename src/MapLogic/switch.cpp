@@ -27,10 +27,17 @@ void Switch::SteppedOver(Character * who) {
 	globalAudios[TOGGLE].res.sound->play();
 
 	if (associated_field) {
-		if (on_up ^ Up() )
-			ActivateRemotes();
-		else
-			DeactivateRemotes();
+		if (on_up ) {
+			if (Up())
+				ActivateRemotes();
+			else
+				DeactivateRemotes();
+		} else {
+			if (!Up())
+				ActivateRemotes();
+			else
+				DeactivateRemotes();
+		} 
 	}
 	/* update the state machine */
 	Field::SteppedOver(who);
