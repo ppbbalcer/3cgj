@@ -37,8 +37,8 @@ Fireball * Player::Shoot()
 
 	if (_mana - FIREBALL_MANA_COST < 0)
 		return NULL;
-
-	if (((1.0 * now - _last_shot_time) / (CLOCKS_PER_SEC / 1000)) <= FIREBALL_MIN_DIFF_MS)
+	clock_t ms_since_last_shot = ((1.0 * now - _last_shot_time) / (CLOCKS_PER_SEC / 1000));
+	if (ms_since_last_shot <= FIREBALL_MIN_DIFF_MS)
 		return NULL;
 
 	_mana -= FIREBALL_MANA_COST;

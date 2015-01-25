@@ -11,5 +11,5 @@ void ControllerField::ActivateRemotes()
 void ControllerField::DeactivateRemotes()
 {
 	if (associated_field)
-		associated_field->Deactivate();
+	    associated_field->Deactivate();
 }
