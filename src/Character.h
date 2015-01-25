@@ -59,6 +59,7 @@ public:
 
 	void OnRenderCircle(SDL_Renderer *renderer, int radius, int tileIdx);
 	virtual void OnRender(SDL_Renderer *renderer);
+	void renderAvatar(SDL_Renderer *renderer, int x, int y, SDL_RendererFlip flip);
 	void setPosTiles(int x, int y);
 	/* strength of damage dealt by character*/
 	int GetPowerLevel();
