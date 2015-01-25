@@ -168,6 +168,11 @@ void Character::updateDirection(DIRECT directMove)
 	//Protect move two tiles
 	float distX = _posX - closeTileX*tileSize;
 	float distY = _posY - closeTileY*tileSize;
+	if (getType() == TYPE_ENEMY) {
+		distX = 0;
+		distY = 0;
+	}
+
 
 
 	switch (directMove) {
