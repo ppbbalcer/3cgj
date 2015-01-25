@@ -55,8 +55,6 @@ SDL_Rect SceneGame::GetDefaultViewport()
 }
 void SceneGame::OnLoad()
 {
-	if (is_loaded)
-		return;
 	// montage *.png ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
 	SDL_Rect dvp=GetDefaultViewport();
 
@@ -96,18 +94,21 @@ void SceneGame::OnLoad()
 
 	const enemies_list &ens = map->GetEnemies();
 
-	//int i=0;
-	for (enemies_list::const_iterator it=ens.begin() ; it!=ens.end();
-	     ++it)
-	{
-		tmpTexture = new RTexture(texturesScene_game[3]);
-		tmpTexture->setTileSizeSrc(tileSizeSrc);
-		tmpTexture->setTileSizeDst(tile_size);
-		tmpTexture->setTileIdx(23);
-		Enemy* enemy = new Enemy(tmpTexture, map, (*it)->hp, (*it)->ai);
-		enemy->setPosTiles((*it)->x, (*it)->y);
-		_enemys.push_back(enemy);
+	if (!is_loaded) {
+		//int i=0;
+		for (enemies_list::const_iterator it=ens.begin() ; it!=ens.end();
+			 ++it)
+		{
+			tmpTexture = new RTexture(texturesScene_game[3]);
+			tmpTexture->setTileSizeSrc(tileSizeSrc);
+			tmpTexture->setTileSizeDst(tile_size);
+			tmpTexture->setTileIdx(23);
+			Enemy* enemy = new Enemy(tmpTexture, map, (*it)->hp, (*it)->ai);
+			enemy->setPosTiles((*it)->x, (*it)->y);
+			_enemys.push_back(enemy);
+		}
 	}
+
 
 	_tiles = new RTexture(texturesScene_game[3]);
 	_tiles->setTileSizeSrc(tileSizeSrc);
@@ -124,6 +125,7 @@ void SceneGame::OnLoad()
 	}
 	globalAudios[HEARTBEAT].res.sound->setVolume(0.2f);
 	globalAudios[HEARTBEAT].res.sound->play(-1, 0, HEARTBEAT_BASE_INTERVAL);
+	is_loaded = true;
 }
 
 extern int doskey_active;
