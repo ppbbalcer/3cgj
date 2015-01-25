@@ -2,8 +2,10 @@
 #include "Engine/Engine.h"
 #include "Character.h"
 
-Fireball::Fireball(int start_x, int start_y, int _vx, int _vy, int level)
+Fireball::Fireball(int start_x, int start_y, int _vx, int _vy, int level,
+	Character *_producer)
 {
+	producer=_producer;
 	power_level = level;
 	x = start_x;
 	y = start_y;
@@ -26,6 +28,8 @@ int Fireball::updatePosition(IMap *map, int time_ms)
 	if (map->GetFieldAt(x, y)->IsOccupied()) {
 		Character * whoishere =
 		        map->GetFieldAt(x, y)->WhoIsHere();
+		if (whoishere==producer)
+			return 0;
 		whoishere->crucio(power_level);
 		// harm someone
 		return 1;

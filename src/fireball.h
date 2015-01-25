@@ -1,6 +1,7 @@
 #ifndef __FIREBALL_H
 #define __FIREBALL_H
 #include "MapLogic/map.h"
+class Character;
 
 class Fireball
 {
@@ -11,8 +12,9 @@ class Fireball
 	int posX; // in pixels (margin not included)
 	int posY;
 	int power_level;
+	Character *producer;
 public:
-	Fireball(int start_x, int start_y, int _vx, int _vy, int _power);
+	Fireball(int start_x, int start_y, int _vx, int _vy, int _power, Character *producer);
 
 	/**
 	 * Attempt to update position
