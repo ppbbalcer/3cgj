@@ -8,11 +8,12 @@ class Player : public Character
 {
 private:
 	int _mana;
-	clock_t _last_shot_time;
+	int _time_to_shot;
 
 public:
 	Player(RTexture* texture, IMap * map, int hp, int mana);
 	~Player(void);
+	virtual void OnUpdate(int time_ms);
 
 	int getMana();
 	void restoreMana(int howMuchMana);
