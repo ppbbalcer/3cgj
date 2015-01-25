@@ -19,6 +19,8 @@ void Skull::SteppedOver(Character * who)
 {
 	if (IsGolden()) {
 		doskey_active++;
+	} else {
+		ActivateRemotes();
 	}
 	globalAudios[BUTTON_ON].res.sound->play();
 	//someone_is_here=who;
@@ -28,6 +30,8 @@ void Skull::LeftField()
 {
 	if (IsGolden()) {
 		doskey_active--;
+	} else {
+		DeactivateRemotes();
 	}
 	globalAudios[BUTTON_OFF].res.sound->play();
 	//someone_is_here=0;

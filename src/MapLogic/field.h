@@ -32,6 +32,7 @@ public:
 		MEDKIT,
 		GOLDEN_SKULL, /* dos computer that opens doors */
 		SILVER_SKULL,
+		INACTIVE_SKULL,
 		POWERUP,
 		SMALL_MANA_FLASK,
 		LARGE_MANA_FLASK,

@@ -28,9 +28,9 @@ void Switch::SteppedOver(Character * who) {
 
 	if (associated_field) {
 		if (on_up ^ Up() )
-			associated_field->Deactivate();
+			ActivateRemotes();
 		else
-			associated_field->Activate();
+			DeactivateRemotes();
 	}
 	/* update the state machine */
 	Field::SteppedOver(who);

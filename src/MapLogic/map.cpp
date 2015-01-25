@@ -86,10 +86,10 @@ LoadedMap::LoadedMap(const char * path) {
 				new_field= new Field(IField::WALL);
 				break;
 			case 'k':
-				new_field= new Skull(true,false);
+				new_field= new Skull(true,true);
 				break;
 			case 'K':
-				new_field= new Skull(false,false);
+				new_field= new Skull(false,true);
 				break;
 			case '+':
 				new_field= new Field(IField::MEDKIT);
@@ -197,14 +197,14 @@ LoadedMap::LoadedMap(const char * path) {
 		if (command == "start") {
 			mapfile >> params->alpha >> params->start_hp >> params->start_mana;
 			printf("HIER\n");
-		} else if (command == "switch") {
+		} else if (command == "switch" || command=="controller") {
 			int sw_x;
 			int sw_y;
 			string direction;
 			int tar_x;
 			int tar_y;
 			mapfile >> sw_x >> sw_y >> direction >> tar_x >> tar_y;
-			Switch * sw = dynamic_cast <Switch*>(
+			ControllerField * sw = dynamic_cast <ControllerField*>(
 				GetFieldAt(sw_x, sw_y));
 			if (!sw) {assert(0);}
 			Field * tar = dynamic_cast <Field*>(

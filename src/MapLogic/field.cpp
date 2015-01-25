@@ -33,7 +33,8 @@ void Field::EnsureFieldIdsInitialized()
 	assigned_field[DOOR_HORIZONTAL_CLOSED] = 14;
 	assigned_field[DOOR_HORIZONTAL_OPEN] = 15;
 	assigned_field[MEDKIT] = 25;
-	assigned_field[SILVER_SKULL] = 26;
+	assigned_field[INACTIVE_SKULL] = 26;
+	assigned_field[SILVER_SKULL] = 45;
 	assigned_field[GOLDEN_SKULL] = 44;
 	assigned_field[POWERUP] = 31;
 	assigned_field[SMALL_MANA_FLASK] = 36;
