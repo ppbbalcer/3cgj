@@ -41,6 +41,8 @@ public:
 		EMPTY_FLASK,
 		SWITCH_UP,
 		STAIRS,
+		SPIKES_ON,
+		SPIKES_OFF,
 		TRAP,
 		SWITCH_DOWN,
 		EVIL_COMPUTER, /*spawns fireballs everywhere*/
