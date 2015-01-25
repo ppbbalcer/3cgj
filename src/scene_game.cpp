@@ -10,6 +10,7 @@
 #include "KeyMap.h"
 #include "level.h"
 #include "MapLogic/door.h"
+#include "MapLogic/stairs.h"
 using namespace std;
 
 #define MAX_ROOM_PATH 255
@@ -499,7 +500,8 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		int target_map1=0;
 		int target_level2=level->getId()+1;
 		int target_map2=0;
-
+		/* game ended with victory ? */
+		bool game_end=false;
 		Door * dor = dynamic_cast <Door*>(
 			map->GetFieldAt(_player1->getPosAfterX(),
 					_player1->getPosAfterY()));
@@ -513,14 +515,25 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 		if (dor) {
 			target_level2=level->getId();
 			target_map2=dor->GetTargetBoard();
+		} else {
+			Stairs * sta = dynamic_cast <Stairs*>(
+				map->GetFieldAt(_player1->getPosAfterX(),
+						_player1->getPosAfterY()));
+			if (sta->GetVictory()) {
+				game_end=true;
+			}
 		}
 		
 		if (target_level2==target_level1 &&
 			target_map2==target_map1) {
 			EngineInst->font()->printfLT(100,
 						     map->GetHeight()*tileSize, "Both players won");
-			level->setId(target_level1);
-			level->setCurrentScene(target_map1);
+			if (game_end) {
+				level->SetVictoryScene();
+			} else {
+				level->setId(target_level1);
+				level->setCurrentScene(target_map1);
+			}
 		} else {
 			/* did we really win? */
 			EngineInst->

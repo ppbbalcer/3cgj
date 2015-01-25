@@ -1,5 +1,7 @@
 #include "level.h"
+#include "GlobalData.h"
 
+#include "victoryscene.h"
 Level::Level(int id, int initial_scene) {
 	this->id = id;
 	this->initial_scene = initial_scene;
@@ -32,7 +34,11 @@ void Level::setCurrentScene(int scene_id) {
 	current_scene = scene_id;
 	EngineInst->setNextScene(getCurrentScene());
 }
-
+void Level::SetVictoryScene()
+{
+	Scene * victory = new VictoryScene;
+	EngineInst->setNextScene(victory);
+}
 void Level::resetCurrent() {
 	scenes[current_scene]->OnFreeBase();
 	delete scenes[current_scene];

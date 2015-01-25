@@ -13,6 +13,7 @@ private:
 	int current_scene;
 	int initial_scene;
 	scenes_map_t scenes;
+	
 public:
 	Level(int id, int initial_scene = INITIAL_LEVEL_SCENE);
 	~Level();
@@ -21,6 +22,7 @@ public:
 	SceneGame* getCurrentScene(); 
 	int getId() { return id; }
 	void setId(int i);
+	void SetVictoryScene();
 };
 
 #endif

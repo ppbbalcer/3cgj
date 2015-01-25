@@ -238,6 +238,13 @@ LoadedMap::LoadedMap(const char * path) {
 			Door * dor = dynamic_cast <Door*>(
 				GetFieldAt(x, y));
 			dor->SetTargetBoard(target);
+		} else if (command == "stairs") {
+			int x; int y;
+			string direction;
+			mapfile >> x >> y >> direction;
+			if (direction=="winner")
+				dynamic_cast <Stairs*>(
+					GetFieldAt(x, y))->SetVictory();
 		}
 	}
 	mapfile.close();
