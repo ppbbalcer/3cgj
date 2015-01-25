@@ -5,6 +5,9 @@ This is PRE ALPHA RELEASE.
 
 To run game double click onto executable.
 
+You can also make your own levels by creating new files in the
+Resources/levels folder.
+
 This game is released under THREE CLAUSE BSD LICENSE
 
 
@@ -32,3 +35,8 @@ Following problems are known:
 
 - when working directory DOESN'T contain resources directory,
   execution fails.
+
+- in Windows 8 the screen might get scaled unproportionally, in
+  such case disabling display scaling on high DPI settings should
+  help (right click on the executable file "Revenge of the GM.exe",
+  Compatibility -> Disable display scaling on high DPI settings
