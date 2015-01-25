@@ -40,7 +40,10 @@ void Skull::SteppedOver(Character * who)
 	if (IsGolden()) {
 		doskey_active++;
 	} else {
-		ActivateRemotes();
+		if (on_up)
+			ActivateRemotes();
+		else
+			DeactivateRemotes();
 	}
 	globalAudios[BUTTON_ON].res.sound->play();
 }
@@ -53,6 +56,9 @@ void Skull::LeftField()
 	if (IsGolden()) {
 		doskey_active--;
 	} else {
-		DeactivateRemotes();
+		if (on_up)
+			DeactivateRemotes();
+		else
+			ActivateRemotes();
 	}
 }

@@ -5,7 +5,7 @@ class ControllerField: public Field
 {
 protected:
 	Field * associated_field;
-
+	bool on_up;
 	void ActivateRemotes();
 	void DeactivateRemotes();
 public:
@@ -22,6 +22,7 @@ public:
 	 */
 	void AssociateField(Field * associated, bool on_up) {
 		associated_field=associated;
+		this->on_up=on_up;
 	}
 
 };
