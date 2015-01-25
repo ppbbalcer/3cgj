@@ -21,10 +21,12 @@
     <ClCompile Include="src\GlobalData.cpp" />
     <ClCompile Include="src\level.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MapLogic\controller_field.cpp" />
     <ClCompile Include="src\MapLogic\door.cpp" />
     <ClCompile Include="src\MapLogic\field.cpp" />
     <ClCompile Include="src\MapLogic\map.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\MapLogic\skull.cpp" />
     <ClCompile Include="src\MapLogic\switch.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\scene_game.cpp" />
@@ -43,11 +45,13 @@
     <ClInclude Include="src\GlobalData.h" />
     <ClInclude Include="src\KeyMap.h" />
     <ClInclude Include="src\level.h" />
+    <ClInclude Include="src\MapLogic\controller_field.h" />
     <ClInclude Include="src\MapLogic\door.h" />
     <ClInclude Include="src\MapLogic\field.h" />
     <ClInclude Include="src\MapLogic\field_impl.h" />
     <ClInclude Include="src\MapLogic\generic_map.h" />
     <ClInclude Include="src\MapLogic\map.h" />
+    <ClInclude Include="src\MapLogic\skull.h" />
     <ClInclude Include="src\MapLogic\switch.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\SceneExamples.h" />
