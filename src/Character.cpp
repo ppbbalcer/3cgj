@@ -165,10 +165,16 @@ void Character::updateDirection(DIRECT directMove)
 	int closeTileX = (_posX + tileSize*0.5f)/tileSize;
 	int closeTileY = (_posY + tileSize*0.5f)/tileSize;
 
+	//Protect move two tiles
+	float distX = _posX - closeTileX*tileSize;
+	float distY = _posY - closeTileY*tileSize;
+
 
 	switch (directMove) {
 	case DIRECT_DOWN:
-		if ( (closeTileY <  _map->GetHeight() - 1) && (!_map->GetFieldAt(closeTileX, closeTileY + 1)->IsObstacle()) )
+		if ( (closeTileY <  _map->GetHeight() - 1) 
+			&& (distY >= 0) 
+			&& (!_map->GetFieldAt(closeTileX, closeTileY + 1)->IsObstacle()) )
 			//&& (!_map->GetFieldAt(_pos_before_x, _pos_before_y + 1)->IsObstacle())
 		{
 			_pos_after_x = closeTileX;
@@ -176,7 +182,9 @@ void Character::updateDirection(DIRECT directMove)
 		}
 		break;
 	case DIRECT_UP:
-		if ((closeTileY > 0) && (!_map->GetFieldAt(closeTileX, closeTileY - 1)->IsObstacle()) )
+		if ((closeTileY > 0) 
+			&& (distY <= 0) 
+			&& (!_map->GetFieldAt(closeTileX, closeTileY - 1)->IsObstacle()) )
 		// && (!_map->GetFieldAt(_pos_before_x, _pos_before_y - 1)->IsObstacle())
 		{
 			
@@ -186,7 +194,9 @@ void Character::updateDirection(DIRECT directMove)
 		break;
 
 	case DIRECT_RIGHT:
-		if ((closeTileX <  _map->GetWidth() - 1) && (!_map->GetFieldAt(closeTileX + 1, closeTileY)->IsObstacle()) )
+		if ((closeTileX <  _map->GetWidth() - 1) 
+			&& (distX >= 0) 
+			&& (!_map->GetFieldAt(closeTileX + 1, closeTileY)->IsObstacle()) )
 		 //&& (!_map->GetFieldAt(_pos_before_x + 1, _pos_before_y)->IsObstacle())
 		{
 			_pos_after_y = closeTileY;
@@ -196,7 +206,9 @@ void Character::updateDirection(DIRECT directMove)
 		break;
 
 	case DIRECT_LEFT:
-		if ((closeTileX  > 0) &&(!_map->GetFieldAt(closeTileX - 1,closeTileY)->IsObstacle()) )
+		if ((closeTileX  > 0) 
+			&& (distX <= 0) 
+			&&(!_map->GetFieldAt(closeTileX - 1,closeTileY)->IsObstacle()) )
 		//&&  (!_map->GetFieldAt(_pos_before_x - 1, _pos_before_y)->IsObstacle())
 		{
 			_pos_after_y = closeTileY;
