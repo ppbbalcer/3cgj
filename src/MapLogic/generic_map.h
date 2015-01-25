@@ -13,6 +13,7 @@ protected:
 	starting_pos p1_start;
 	starting_pos p2_start;
 	enemies_list enemies;
+	map_params *params;
 protected:
 	virtual const starting_pos & GetPlayer1Start();
 	virtual const starting_pos & GetPlayer2Start();
@@ -93,6 +94,6 @@ public:
 	int GetHeight() {
 		return height;
 	}
-
+	map_params* getParams() { return params; }
 };
 #endif

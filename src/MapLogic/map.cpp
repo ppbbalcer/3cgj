@@ -183,7 +183,11 @@ LoadedMap::LoadedMap(const char * path) {
 		 */
 		string command;
 		mapfile >> command;
-		if (command == "switch") {
+		if (command == "start") {
+			params = new map_params();
+			mapfile >> params->alpha >> params->start_hp >> params->start_mana;
+			printf("HIER\n");
+		} else if (command == "switch") {
 			int sw_x;
 			int sw_y;
 			string direction;
@@ -218,6 +222,12 @@ LoadedMap::LoadedMap(const char * path) {
 		}
 	}
 	mapfile.close();
+	if (params == NULL) {
+		params = new map_params();
+		params->alpha = 140;
+		params->start_hp = 100;
+		params->start_mana = 100;
+	}
 }
 
 const starting_pos & GenericMap::GetPlayer1Start()
