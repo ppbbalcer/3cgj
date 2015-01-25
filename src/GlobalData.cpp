@@ -31,7 +31,7 @@ AudioResource globalAudios[] = {
 size_t globalAudiosSize = sizeof(globalAudios) / sizeof(globalAudios[0]);
 
 ResourceItem texturesScene[] = {
-	{"Resources/laughing_man_logo.png",		false, true, true, 0,		NULL, NULL, 0, 0}, //Alfa problem fixed
+	{"Resources/logo_end.png",		false, true, true, 0,		NULL, NULL, 0, 0}, //Alfa problem fixed
 };
 
 size_t texturesSceneSize = sizeof(texturesScene) / sizeof(texturesScene[0]);
