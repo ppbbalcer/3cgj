@@ -53,6 +53,7 @@ public:
 	 * @param x,y field position (0-n)
 	 */
 	virtual IField* GetFieldAt(int x, int y) = 0;
+	virtual const char *GetTitleString() = 0;
 	virtual ~IMap() {};
 };
 

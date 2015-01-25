@@ -60,6 +60,7 @@ void SceneGame::OnLoad()
 	 * (to be invoked from Resources/tiles/walls directory)
 	 *  montage *.png -background none ../floor0.png -geometry +0x0 -tile 3x3 ../walls.png
 	 */
+	EngineInst->clearStatusLine();
 	SDL_Rect dvp=GetDefaultViewport();
 	/* scale entire board
 	 */
@@ -67,11 +68,12 @@ void SceneGame::OnLoad()
 				 dvp.h/map->GetHeight());
 
 	EngineInst->setTileSize(tile_size);
-
 	bool success = EngineInst->loadResources(texturesScene_game, texturesScene_gameSize);
 	/* slightly bigger than usually displayed, for small maps on large resolutions*/
 	int tileSizeSrc = 64;
 
+	EngineInst->setStatusLine("mission hint");
+	
 	RTexture *tmpTexture;
 	_background = new RTexture(texturesScene_game[1]);
 	_background ->setScaleSize(1.0f * EngineInst->screen_width() / _background->getWidth());
@@ -93,6 +95,9 @@ void SceneGame::OnLoad()
 			      map->GetPlayer1Start().second);
 	_player2->setPosTiles(map->GetPlayer2Start().first,
 			      map->GetPlayer2Start().second);
+
+
+	EngineInst->setStatusLine(map->GetTitleString());
 
 	/* upon first load of this particular map place all enemies */
 	if (!is_loaded) {
@@ -486,10 +491,8 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 	/* check loss condition */
 	if (_player1->GetState() == Character::DEAD ||
 	                _player2->GetState() == Character::DEAD) {
-		EngineInst->font()->printfLT(100,
-		                             map->GetHeight()*tileSize, "You lost!");
-		EngineInst->font()->printfLT(100,
-		                             (map->GetHeight()*tileSize)+30, "Press R to try again");
+		EngineInst->setStatusLine(  "You lost! "
+					    "Press R to try again");
 	}
 	/*Check victory condition*/
 	else if (_player1->GetState() == Character::WON &&
@@ -521,6 +524,7 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 						_player1->getPosAfterY()));
 			if (sta->GetVictory()) {
 				game_end=true;
+				EngineInst->clearStatusLine();
 			}
 		}
 		
@@ -535,20 +539,15 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 				level->setCurrentScene(target_map1);
 			}
 		} else {
-			/* did we really win? */
-			EngineInst->
-			font()->printfLT(100,
-					 map->GetHeight()*tileSize, "You lost - you have left level through different doors.");
-			EngineInst->font()->printfLT(100,
-						     (map->GetHeight()*tileSize)+30, "Press R to try again");
+			EngineInst->setStatusLine("You lost - you have left level through different doors. Press R to try again");
 			
 		}
 	} else if (_player1->GetState() == Character::WON) {
-		EngineInst->font()->printfLT(100,
-			map->GetHeight()*tileSize, "Player 1 has left the screen. Player 2 must join him so you can win the level together.");
+
+		EngineInst->setStatusLine( "Player 1 has left the screen. Player 2 must join him so you can win the level together.");
 	} else if (_player2->GetState() == Character::WON) {
-		EngineInst->font()->printfLT(100,
-			map->GetHeight()*tileSize, "Player 2 has left the screen. Player 2 must join him so you can win the level together.");
+		
+		EngineInst->setStatusLine( "Player 2 has left the screen. Player 2 must join him so you can win the level together.");
 	}
 
 	_player1->OnRender(renderer);

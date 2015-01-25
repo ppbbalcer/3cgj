@@ -206,6 +206,18 @@ LoadedMap::LoadedMap(const char * path) {
 		if (command == "start") {
 			mapfile >> params->alpha >> params->start_hp >> params->start_mana;
 			printf("HIER\n");
+		} else if (command == "title_string") {
+			std::string title;
+			while (mapfile.get()!='"') ;
+			int c;
+			do
+			{
+				c=mapfile.get();
+				if (c!='"')
+					title.push_back(c);
+			}
+			while (c!='"');
+			title_string=title;
 		} else if (command == "switch" || command=="controller") {
 			int sw_x;
 			int sw_y;

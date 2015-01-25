@@ -290,7 +290,16 @@ void Engine::showFPS(bool flag)
 {
 	_showFPS = flag;
 }
+void Engine::clearStatusLine()
+{
+	status_line.clear();
+}
 
+void Engine::setStatusLine( const char * l)
+{
+	//clearStatusLine();
+	status_line.assign(l);
+}
 void Engine::mainLoop() {
 	_quitMainLoop = false;
 	
@@ -335,7 +344,10 @@ void Engine::mainLoop() {
 		if (_font && _showFPS) {
 			_font->printf(screen_width(), 0, ALIGN_RIGHT | ALIGN_TOP, "FPS: %.2f", 1000.0f/delta);
 		}
+		if (_font && !status_line.empty()) {
+			_font->printf(screen_width()/2,screen_height(),ALIGN_BOTTOM, status_line.c_str());
 
+		}
 		if (_scene->getDrawType() == Scene::DrawType_Paint) {
 			//Draw 2D
 			//Clean screen

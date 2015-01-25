@@ -18,6 +18,7 @@ protected:
 	virtual const starting_pos & GetPlayer1Start();
 	virtual const starting_pos & GetPlayer2Start();
 	virtual const enemies_list & GetEnemies();
+	std::string title_string;
 
 	/*following methods are used by implementation of specialized
 	 * constructors of GeneratedMap and LoadedMap
@@ -79,6 +80,10 @@ protected:
 		return false;
 	}
 public:
+	const char *GetTitleString()
+	{
+		return title_string.c_str();
+	}
 	IField* GetFieldAt(int x, int y) {
 		return fields[x+y*width];
 	}
