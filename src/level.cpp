@@ -29,7 +29,7 @@ void Level::setId(int i) {
 
 void Level::setCurrentScene(int scene_id) {
 	if (scenes.find(scene_id) == scenes.end()) {
-		scenes[scene_id] = new SceneGame(this, scene_id);
+		scenes[scene_id] = new SceneGame(this, 3);
 	}
 	current_scene = scene_id;
 	EngineInst->setNextScene(getCurrentScene());

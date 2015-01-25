@@ -228,8 +228,13 @@ void SceneGame::updateEnemies(int timems)
 		(*enemy)->OnUpdate(timems);
 		if ((*enemy)->getAI() == ENEMY_AI_OFF)
 			continue;
-		int startX = (*enemy)->getPosBeforeX();
-		int startY = (*enemy)->getPosBeforeY();
+
+		if((*enemy)->getWay().size() > 0) {
+			continue;
+		}
+
+		int startX = (*enemy)->getPosAfterX();
+		int startY = (*enemy)->getPosAfterY();
 		AStarWay_t way1;
 		AStarWay_t way2;
 
@@ -269,19 +274,17 @@ void SceneGame::updateEnemies(int timems)
 
 		if (direct1 != DIRECT_NO_WAY && direct2 == DIRECT_NO_WAY) {
 			destBest = direct1;
-			//(*enemy)->way = way1; 	//For debug A*
+			(*enemy)->setWay(way1);
 		} else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
 			destBest = direct2;
-			//(*enemy)->way = way2;
-
-
+			(*enemy)->setWay(way2);
 		} else if (direct1 != DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
 			if (way1.size() > way2.size()) {
 				destBest = direct2;
-				//(*enemy)->way = way2;
+				(*enemy)->setWay(way2);
 			} else {
 				destBest = direct1;
-				//(*enemy)->way = way1;
+				(*enemy)->setWay(way1);
 			}
 		} else {
 			destBest = (*enemy)->getRandomDirection();
