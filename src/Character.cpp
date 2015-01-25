@@ -163,14 +163,14 @@ void Character::updateDirection(DIRECT directMove)
 
 	switch (directMove) {
 	case DIRECT_DOWN:
-		if ((!_map->GetFieldAt(_pos_before_x, _pos_before_y + 1)->IsObstacle()) &&
+		if ((_pos_before_y + 1) < _map->GetHeight() && (!_map->GetFieldAt(_pos_before_x, _pos_before_y + 1)->IsObstacle()) &&
 		                (!_map->GetFieldAt(_pos_before_x, _pos_before_y + 1)->IsObstacle())) {
 			_pos_after_x = _pos_before_x;
 			_pos_after_y = _pos_before_y + 1;
 		}
 		break;
 	case DIRECT_UP:
-		if ((!_map->GetFieldAt(_pos_before_x, _pos_before_y - 1)->IsObstacle()) &&
+		if ((_pos_before_y - 1) >= 0 && (!_map->GetFieldAt(_pos_before_x, _pos_before_y - 1)->IsObstacle()) &&
 		                (!_map->GetFieldAt(_pos_before_x, _pos_before_y - 1)->IsObstacle())) {
 			
 			_pos_after_x = _pos_before_x;
@@ -179,7 +179,7 @@ void Character::updateDirection(DIRECT directMove)
 		break;
 
 	case DIRECT_RIGHT:
-		if ((!_map->GetFieldAt(_pos_before_x + 1, _pos_before_y)->IsObstacle()) &&
+		if ((_pos_before_x + 1) < _map->GetWidth() && (!_map->GetFieldAt(_pos_before_x + 1, _pos_before_y)->IsObstacle()) &&
 		                (!_map->GetFieldAt(_pos_before_x + 1, _pos_before_y)->IsObstacle())) {
 			_pos_after_y = _pos_before_y;
 			_pos_after_x = _pos_before_x + 1;
@@ -187,7 +187,7 @@ void Character::updateDirection(DIRECT directMove)
 		break;
 
 	case DIRECT_LEFT:
-		if ((!_map->GetFieldAt(_pos_before_x - 1, _pos_before_y)->IsObstacle()) &&
+		if ((_pos_before_x - 1) >= 0 && (!_map->GetFieldAt(_pos_before_x - 1, _pos_before_y)->IsObstacle()) &&
 		                (!_map->GetFieldAt(_pos_before_x - 1, _pos_before_y)->IsObstacle())) {
 			_pos_after_y = _pos_before_y;
 			_pos_after_x = _pos_before_x - 1;
