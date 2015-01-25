@@ -24,12 +24,12 @@ int Enemy::crucio(int howMuchCrucio)
 }
 void Enemy::OnUpdate(int time_ms)
 {
-	Character::OnUpdate(time_ms);
+	Character::OnUpdate(time_ms/3);
 	// Don't attack PC if I am dead
 	if (GetState()!=ALIVE)
 		return;
 	clock_t now = clock();
-	if (((1.0 * now - _last_attack_around) / (CLOCKS_PER_SEC / 1000)) >= 200)
+	if (((1.0 * now - _last_attack_around) / (CLOCKS_PER_SEC / 1000)) >= 600)
 	{
 		for (int i = getPosBeforeX()-1; i!= getPosBeforeX()+1; ++i) 
 			for (int j = getPosBeforeY()-1; j!= getPosBeforeY()+1; ++j)
