@@ -78,13 +78,13 @@ void SceneGame::OnLoad()
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(24);
-	_player1 = new Player(tmpTexture, map);
+	_player1 = new Player(tmpTexture, map, map->getParams()->start_hp, map->getParams()->start_mana);
 
 	tmpTexture = new RTexture(texturesScene_game[3]);
 	tmpTexture->setTileSizeSrc(tileSizeSrc);
 	tmpTexture->setTileSizeDst(tile_size);
 	tmpTexture->setTileIdx(27);
-	_player2 = new Player(tmpTexture, map);
+	_player2 = new Player(tmpTexture, map, map->getParams()->start_hp, map->getParams()->start_mana);
 
 	_player1->setPosTiles(map->GetPlayer1Start().first,
 			      map->GetPlayer1Start().second);
@@ -252,6 +252,8 @@ void SceneGame::updateEnemies(int timems)
 		} else if (direct1 == DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
 			destBest = direct2;
 			//(*enemy)->way = way2;
+
+
 		} else if (direct1 != DIRECT_NO_WAY && direct2 != DIRECT_NO_WAY) {
 			if (way1.size() > way2.size()) {
 				destBest = direct2;
@@ -372,9 +374,9 @@ void SceneGame::OnRenderShadow(SDL_Renderer* renderer) {
 	for (int y = 0 ; y < _arrayShadowH; ++y) {
 		for (int x = 0 ;x< _arrayShadowW; ++x) {
 			alfa = 255 - _arrayShadow[y*_arrayShadowW + x];
-			if (alfa >140)
+			if (alfa > map->getParams()->alpha)
 			{
-				alfa = 140;
+				alfa = map->getParams()->alpha;
 			}
 			_tiles->setAlpha(alfa);
 			_tiles->renderTile(renderer, x*tileSize, y*tileSize, 35, SDL_FLIP_NONE);
@@ -532,9 +534,11 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 	// Render top bar
 	SDL_Rect veryTopBar;
+	int playerBarYPadding = 5;
 	int playerBarXPadding = 20;
 	int playerBarHeight = 20;
 	int paddingBetweenBars = 5;
+
 
 	veryTopBar.x = 0;
 	veryTopBar.y = 20;
@@ -543,61 +547,77 @@ void SceneGame::OnRender(SDL_Renderer* renderer)
 
 	SDL_RenderSetViewport(renderer, &veryTopBar);
 
-	SDL_Rect p1_hp_rect = { playerBarXPadding, 0, _player1->getHealth() * 2, playerBarHeight};
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderFillRect(renderer, &p1_hp_rect);
 	
-	//Frame
-	SDL_SetRenderDrawColor(renderer, 200, 0, 30, SDL_ALPHA_OPAQUE);
-	p1_hp_rect.w = 200;
-	SDL_RenderDrawRect( renderer, &p1_hp_rect );
-	p1_hp_rect.x++;
-	p1_hp_rect.y++;
-	p1_hp_rect.w -= 2;
-	p1_hp_rect.h -= 2;
-	SDL_RenderDrawRect( renderer, &p1_hp_rect );
+	/* PLAYER 1 */
+	{
+		_player1->renderAvatar(renderer, EngineInst->screen_width() - tileSize - playerBarXPadding, 0, SDL_FLIP_HORIZONTAL);
+		EngineInst->font()->printf(EngineInst->screen_width()  - tileSize - playerBarXPadding - 210, playerBarYPadding + veryTopBar.y, ALIGN_RIGHT | ALIGN_TOP, "Player controls UP, DOWN, LEFT, RIGHT CTRL-Fire");
 
-	SDL_Rect p1_mana_rect = { playerBarXPadding, playerBarHeight + paddingBetweenBars, _player1->getMana() * 2, playerBarHeight};
-	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
-	SDL_RenderFillRect(renderer, &p1_mana_rect);
+		SDL_Rect p1_hp_rect = { EngineInst->screen_width()  - tileSize - playerBarXPadding - _player1->getHealth() * 2, playerBarYPadding, _player1->getHealth() * 2, playerBarHeight};
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderFillRect(renderer, &p1_hp_rect);
 
-	//Frame
-	SDL_SetRenderDrawColor(renderer, 20, 20, 180, SDL_ALPHA_OPAQUE);
-	p1_mana_rect.w = 200;
-	SDL_RenderDrawRect( renderer, &p1_mana_rect );
-	p1_mana_rect.x++;
-	p1_mana_rect.y++;
-	p1_mana_rect.w -= 2;
-	p1_mana_rect.h -= 2;
-	SDL_RenderDrawRect( renderer, &p1_mana_rect );
+		//Frame
+		SDL_SetRenderDrawColor(renderer, 200, 0, 30, SDL_ALPHA_OPAQUE);
+		p1_hp_rect.x = EngineInst->screen_width() - tileSize - playerBarXPadding - 200;
+		p1_hp_rect.w = 200;
+		SDL_RenderDrawRect( renderer, &p1_hp_rect );
+		p1_hp_rect.x++;
+		p1_hp_rect.y++;
+		p1_hp_rect.w -= 2;
+		p1_hp_rect.h -= 2;
+		SDL_RenderDrawRect( renderer, &p1_hp_rect );
 
-	SDL_Rect p2_hp_rect = { EngineInst->screen_width() - playerBarXPadding - _player2->getHealth() * 2, 0, _player2->getHealth() * 2, playerBarHeight};
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderFillRect(renderer, &p2_hp_rect);
+		SDL_Rect p1_mana_rect = { EngineInst->screen_width() - tileSize - playerBarXPadding - _player1->getMana() * 2, playerBarHeight + paddingBetweenBars + playerBarYPadding, _player1->getMana() * 2, playerBarHeight};
+		SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+		SDL_RenderFillRect(renderer, &p1_mana_rect);
 
-	//Frame
-	SDL_SetRenderDrawColor(renderer, 200, 0, 30, SDL_ALPHA_OPAQUE);
-	p2_hp_rect.x = EngineInst->screen_width() - playerBarXPadding - 200;
-	p2_hp_rect.w = 200;
-	SDL_RenderDrawRect( renderer, &p2_hp_rect );
-	p2_hp_rect.x++;
-	p2_hp_rect.y++;
-	p2_hp_rect.w -= 2;
-	p2_hp_rect.h -= 2;
-	SDL_RenderDrawRect( renderer, &p2_hp_rect );
+		//Frame
+		SDL_SetRenderDrawColor(renderer, 20, 20, 180, SDL_ALPHA_OPAQUE);
+		p1_mana_rect.x = EngineInst->screen_width() - tileSize - playerBarXPadding - 200;
+		p1_mana_rect.w = 200;
+		SDL_RenderDrawRect( renderer, &p1_mana_rect );
+		p1_mana_rect.x++;
+		p1_mana_rect.y++;
+		p1_mana_rect.w -= 2;
+		p1_mana_rect.h -= 2;
+		SDL_RenderDrawRect( renderer, &p1_mana_rect );
 
-	SDL_Rect p2_mana_rect = { EngineInst->screen_width() - playerBarXPadding - _player2->getMana() * 2, playerBarHeight + paddingBetweenBars, _player2->getMana() * 2, playerBarHeight};;
-	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
-	SDL_RenderFillRect(renderer, &p2_mana_rect);
+	}
 
-	//Frame
-	SDL_SetRenderDrawColor(renderer, 20, 20, 180, SDL_ALPHA_OPAQUE);
-	p2_mana_rect.x = EngineInst->screen_width() - playerBarXPadding - 200;
-	p2_mana_rect.w = 200;
-	SDL_RenderDrawRect( renderer, &p2_mana_rect );
-	p2_mana_rect.x++;
-	p2_mana_rect.y++;
-	p2_mana_rect.w -= 2;
-	p2_mana_rect.h -= 2;
-	SDL_RenderDrawRect( renderer, &p2_mana_rect );
+	/* PLAYER 2 */
+	{
+		_player2->renderAvatar(renderer, playerBarXPadding, 0, SDL_FLIP_NONE);
+		EngineInst->font()->printf( playerBarXPadding + tileSize +210, playerBarYPadding + veryTopBar.y + playerBarHeight +paddingBetweenBars, ALIGN_LEFT | ALIGN_TOP, "Player controls WSAD F-Fire");
+
+		SDL_Rect p2_hp_rect = { playerBarXPadding + tileSize, playerBarYPadding, _player2->getHealth() * 2, playerBarHeight};
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderFillRect(renderer, &p2_hp_rect);
+	
+		//Frame
+		SDL_SetRenderDrawColor(renderer, 200, 0, 30, SDL_ALPHA_OPAQUE);
+		p2_hp_rect.w = 200;
+		SDL_RenderDrawRect( renderer, &p2_hp_rect );
+		p2_hp_rect.x++;
+		p2_hp_rect.y++;
+		p2_hp_rect.w -= 2;
+		p2_hp_rect.h -= 2;
+		SDL_RenderDrawRect( renderer, &p2_hp_rect );
+
+		SDL_Rect p2_mana_rect = { playerBarXPadding + tileSize, playerBarHeight + paddingBetweenBars + playerBarYPadding, _player2->getMana() * 2, playerBarHeight};
+		SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+		SDL_RenderFillRect(renderer, &p2_mana_rect);
+
+		//Frame
+		SDL_SetRenderDrawColor(renderer, 20, 20, 180, SDL_ALPHA_OPAQUE);
+		p2_mana_rect.w = 200;
+		SDL_RenderDrawRect( renderer, &p2_mana_rect );
+		p2_mana_rect.x++;
+		p2_mana_rect.y++;
+		p2_mana_rect.w -= 2;
+		p2_mana_rect.h -= 2;
+		SDL_RenderDrawRect( renderer, &p2_mana_rect );
+
+	}
+
 }

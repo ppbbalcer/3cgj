@@ -11,7 +11,7 @@ private:
 	clock_t _last_shot_time;
 
 public:
-	Player(RTexture* texture, IMap * map);
+	Player(RTexture* texture, IMap * map, int hp, int mana);
 	~Player(void);
 
 	int getMana();

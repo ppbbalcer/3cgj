@@ -4,10 +4,12 @@
 
 using namespace std;
 
-Player::Player(RTexture * texture, IMap * map) : Character(texture, map)
+Player::Player(RTexture * texture, IMap * map, int hp, int mana) : Character(texture, map)
 {
 	_type = TYPE_PLAYER;
-	_mana = MAX_MANA;
+	_mana = mana;
+	_health = hp;
+	printf("PLAYER: %u %u\n", _health, _mana);
 	_last_shot_time = clock() - FIREBALL_MIN_DIFF_MS * (CLOCKS_PER_SEC / 1000);
 };
 
