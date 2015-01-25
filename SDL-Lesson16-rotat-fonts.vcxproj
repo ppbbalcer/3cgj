@@ -27,9 +27,11 @@
     <ClCompile Include="src\MapLogic\map.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\MapLogic\skull.cpp" />
+    <ClCompile Include="src\MapLogic\stairs.cpp" />
     <ClCompile Include="src\MapLogic\switch.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\scene_game.cpp" />
+    <ClCompile Include="src\victoryscene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Character.h" />
@@ -52,11 +54,13 @@
     <ClInclude Include="src\MapLogic\generic_map.h" />
     <ClInclude Include="src\MapLogic\map.h" />
     <ClInclude Include="src\MapLogic\skull.h" />
+    <ClInclude Include="src\MapLogic\stairs.h" />
     <ClInclude Include="src\MapLogic\switch.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\SceneExamples.h" />
     <ClInclude Include="src\SceneFont.h" />
     <ClInclude Include="src\scene_game.h" />
+    <ClInclude Include="src\victoryscene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F4CBED84-EE5D-4375-A743-9CFF692D691B}</ProjectGuid>
