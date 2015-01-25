@@ -38,15 +38,23 @@ void Enemy::OnUpdate(int time_ms)
 	if (_time_to_attack)
 		return;
 	
-
+	/* inflicit damage on all player characters on neighboring 
+	 * fields
+	 */
 	for (int i = getPosBeforeX()-1; i!= getPosBeforeX()+2; ++i) 
 			for (int j = getPosBeforeY()-1; j!= getPosBeforeY()+2; ++j)
 			{
+				/*check if field is within boundaries
+				 * of the map
+				 */
 				if (i>=_map->GetWidth()) continue;
 				if (i<0) continue;
 				if (j>=_map->GetHeight()) continue;
 				if (j<0) continue;
 				Character * wih = _map->GetFieldAt(i,j)->WhoIsHere();
+				/* if field is occupied and a character
+				 * who is there happens to be a players 
+				 * character (don't harm AIs) */
 				if (wih && dynamic_cast<Player*>(wih))
 				{
 					printf("Crucio!\n");

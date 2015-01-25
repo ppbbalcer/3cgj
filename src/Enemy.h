@@ -14,10 +14,15 @@ enum enemy_ai {
 	ENEMY_AI_DISTANCE
 };
 
+/**
+ * class represents non-player characters
+ */
 class Enemy : public Character
 {
+	//! in milliseconds
 	clock_t _time_to_attack;
 	clock_t _time_to_random_direction;
+	//! ai instance
 	enemy_ai _ai;
 public:
 	Enemy(RTexture* texture, IMap * map, int hp, int ai);
