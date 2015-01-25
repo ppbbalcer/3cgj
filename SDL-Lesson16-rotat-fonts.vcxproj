@@ -27,6 +27,7 @@
     <ClCompile Include="src\MapLogic\map.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\MapLogic\skull.cpp" />
+    <ClCompile Include="src\MapLogic\spikes.cpp" />
     <ClCompile Include="src\MapLogic\stairs.cpp" />
     <ClCompile Include="src\MapLogic\switch.cpp" />
     <ClCompile Include="src\Player.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="src\MapLogic\generic_map.h" />
     <ClInclude Include="src\MapLogic\map.h" />
     <ClInclude Include="src\MapLogic\skull.h" />
+    <ClInclude Include="src\MapLogic\spikes.h" />
     <ClInclude Include="src\MapLogic\stairs.h" />
     <ClInclude Include="src\MapLogic\switch.h" />
     <ClInclude Include="src\Player.h" />

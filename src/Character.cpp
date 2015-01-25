@@ -165,25 +165,6 @@ void Character::updateDirection(DIRECT directMove)
 	int closeTileX = (_posX + tileSize*0.5f)/tileSize;
 	int closeTileY = (_posY + tileSize*0.5f)/tileSize;
 
-	//if(closeTileX < 0) {
-	//	closeTileX = 0;
-	//} else if(closeTileX > _map->GetWidth() - 1) {
-	//	closeTileX = _pos_before_y == _map->GetWidth() - 1;
-	//}
-
-	//if(closeTileY < 0) {
-	//	closeTileY = 0;
-	//} else if(closeTileY > _map->GetHeight() - 1) {
-	//	closeTileY = _map->GetHeight() - 1;
-	//}
-/*
-	if(closeTileX < 0) {
-		closeTileX = 0;
-	}
-
-	if (closeTileX == 0 || _pos_before_y == _map->GetHeight() - 1 ||
-	                _pos_before_x == 0 || _pos_before_x == _map->GetWidth() - 1) {
-*/
 
 	switch (directMove) {
 	case DIRECT_DOWN:

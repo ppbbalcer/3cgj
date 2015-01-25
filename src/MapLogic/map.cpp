@@ -10,6 +10,7 @@
 #include "door.h"
 #include "skull.h"
 #include "stairs.h"
+#include "spikes.h"
 using namespace std;
 
 
@@ -78,6 +79,12 @@ LoadedMap::LoadedMap(const char * path) {
 				break;
 			case 'd':
 				new_field= new Field(IField::DESK);
+				break;
+			case '#':
+				new_field= new Spikes(true);
+				break;
+			case '%':
+				new_field= new Spikes(false);
 				break;
 			case 'u':
 				new_field= new Field(IField::POWERUP);
