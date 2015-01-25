@@ -2,6 +2,7 @@
 #include "map.h"
 #include "generic_map.h"
 #include "switch.h"
+#include "../GlobalData.h"
 
 bool Switch::Up() {
 		if (GetType()==SWITCH_UP) {
@@ -22,6 +23,8 @@ void Switch::SteppedOver(Character * who) {
 	} else {
 		assert(0);
 	}
+
+	globalAudios[TOGGLE].res.sound->play();
 
 	if (associated_field) {
 		if (on_up ^ Up() )

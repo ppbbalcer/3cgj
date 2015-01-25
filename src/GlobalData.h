@@ -15,14 +15,15 @@ extern class Scene* gScene;
 extern size_t gScenesSize;
 
 enum GameSounds {
-	CLICK_ON = 0,
-	CLICK_OFF,
+	BUTTON_ON = 0,
+	BUTTON_OFF,
 	FIREBALL,
 	SLURP,
 	HEARTBEAT,
 	PLAYER_DEATH,
 	ENEMY_DEATH,
 	PLAYER_PAIN,
+	TOGGLE
 };
 
 extern AudioResource globalAudios[];

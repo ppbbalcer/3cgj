@@ -100,7 +100,7 @@ void Field::SteppedOver(Character * who)
 	}
 	if (type == DOSKEY) {
 		doskey_active++;
-		globalAudios[CLICK_ON].res.sound->play();
+		globalAudios[BUTTON_ON].res.sound->play();
 	}
 	someone_is_here = who;
 }
@@ -109,7 +109,7 @@ void Field::LeftField()
 {
 	if (type == DOSKEY) {
 		doskey_active--;
-		globalAudios[CLICK_OFF].res.sound->play();
+		globalAudios[BUTTON_OFF].res.sound->play();
 	}
 	someone_is_here = 0;
 }
