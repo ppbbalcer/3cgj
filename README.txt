@@ -1,9 +1,9 @@
-What Shall We Do Now
+What Shall We Do Now - Revenge of the GM
 README file
 
 This is PRE ALPHA RELEASE.
 
-To run game double click onto executable.
+To run game double click onto executable (Windows) or build it yourself (Linux).
 
 You can also make your own levels by creating new files in the
 Resources/levels folder.
@@ -11,7 +11,7 @@ Resources/levels folder.
 This game is released under THREE CLAUSE BSD LICENSE
 
 
-Copyright (c) 2015
+Copyright (c) 2015, Pawłowski Sławomir, Kaminski Maciej, Naruszewicz Maciej, Balcer Piotr
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -40,3 +40,6 @@ Following problems are known:
   such case disabling display scaling on high DPI settings should
   help (right click on the executable file "Revenge of the GM.exe",
   Compatibility -> Disable display scaling on high DPI settings
+
+- Game wasn't designed to run on dual monitor setups and may crash on
+  such.
