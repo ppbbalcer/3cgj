@@ -14,6 +14,8 @@ const char * Congratulations =
 	"Or more accurately you survived.\n"
 	"Congratulations. Our game wasn't meant to be easy - we hope,\n"
 	"your playthrough was as exciting as our effort developing it.\n"
+
+	"\n\nRevenge of the GM is (c) 2015.\nDevelopment team:\n- Pawlowski Slawomir\n- Kaminski Maciej\n- Naruszewicz Maciej\n- Balcer Piotr"
 	"\n\nPress [ESCAPE] to return to desktop...";
 
 float cur_char=0;
