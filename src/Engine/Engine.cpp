@@ -14,7 +14,9 @@ void PAUSE() {
 	assert(false);
 }
 
+#ifndef FULLSCREEN
 #define FULLSCREEN
+#endif
 
 #define DEF_SCREEN_WIDTH 1200
 #define DEF_SCREEN_HEIGHT 900
@@ -44,7 +46,7 @@ float Q_rsqrt( float number )
 }
 
 
-#define GAME_TITLE "WHAT DO WE DO NOW?"
+#define GAME_TITLE "WHAT DO WE DO NOW - revenge of the GM?"
 #define _engine EngineInst
 
 Engine* EngineInst = NULL;

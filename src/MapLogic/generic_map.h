@@ -104,6 +104,7 @@ public:
 	}
 	GenericMap()
 	{
+		_all_doors_open=0;
 		golden_skulls_active = false;
 		width = 0;
 		height = 0;
