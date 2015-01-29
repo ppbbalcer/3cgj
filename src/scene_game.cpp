@@ -151,7 +151,9 @@ void SceneGame::OnFree()
 	delete _arrayShadow;
 	_arrayShadow = NULL;
 
-
+	//Destroy textures???
+	map->ResetDoorsOpen();
+	
 	globalAudios[HEARTBEAT].res.sound->stop();
 
 	EngineInst->unLoadResources(texturesScene, texturesSceneSize);

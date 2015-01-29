@@ -83,6 +83,9 @@ protected:
 		return false;
 	}
 public:
+	void ResetDoorsOpen() {
+		_all_doors_open=0;
+	}
 	void SetDoorsOpen(bool open) {
 		if (open)
 			_all_doors_open++;
