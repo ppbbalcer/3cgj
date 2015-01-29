@@ -8,10 +8,15 @@ class Field: public IField {
 	Character* someone_is_here;
 	static int assigned_field[NUM_FIELD_TYPES];
 	static void EnsureFieldIdsInitialized();
+protected:
+	IMap *assoc_map;
 public:
 	Field(int f) {
 		someone_is_here=NULL;
 		type=f;
+	}
+	virtual void InitMapAssociation(IMap *map) {
+		assoc_map=map;
 	}
 	virtual int GetType();
 	virtual bool IsObstacle();

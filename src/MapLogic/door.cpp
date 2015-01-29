@@ -28,12 +28,11 @@ void Door::SteppedOver(Character * who)
 	Field::SteppedOver(who);
 }
 
-extern int doskey_active;
 int Door::GetType()
 {
-	if (Field::GetType()==DOOR_VERTICAL_CLOSED && doskey_active)
+	if (Field::GetType()==DOOR_VERTICAL_CLOSED && assoc_map->GetDoorsOpen())
 		return DOOR_VERTICAL_OPEN;
-	if (Field::GetType()==DOOR_HORIZONTAL_CLOSED && doskey_active)
+	if (Field::GetType()==DOOR_HORIZONTAL_CLOSED && assoc_map->GetDoorsOpen())
 		return DOOR_HORIZONTAL_OPEN;
 
 	return Field::GetType();

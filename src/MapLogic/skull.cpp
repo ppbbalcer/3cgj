@@ -35,14 +35,14 @@ Skull::Skull(bool golden, bool _enabled):
 {
 	enabled=_enabled;
 }
-extern int doskey_active;
+//extern int doskey_active;
 void Skull::SteppedOver(Character * who)
 {
 	Field::SteppedOver(who);
 	if ( enabled<=0)
 		return;
 	if (IsGolden()) {
-		doskey_active++;
+		assoc_map->SetDoorsOpen(true);
 	} else {
 		ActivateRemotes();
 	}
@@ -55,7 +55,7 @@ void Skull::LeftField()
 		return;
 	globalAudios[BUTTON_OFF].res.sound->play();
 	if (IsGolden()) {
-		doskey_active--;
+		assoc_map->SetDoorsOpen(false);
 	} else {
 		DeactivateRemotes();
 	}

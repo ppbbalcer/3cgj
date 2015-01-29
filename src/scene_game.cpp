@@ -140,8 +140,6 @@ void SceneGame::OnLoad()
 	globalAudios[HEARTBEAT].res.sound->play(-1, 0, HEARTBEAT_BASE_INTERVAL);
 	is_loaded = true;
 }
-/* this global variable implements golden skull feature*/
-extern int doskey_active;
 
 void SceneGame::OnFree()
 {
@@ -153,8 +151,6 @@ void SceneGame::OnFree()
 	delete _arrayShadow;
 	_arrayShadow = NULL;
 
-	//Destroy textures???
-	doskey_active = 0;
 
 	globalAudios[HEARTBEAT].res.sound->stop();
 

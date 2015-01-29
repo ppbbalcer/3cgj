@@ -66,7 +66,6 @@ bool Field::IsObstacle()
 		return true;
 	return (type >= WALL && type <= T_BOTTOM);
 }
-int doskey_active = 0;
 int Field::GetType()
 {
 	return type;

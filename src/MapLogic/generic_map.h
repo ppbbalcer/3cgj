@@ -9,11 +9,13 @@ private:
 	Field** fields;
 	int width;
 	int height;
+	int _all_doors_open;
 protected:
 	starting_pos p1_start;
 	starting_pos p2_start;
 	enemies_list enemies;
 	map_params *params;
+	bool golden_skulls_active;
 protected:
 	virtual const starting_pos & GetPlayer1Start();
 	virtual const starting_pos & GetPlayer2Start();
@@ -54,6 +56,7 @@ protected:
 			FreeFieldIfExists(x,y);
 		}
 		fields[x+y*width] = field1;
+		field1->InitMapAssociation(this);
 		return 0;
 	}
 	void DeallocateFields() {
@@ -80,6 +83,15 @@ protected:
 		return false;
 	}
 public:
+	void SetDoorsOpen(bool open) {
+		if (open)
+			_all_doors_open++;
+		else
+			_all_doors_open--;
+	}
+	bool GetDoorsOpen() {
+		return _all_doors_open >0;
+	}
 	const char *GetTitleString()
 	{
 		return title_string.c_str();
@@ -89,6 +101,7 @@ public:
 	}
 	GenericMap()
 	{
+		golden_skulls_active = false;
 		width = 0;
 		height = 0;
 		fields = 0;

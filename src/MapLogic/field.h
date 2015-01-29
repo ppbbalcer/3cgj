@@ -1,6 +1,7 @@
 #ifndef __FIELD_H
 #define __FIELD_H
 class Character;
+class IMap;
 class IField {
 public:
 
@@ -30,7 +31,7 @@ public:
 		DOOR_HORIZONTAL_OPEN,
 		DOOR_VERTICAL_OPEN,
 		MEDKIT,
-		GOLDEN_SKULL, /* dos computer that opens doors */
+		GOLDEN_SKULL,
 		SILVER_SKULL,
 		INACTIVE_SKULL,
 		POWERUP,
@@ -61,7 +62,7 @@ public:
 	virtual void LeftField()=0;
 	virtual bool IsOccupied()=0;
 	virtual Character* WhoIsHere()=0;
-
+	virtual void InitMapAssociation(IMap *map)=0;
 };
 
 #endif

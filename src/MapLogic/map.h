@@ -54,7 +54,11 @@ public:
 	 */
 	virtual IField* GetFieldAt(int x, int y) = 0;
 	virtual const char *GetTitleString() = 0;
+	virtual void SetDoorsOpen(bool open) = 0;
+	virtual bool GetDoorsOpen() = 0;
+
 	virtual ~IMap() {};
+
 };
 
 
